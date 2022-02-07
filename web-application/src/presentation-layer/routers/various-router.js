@@ -16,6 +16,10 @@ router.get("/about", function(request, response){
 router.get("/contact", function(request, response){
 	response.render("contact.hbs")
 })
+router.get("/extraFeatures", function(request, response){
+	response.render("deadline.hbs")
+})
+
 
 router.get("/top250", function(request, response){
 	movieManager.getAllMovies(function(errors, top250Movies){
