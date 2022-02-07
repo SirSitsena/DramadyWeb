@@ -1,0 +1,25 @@
+
+{{#if movies.length}}
+    {{#each movies}}
+        <div class="box">
+            <article class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="{{image}}" alt="movie poster" height="64">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{fullTitle}}</strong> <span>IMDB: {{imDbRating}}</span>
+                            <br>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cupiditate dolorum eos est excepturi ipsa, labore neque odio officia perferendis quidem quis ratione reiciendis repellat saepe, sunt tempora vitae voluptas.
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    {{/each}}
+{{else}}
+    <p>No movies</p>
+{{/if}}
