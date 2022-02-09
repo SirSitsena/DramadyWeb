@@ -10,7 +10,7 @@ CREATE TABLE accounts (
 INSERT INTO accounts (username, password) VALUES ("Alice", "abc123");
 
 
----------------------------//----------Creates the movie table
+-- Creates the movie table
 CREATE TABLE IF NOT EXISTS `top250Movies` (
 `id` VARCHAR(255) NOT NULL,
 `rank` INT NULL,
@@ -276,4 +276,4 @@ INSERT INTO top250Movies VALUES
 ('tt0050783',249,'Nights of Cabiria','Nights of Cabiria (1957)',1957,'https://m.media-amazon.com/images/M/MV5BOTdhNmUxZmQtNmMwNC00MzE3LWE1MTUtZDgxZTYwYjEzZjcwXkEyXkFqcGdeQXVyNTA1NjYyMDk@._V1_UX128_CR0\,3\,128\,176_AL_.jpg','Federico Fellini (dir.)\, Giulietta Masina\, François Périer',8.0,47477),
 ('tt0060107',250,'Andrei Rublev','Andrei Rublev (1966)',1966,'https://m.media-amazon.com/images/M/MV5BNjM2MjMwNzUzN15BMl5BanBnXkFtZTgwMjEzMzE5MTE@._V1_UY176_CR0\,0\,128\,176_AL_.jpg','Andrei Tarkovsky (dir.)\, Anatoliy Solonitsyn\, Ivan Lapikov',8.0,52191);
 
-----------------------------//
+-- stop
