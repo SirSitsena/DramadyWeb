@@ -2,26 +2,82 @@
 CREATE TABLE accounts (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(50) NOT NULL,
+	isAdministrator BOOLEAN DEFAULT FALSE,
 	password VARCHAR(30) NOT NULL,
 	CONSTRAINT usernameUnique UNIQUE (username)
 );
 
+-- Create Movie table, Example of a titleId search: https://imdb-api.com/en/API/Title/k_9t0l0iej/tt1375666
+
+CREATE TABLE movies (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	titleId VARCHAR(50) NOT NULL,
+	title VARCHAR(255),
+	fullTitle VARCHAR(255),
+	year VARCHAR(6),
+	image VARCHAR(255),
+	releaseDate VARCHAR(30),
+	runtimeStr VARCHAR(30),
+	plot VARCHAR(2000)
+);
+
+-- Create comments table
+
+CREATE TABLE comments (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	content VARCHAR(500),
+	isPublic BOOLEAN DEFAULT FALSE,
+	userId INT UNSIGNED,
+	CONSTRAINT fk_user
+	FOREIGN KEY (userId) REFERENCES accounts(id),
+	movieId INT UNSIGNED,
+	CONSTRAINT fk_movies
+	FOREIGN KEY (movieId) REFERENCES movies(id)
+);
+
+-- CREATE FAVOURITE LIST
+CREATE TABLE UserFavourites (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	dateAdded DATE,
+	userId INT UNSIGNED,
+	CONSTRAINT fk_userFavourites
+	FOREIGN KEY (userId) REFERENCES accounts(id),
+	movieId INT UNSIGNED,
+	CONSTRAINT fk_moviesFavourites
+	FOREIGN KEY (movieId) REFERENCES movies(id)
+);
+
+
+-- CREATE WATCHLIST
+CREATE TABLE UserWatchlist (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	dateAdded DATE,
+	userId INT UNSIGNED,
+	CONSTRAINT fk_userWatchlist
+	FOREIGN KEY (userId) REFERENCES accounts(id),
+	movieId INT UNSIGNED,
+	CONSTRAINT fk_moviesWatchlist
+	FOREIGN KEY (movieId) REFERENCES movies(id)
+);
+
 -- Create a dummy account for testing.
 INSERT INTO accounts (username, password) VALUES ("Alice", "abc123");
+-- Create an account with elevated permission:
+INSERT INTO accounts (username, password, isAdministrator) VALUES ("Edvin", "abc123", TRUE);
 
 
 -- Creates the movie table
-CREATE TABLE IF NOT EXISTS `top250Movies` (
-`id` VARCHAR(255) NOT NULL,
-`rank` INT NULL,
-`title` VARCHAR(255) NULL,
-`fullTitle` VARCHAR(255) NULL,
-`year` INT NULL,
-`image` VARCHAR(255) NULL,
-`crew` VARCHAR(255) NULL,
-`imDbRating` FLOAT NULL,
-`imDbRatingCount` INT NULL,
-PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS top250Movies (
+	id VARCHAR(255) NOT NULL,
+	rank INT NULL,
+	title VARCHAR(255) NULL,
+	fullTitle VARCHAR(255) NULL,
+	year INT NULL,
+	image VARCHAR(255) NULL,
+	crew VARCHAR(255) NULL,
+	imDbRating FLOAT NULL,
+	imDbRatingCount INT NULL,
+	PRIMARY KEY (id)
 );
 
 INSERT INTO top250Movies VALUES

@@ -1,10 +1,19 @@
-<div class="content">
-	<h2>Sign in</h2>
-	<p>Sign in using the form below.</p>
-</div>
-
-<form action="">
-	
-	TODO
-	
-</form>
+{{#if errors.length}}
+    <p>An issue appeared: </p>
+    <ul>
+        {{#each errors}}
+            <li>{{this}}</li> 
+        {{/each}}
+    </ul>
+{{else}}
+    {{#if message}}
+        <h2>Signed in.</h2>
+    {{else}}
+        <h2>Sign in here:</h2>
+        <form action="/accounts/sign-in" method="POST">
+            Username: <input type="text" name="username"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit" value="login!">
+        </form>
+    {{/if}}
+{{/if}}

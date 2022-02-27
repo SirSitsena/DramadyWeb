@@ -4,7 +4,6 @@ const imdbMovieManager = require('../../business-logic-layer/imdbApi-manager')
 const router = express.Router()
 
 router.get("/", function(request, response){
-
 	response.render("home.hbs")
 })
 

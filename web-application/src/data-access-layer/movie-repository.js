@@ -101,3 +101,86 @@ exports.getMovieById = function(year, callback){
 	})
 	
 }
+
+
+/* **************************** FAVOURITES ********************* */
+
+/* 
+	Add a record to favourites list.
+
+	SUCCESS: RETURNS ID OF FAVOURITE.
+*/
+exports.createUserFavourites = function(userId, movieId, date, callback) {
+	
+	const query = 'INSERT INTO UserFavourites (dateAdded, userId, movieId) VALUES (?, ?, ?)'
+	const values = [date, userId, movieId]
+
+	db.query(query, values, function(error, results){
+		if(error){
+			// TODO: Look for usernameUnique violation.
+			callback(['databaseError'], null)
+		}else{
+			callback([], results.insertId)
+		}
+	})
+}
+
+/*
+	Delete a record from the favourites list.
+
+	SUCCESS: RETURNS (1) DELETED ROW
+*/
+exports.deleteUserFavourite = function(id, callback) {
+	const query = 'DELETE FROM UserFavourites WHERE id = ?'
+	const values = [id]
+
+	db.query(query, values, function(error, results){
+		if(error){
+			//TODO: LOOK FOR ERRORS :
+			callback(['datanaseError'], null)
+		}else{
+			callback([], results.affectedRows)
+		}
+	})
+}
+
+/* ************************* WATCHLIST ************************** */
+
+/* 
+	Add a record to watchlist.
+
+	SUCCESS: RETURNS ID OF watchlist item.
+*/
+exports.createUserWatchlist = function(userId, movieId, date, callback) {
+	
+	const query = 'INSERT INTO UserWatchlist (dateAdded, userId, movieId) VALUES (?, ?, ?)'
+	const values = [date, userId, movieId]
+
+	db.query(query, values, function(error, results){
+		if(error){
+			// TODO: Look for usernameUnique violation.
+			callback(['databaseError'], null)
+		}else{
+			callback([], results.insertId)
+		}
+	})
+}
+
+/*
+	Delete a record from the watchlist.
+
+	SUCCESS: RETURNS (1) DELETED ROW
+*/
+exports.deleteUserWatchlist = function(id, callback) {
+	const query = 'DELETE FROM UserWatchlist WHERE id = ?'
+	const values = [id]
+
+	db.query(query, values, function(error, results){
+		if(error){
+			//TODO: LOOK FOR ERRORS :
+			callback(['datanaseError'], null)
+		}else{
+			callback([], results.affectedRows)
+		}
+	})
+}

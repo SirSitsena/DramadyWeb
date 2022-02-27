@@ -1,10 +1,20 @@
-<div class="content">
-	<h2>Sign up</h2>
-	<p>Create a new account using the form below.</p>
-</div>
-
-<form action="">
-	
-	TODO
-	
-</form>
+{{#if errors.length}}
+    <p>An issue appeared: </p>
+    <ul>
+        {{#each errors}}
+            <li>{{this}}</li> 
+        {{/each}}
+    </ul>
+{{else}}
+    {{#if accountId.length}}
+        <h2>User registered.</h2>
+    {{else}}
+        <h2>Sign up here:</h2>
+        <form action="/accounts/sign-up" method="POST">
+            Username: <input type="text" name="username"><br>
+            FullName: <input type="text" name="fullname"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit" value="Register!">
+        </form>
+    {{/if}}
+{{/if}}

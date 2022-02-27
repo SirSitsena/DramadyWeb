@@ -9,6 +9,7 @@ services:
       - "./web-application/src:/web-application/src"
     depends_on:
       - database
+      - cache
   database:
     build: ./database
     ports:
@@ -16,3 +17,11 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=theRootPassword
       - MYSQL_DATABASE=webAppDatabase
+  cache:
+    image: redis:6.2
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - "./sessions:/sessions"
