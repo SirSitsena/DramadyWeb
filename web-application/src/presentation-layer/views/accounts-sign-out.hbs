@@ -1,0 +1,17 @@
+{{#if errors.length}}
+    <p>An issue appeared: </p>
+    <ul>
+        {{#each errors}}
+            <li>{{this}}</li> 
+        {{/each}}
+    </ul>
+{{else}}
+    {{#if message}}
+        <h2>{{message}}</h2>
+        <script>
+            setTimeout(function(){
+                window.location = '/'
+            }, 2000)
+        </script>
+    {{/if}}
+{{/if}}

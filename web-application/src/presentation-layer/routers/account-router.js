@@ -33,10 +33,11 @@ router.post('/sign-up', function(request, response){
     })
 })
 
+// Show the form of signing in:
 router.get("/sign-in", function(request, response){
 	response.render("accounts-sign-in.hbs")
 })
-
+// Post the form.
 router.post("/sign-in", function(request, response) {
 	let account = {}
 	account.username = request.body.username
@@ -48,6 +49,17 @@ router.post("/sign-in", function(request, response) {
 			message: message
 		}
 		response.render("accounts-sign-in.hbs", model)
+	})
+})
+
+//Signing out of an account
+router.post('/sign-out', function(request, response) {
+	accountManager.signOut(request, function(errors, message) {
+		const model = {
+			errors: errors,
+			message: message
+		}
+		response.render('accounts-sign-out.hbs', model)
 	})
 })
 

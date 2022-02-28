@@ -48,8 +48,15 @@
 				<div class="navbar-end">
 					<div class="navbar-item">
 						<div class="buttons">
-							<a class="button is-primary" href="/accounts/sign-up">Sign up</a>
-							<a class="button is-dark" href="/accounts/sign-in">Sign in</a>
+							{{#if session.accountId}}
+							<form method="POST" action="/accounts/sign-out" style="display:inline-block;">
+								<input type="hidden" name="refUrl" value="{{ref}}">
+								<button type="submit" class="button is-primary">Sign out</button>
+							</form>
+							{{else}}
+								<a class="button is-primary" href="/accounts/sign-up">Sign up</a>
+								<a class="button is-dark" href="/accounts/sign-in">Sign in</a>
+							{{/if}}
 						</div>
 					</div>
 				</div>

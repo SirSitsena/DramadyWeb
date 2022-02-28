@@ -45,6 +45,12 @@ app.use(
 		resave: false
 	})
 )
+// Make the session avaliable in views:
+app.use(function(request, response, next) {
+	response.locals.session = request.session
+	next()
+})
+
 
 // Attach all routers.
 app.use('/', variousRouter)

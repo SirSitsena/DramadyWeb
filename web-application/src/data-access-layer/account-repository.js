@@ -66,6 +66,7 @@ exports.createAccount = function(account, callback){
 	Log in to an account
 */
 exports.signIn = function(account, callback) {
+	
 	const query = 'SELECT * FROM accounts WHERE username = ? AND password = ?'
 	const values = [account.username, account.password]
 
