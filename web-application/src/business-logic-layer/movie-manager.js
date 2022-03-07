@@ -1,4 +1,4 @@
-const movieRepository = require('../data-access-layer/movie-repository')
+//const movieRepository = require('../data-access-layer/movie-repository')
 // const movieValidator = require('./movie-validator')
 
 module.exports = function({movieRepository}){
@@ -93,7 +93,6 @@ module.exports = function({movieRepository}){
 		},
 		
 		/*						 WATCHLIST FUNCTIONALITY						*/
-		
 		viewWatchlist: function(request, callback){
 			/*
 				Viewing an accounts watchlist.

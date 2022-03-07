@@ -16,48 +16,53 @@ redisClient.connect().catch(console.error)
 
 
 
-const variousRouter = require('./routers/various-router')
-const accountRouter = require('./routers/account-router')
-const moviesRouter = require('./routers/movies-router')
+//const variousRouter = require('./routers/various-router')
+//const accountRouter = require('./routers/account-router')
+//const moviesRouter = require('./routers/movies-router')
 
-const app = express()
+module.exports = function({accountRouter, movieRouter, variousRouter}){
+	const app = express()
 
-// Setup express-handlebars.
-app.set('views', path.join(__dirname, 'views'))
+	// Setup express-handlebars.
+	app.set('views', path.join(__dirname, 'views'))
 
-// Note: This code is for an old version of express-handlebars.
-// One should use newest version of packages.
-app.engine('hbs', expressHandlebars({
-	extname: 'hbs',
-	defaultLayout: 'main',
-	layoutsDir: path.join(__dirname, 'layouts')
-}))
+	// Note: This code is for an old version of express-handlebars.
+	// One should use newest version of packages.
+	app.engine('hbs', expressHandlebars({
+		extname: 'hbs',
+		defaultLayout: 'main',
+		layoutsDir: path.join(__dirname, 'layouts')
+	}))
 
-// Handle static files in the public folder.
-app.use(express.static(path.join(__dirname, 'public')))
+	// Handle static files in the public folder.
+	app.use(express.static(path.join(__dirname, 'public')))
 
-// Use redis store for sessions
-app.use(
-	session({
-		store: new RedisStore({client: redisClient}),
-		saveUninitialized: false,
-		secret: "DramadySecretKey",
-		resave: false
+	// Use redis store for sessions
+	app.use(
+		session({
+			store: new RedisStore({client: redisClient}),
+			saveUninitialized: false,
+			secret: "DramadySecretKey",
+			resave: false
+		})
+	)
+	// Make the session avaliable in views:
+	app.use(function(request, response, next) {
+		response.locals.session = request.session
+		next()
 	})
-)
-// Make the session avaliable in views:
-app.use(function(request, response, next) {
-	response.locals.session = request.session
-	next()
-})
 
 
-// Attach all routers.
-app.use('/', variousRouter)
-app.use('/accounts', accountRouter)
-app.use('/movies', moviesRouter)
+	// Attach all routers.
+	app.use('/', variousRouter)
+	app.use('/accounts', accountRouter)
+	app.use('/movies', movieRouter)
 
-// Start listening for incoming HTTP requests!
-app.listen(8080, function(){
-	console.log('Running on 8080!')
-})
+	// Start listening for incoming HTTP requests!
+	app.listen(8080, function(){
+		console.log('Running on 8080!')
+	})
+
+	return app
+}
+
