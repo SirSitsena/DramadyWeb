@@ -9,6 +9,7 @@ exports.getMostPopularMovies = function(callback) {
         if (err || body.errorMessage != "") {
             callback(err, null)
         } else {
+            //console.log(body.items)
             callback(null, body.items)
         }
         // console.log(body.url);

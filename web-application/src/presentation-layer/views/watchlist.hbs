@@ -1,0 +1,21 @@
+<div class="content" style="color:white;">
+<h1 style="color:white;">Watchlist</h1>
+{{#if errors.length}}
+	<p>Oh no, something went wrong:</p>
+	<ul>
+		{{#each errors}}
+			<li>{{this}}</li>
+		{{/each}}
+	</ul>
+{{else}}
+	{{#if movies.length}}
+		<ul>
+			{{#each movies}}
+				{{movieId}}
+			{{/each}}
+		</ul>
+	{{else}}
+		<p>No movies on watchlist yet.</p>
+	{{/if}}
+{{/if}}
+</div>

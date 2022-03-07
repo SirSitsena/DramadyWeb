@@ -22,7 +22,6 @@ CREATE TABLE movies (
 );
 
 -- Create comments table
-
 CREATE TABLE comments (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	content VARCHAR(500),
@@ -35,6 +34,12 @@ CREATE TABLE comments (
 	FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
+CREATE TABLE publicReviews (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	content VARCHAR(500) NOT NULL,
+	titleId VARCHAR(50) NOT NULL
+);
+
 -- CREATE FAVOURITE LIST
 CREATE TABLE UserFavourites (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -42,9 +47,7 @@ CREATE TABLE UserFavourites (
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userFavourites
 	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId INT UNSIGNED,
-	CONSTRAINT fk_moviesFavourites
-	FOREIGN KEY (movieId) REFERENCES movies(id)
+	movieId VARCHAR(25)
 );
 
 
@@ -55,15 +58,16 @@ CREATE TABLE UserWatchlist (
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userWatchlist
 	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId INT UNSIGNED,
-	CONSTRAINT fk_moviesWatchlist
-	FOREIGN KEY (movieId) REFERENCES movies(id)
+	movieId VARCHAR(25)
 );
 
 -- Create a dummy account for testing.
 INSERT INTO accounts (username, password) VALUES ("Alice", "abc123");
 -- Create an account with elevated permission:
 INSERT INTO accounts (username, password, isAdministrator) VALUES ("Edvin", "abc123", TRUE);
+INSERT INTO accounts (username, password, isAdministrator) VALUES
+('rasmus','hej12345', TRUE),
+('anestis', 'hej12345', TRUE);
 
 
 -- Creates the movie table
@@ -79,6 +83,8 @@ CREATE TABLE IF NOT EXISTS top250Movies (
 	imDbRatingCount INT NULL,
 	PRIMARY KEY (id)
 );
+
+
 
 INSERT INTO top250Movies VALUES
 ('tt0111161',1,'The Shawshank Redemption','The Shawshank Redemption (1994)',1994,'https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX128_CR0\,3\,128\,176_AL_.jpg','Frank Darabont (dir.)\, Tim Robbins\, Morgan Freeman',9.2,2538931),

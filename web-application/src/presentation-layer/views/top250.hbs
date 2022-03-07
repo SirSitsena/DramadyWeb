@@ -13,10 +13,40 @@
                     <div class="media-content">
                         <div class="content">
                             <p>
-                                <strong>{{fullTitle}}</strong> <span>IMDB: {{imDbRating}}</span>
+                                <strong>{{fullTitle}}</strong> <span>IMDB: {{imDbRating}}</span><a href="/movies/{{id}}">Go to</a>
+                                
+                                    {{#if this.isFavourited}}
+                                        <span class="icon" style="float:right; color: #00d1b2;">
+                                            <a href="/movies/favourite/{{id}}" style="color: inherit;">
+                                                <i class="fas fa-solid fa-star"></i>
+                                            </a>
+                                        </span>
+                                    {{else}}
+                                        <span class="icon" style="float:right;">
+                                            <a href="/movies/favourite/{{id}}" style="color: inherit;">
+                                                <i class="fas fa-thin fa-star"></i>
+                                            </a>
+                                        </span>
+                                    {{/if}}
+
+                                    {{#if this.isWatchlisted}}
+                                        <span class="icon" style="float:right; color:#00d1b2;">
+                                            <a href="/movies/watchlist/{{id}}" style="color: inherit;">
+                                                <i class="fas fa-solid fa-eye"></i>
+                                            </a>
+                                        </span>
+                                    {{else}}
+                                        <span class="icon" style="float:right;">
+                                            <a href="/movies/watchlist/{{id}}" style="color: inherit;">
+                                                <i class="fas fa-solid fa-eye"></i>
+                                            </a>
+                                        </span>
+                                    {{/if}}
                                 <br>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cupiditate dolorum eos est excepturi ipsa, labore neque odio officia perferendis quidem quis ratione reiciendis repellat saepe, sunt tempora vitae voluptas.
                             </p>
+                            {{id}}
+                            
                         </div>
                     </div>
                 </article>
