@@ -16,6 +16,16 @@ body{
 	color: #e8e8e8;
 }
 
+.modal ul{
+	list-style: none;
+}
+
+.limit-text{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	height: 4.5rem;
+}
+
 #entire-page{
 	max-width: 800px;
 	margin: 0 auto;
