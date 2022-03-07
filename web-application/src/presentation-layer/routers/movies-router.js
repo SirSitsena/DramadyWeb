@@ -75,7 +75,7 @@ module.exports = function({movieManager}){
 	})
 
 	router.get('/watchlist/:titleId', function(request, response){
-		const title = request.params.titleId
+		const titleId = request.params.titleId
 		movieManager.watchlist(request, titleId, function(errors, results){
 			if(errors.length == 0){
 				response.redirect('back')

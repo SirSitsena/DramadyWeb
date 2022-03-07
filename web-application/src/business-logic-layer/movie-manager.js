@@ -134,5 +134,23 @@ module.exports = function({movieRepository}){
 			}
 			
 		},
+
+		/* ************************************ PUBLIC REVIEWS ************************************** */
+
+		createPublicReview: function(review, titleId, callback){
+			movieRepository.createPublicReview(review, titleId, callback)
+		},
+
+		getPublicReviewById: function(reviewId, callback){
+			movieRepository.getPublicReviewById(reviewId, callback)
+		},
+
+		getReviewsByTitleId: function(titleId, callback){
+			movieRepository.getReviewsByTitleId(titleId, callback)
+		},
+
+		getAllPublicReviews: function(callback){
+			movieRepository.getAllPublicReviews(callback)
+		}
 	}
 }

@@ -20,7 +20,7 @@ redisClient.connect().catch(console.error)
 //const accountRouter = require('./routers/account-router')
 //const moviesRouter = require('./routers/movies-router')
 
-module.exports = function({accountRouter, movieRouter, variousRouter}){
+module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI}){
 	const app = express()
 
 	// Setup express-handlebars.
@@ -57,6 +57,8 @@ module.exports = function({accountRouter, movieRouter, variousRouter}){
 	app.use('/', variousRouter)
 	app.use('/accounts', accountRouter)
 	app.use('/movies', movieRouter)
+
+	app.use('/api', appRESTAPI)
 
 	// Start listening for incoming HTTP requests!
 	app.listen(8080, function(){

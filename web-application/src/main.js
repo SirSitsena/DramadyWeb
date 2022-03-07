@@ -1,5 +1,4 @@
 const awilix = require('awilix')
-//web-application\src\data-access-layer
 //ACCOUNTS
 const accountRepository = require('./data-access-layer/account-repository')
 const accountValidator = require('./business-logic-layer/account-validator')
@@ -11,6 +10,9 @@ const movieManager = require('./business-logic-layer/movie-manager')
 const movieRouter = require('./presentation-layer/routers/movies-router')
 
 const variousRouter = require('./presentation-layer/routers/various-router')
+
+const moviesRouterRESTAPI = require('./presentation-layer-rest-api/routers/movies-router-rest-api')
+//const appRESTAPI = require('./presentation-layer-rest-api/rest-api-app')
 
 const db = require('./data-access-layer/db')
 
@@ -26,6 +28,9 @@ container.register("variousRouter", awilix.asFunction(variousRouter))
 container.register("movieRepository", awilix.asFunction(movieRepository))
 container.register("movieManager", awilix.asFunction(movieManager))
 container.register("movieRouter", awilix.asFunction(movieRouter))
+
+container.register('moviesRouterRESTAPI', awilix.asFunction(moviesRouterRESTAPI))
+container.register('appRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/rest-api-app.js')))
 
 container.register('app', awilix.asFunction(require('./presentation-layer/app.js')))
 
