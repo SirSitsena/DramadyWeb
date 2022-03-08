@@ -1,8 +1,9 @@
 const express = require('express')
+const apiManager = require('../../business-logic-layer/api-manager')
 //const movieManager = require('../../business-logic-layer/movie-manager')
-const imdbMovieManager = require('../../business-logic-layer/imdbApi-manager')
+//const imdbMovieManager = require('../../business-logic-layer/api-manager')
 
-module.exports = function({movieManager}){
+module.exports = function({movieManager, apiManager}){
 	const router = express.Router()
 	// Make the session avaliable in views:
 	router.use(function(request, response, next) {
@@ -85,5 +86,12 @@ module.exports = function({movieManager}){
 		})
 	})
 	
+	router.get('/search/:keywords', function(request, response){
+		const words = request.params.keywords
+		apiManager.getSearchMovieByTitle(words, function(error, results) {
+			response.status(200).end()
+		})
+	})
+
 	return router
 }
