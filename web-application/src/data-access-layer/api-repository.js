@@ -8,7 +8,7 @@ module.exports = function({}){
                 if(error || body.errorMessage != ""){
                     callback(error, null)
                 } else {
-                    callback(null, body.results)
+                    callback(null, body)
                 }
             })
         }
