@@ -1,11 +1,7 @@
-//Use the Request library for the API calls. The most simple one out there
-//https://www.twilio.com/blog/2017/08/http-requests-in-node-js.html
-
-const request = require("request")
-const API_KEY_1 = "k_9t0l0iej"
 
 module.exports = function({apiRepository}){
     return {
+
         getSearchMovieByTitle:  function(keywords, callback){
             const acceptableKeywords = encodeURIComponent(keywords.trim())
             apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, results){
@@ -16,6 +12,11 @@ module.exports = function({apiRepository}){
                     //console.log(results)
                 }
             })
+        },
+
+        // Get movie by its imdb id:
+        getMovieByTitleId: function(titleId, callback){
+        	apiRepository.getMovieByTitleId(titleId, callback)
         }
     }
 }

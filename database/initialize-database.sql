@@ -472,12 +472,4 @@ INSERT INTO trendingMovies VALUES
 ('tt7740510',98,'Antlers','Antlers (2021)',2021,'https://imdb-api.com/images/original/MV5BY2UzODAyNjktN2MwYy00M2RkLThiOTEtMjU1MTgxY2EzM2YyXkEyXkFqcGdeQXVyODk5MDA0MDU@._V1_Ratio0.6762_AL_.jpg','2021-10-29',99,'1h 39min','In a small town in central Oregon\, Frank Weaver runs a meth lab out of an abandoned mine. While his young son Aiden waits outside the mine in his truck\, Frank and an accomplice are attacked by an unseen creature. Investigating strange noises\, Aiden is also attacked by the creature. Frank and Aiden survive their encounter with the creature and return home\, where their condition quickly worsens. Frank sets up a locked room and demands that no matter what\, Aiden''s older brother Lucas keeps them locked inside.','Scott Cooper','Henry Chaisson\, Nick Antosca\, Scott Cooper','Keri Russell\, Jesse Plemons\, Jeremy T. Thomas','Drama\, Horror\, Mystery','Fox Searchlight Pictures\, Phantom Four Films\, Double Dare You (DDY)','R',5.9,28169,57),
 ('tt14592064',99,'Home Team','Home Team (2022)',2022,'https://imdb-api.com/images/original/MV5BZmNkZjBhMmMtODBkMC00ZDU1LWEyMTEtOWQ3Zjc2ZWZjMmMxXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_Ratio0.8043_AL_.jpg','2022-01-28',95,'1h 35min','Follows Payton who\, two years after a Super Bowl win when he is suspended\, goes back to his hometown and finds himself reconnecting with his 12-year-old son by coaching his Pop Warner football team. Payton was suspended in 2012 for his role in the team''s Bountygate scandal where bounties were allegedly being paid to players who would try to injure players from the opposing team.','Charles Kinnane\, Daniel Kinnane','Chris Titone\, Keith Blum','Kevin James\, Taylor Lautner\, Rob Schneider','Comedy\, Sport','Happy Madison Productions\, Hey Eddie','PG',6,13831,23);
 
-
-
-
-
-
-
-
-
 -- stop

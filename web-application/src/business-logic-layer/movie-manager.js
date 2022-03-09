@@ -1,14 +1,13 @@
 //const movieRepository = require('../data-access-layer/movie-repository')
 // const movieValidator = require('./movie-validator')
 
-module.exports = function({movieRepository}){
+module.exports = function({movieTop250Repository, movieTrendingRepository, favouritesRepository, watchlistRepository, reviewsRepository}){
 	return {
-		getAllMovies: function(request, callback){
-			movieRepository.getAllMovies(function(errors, movies){
+		getAllMoviesFromTop250: function(request, callback){
+			movieTop250Repository.getAllMovies(function(errors, movies){
 				if(errors.length > 0){
 					callback(['databaseError'], null)
 				} else {
-
 					/* TURN THIS FUNCTION IN TO ASYNC TO MAKE IT WORK
 					if(request.session.accountId){
 						const accountId = request.session.accountId
@@ -40,21 +39,24 @@ module.exports = function({movieRepository}){
 				}
 			})
 		},
-
-		// Get movie by its imdb id:
-		getMovieByTitleId: function(titleId, callback){
-			movieRepository.getMovieByTitleId(titleId, callback)
+		getAllMoviesFromTrending: function(request, callback){
+			movieTrendingRepository.getAllMovies(function(errors, movies){
+				if(errors.length > 0){
+					callback(['databaseError'], null)
+				} else {
+					callback([], movies)
+				}
+			})
 		},
 
-		
+
 		/* 						FAVOURITES FUNCTIONALITY 					*/
-		
 		viewFavourites: function(request, callback){
 			/*
 				Viewing an accounts favourites list.
 			*/
 			if(request.session.accountId){
-				movieRepository.getUsersFavourites(request.session.accountId, callback)
+				favouritesRepository.getUsersFavourites(request.session.accountId, callback)
 			} else {
 				callback(['Please log in to view this page.'], null)
 			}
@@ -67,7 +69,7 @@ module.exports = function({movieRepository}){
 			if(request.session.accountId){
 				const accountId = request.session.accountId
 				//Check if already favourited
-				movieRepository.checkIfFavourited(accountId, titleId, function(errors, results){
+				favouritesRepository.checkIfFavourited(accountId, titleId, function(errors, results){
 					//console.log(results)
 					if(errors.length > 0){
 						//error
@@ -76,13 +78,13 @@ module.exports = function({movieRepository}){
 						if(results.length > 0){
 							// Remove from favourites
 							//console.log("already on favourites")
-							movieRepository.deleteUserFavourite(accountId, titleId, callback)
+							favouritesRepository.deleteUserFavourite(accountId, titleId, callback)
 						} else {
 							// Add to favourites
 							//Get current time
 							const date = new Date().toJSON().slice(0, 10)
 							//console.log("added to favourites")
-							movieRepository.createUserFavourites(accountId, titleId, date, callback)
+							favouritesRepository.createUserFavourites(accountId, titleId, date, callback)
 						}
 					}
 				})
@@ -98,7 +100,7 @@ module.exports = function({movieRepository}){
 				Viewing an accounts watchlist.
 			*/
 			if(request.session.accountId){
-				movieRepository.getUsersWatchlist(request.session.accountId, callback)
+				watchlistRepository.getUsersWatchlist(request.session.accountId, callback)
 			} else {
 				callback(['Please log in to view this page.'], null)
 			}
@@ -110,7 +112,7 @@ module.exports = function({movieRepository}){
 			if(request.session.accountId){
 				const accountId = request.session.accountId
 				//Check if already favourited
-				movieRepository.checkIfWatchlisted(accountId, titleId, function(errors, results){
+				watchlistRepository.checkIfWatchlisted(accountId, titleId, function(errors, results){
 					//console.log(results)
 					if(errors.length > 0){
 						//error
@@ -119,13 +121,13 @@ module.exports = function({movieRepository}){
 						if(results.length > 0){
 							// Remove from favourites
 							//console.log("already on favourites")
-							movieRepository.deleteUserWatchlist(accountId, titleId, callback)
+							watchlistRepository.deleteUserWatchlist(accountId, titleId, callback)
 						} else {
 							// Add to favourites
 							//Get current time
 							const date = new Date().toJSON().slice(0, 10)
 							//console.log("added to favourites")
-							movieRepository.createUserWatchlist(accountId, titleId, date, callback)
+							watchlistRepository.createUserWatchlist(accountId, titleId, date, callback)
 						}
 					}
 				})
@@ -135,22 +137,22 @@ module.exports = function({movieRepository}){
 			
 		},
 
-		/* ************************************ PUBLIC REVIEWS ************************************** */
+		/* 						PUBLIC REVIEWS 					*/
 
 		createPublicReview: function(review, titleId, callback){
-			movieRepository.createPublicReview(review, titleId, callback)
+			reviewsRepository.createPublicReview(review, titleId, callback)
 		},
 
 		getPublicReviewById: function(reviewId, callback){
-			movieRepository.getPublicReviewById(reviewId, callback)
+			reviewsRepository.getPublicReviewById(reviewId, callback)
 		},
 
 		getReviewsByTitleId: function(titleId, callback){
-			movieRepository.getReviewsByTitleId(titleId, callback)
+			reviewsRepository.getReviewsByTitleId(titleId, callback)
 		},
 
 		getAllPublicReviews: function(callback){
-			movieRepository.getAllPublicReviews(callback)
+			reviewsRepository.getAllPublicReviews(callback)
 		}
 	}
 }

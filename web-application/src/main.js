@@ -1,44 +1,30 @@
 const awilix = require('awilix')
-//ACCOUNTS
-const accountRepository = require('./data-access-layer/account-repository')
-const accountValidator = require('./business-logic-layer/account-validator')
-const accountManager = require('./business-logic-layer/account-manager')
-const accountRouter = require('./presentation-layer/routers/account-router')
-//Movies
-const movieRepository = require('./data-access-layer/movie-repository')
-const movieManager = require('./business-logic-layer/movie-manager')
-const movieRouter = require('./presentation-layer/routers/movies-router')
-//API
-const apiRepository = require('./data-access-layer/api-repository')
-const apiManager = require('./business-logic-layer/api-manager')
-
-
-const variousRouter = require('./presentation-layer/routers/various-router')
-
-const moviesRouterRESTAPI = require('./presentation-layer-rest-api/routers/movies-router-rest-api')
-const reviewsRouterRESTAPI = require('./presentation-layer-rest-api/routers/reviews-router-rest-api')
-//const appRESTAPI = require('./presentation-layer-rest-api/rest-api-app')
-
-const db = require('./data-access-layer/db')
-
 const container = awilix.createContainer()
+//DATABASE
+container.register("db", awilix.asValue(require('./data-access-layer/db')))
 
-container.register("apiRepository", awilix.asFunction(apiRepository))
-container.register('apiManager', awilix.asFunction(apiManager))
+//ACCOUNTS
+container.register("accountRepository", awilix.asFunction(require('./data-access-layer/account-repository')))
+container.register("accountValidator", awilix.asFunction(require('./business-logic-layer/account-validator')))
+container.register("accountManager", awilix.asFunction(require('./business-logic-layer/account-manager')))
+container.register("accountRouter", awilix.asFunction(require('./presentation-layer/routers/account-router')))
+//Movies
+container.register("movieTop250Repository", awilix.asFunction(require('./data-access-layer/top250-repository')))
+container.register("favouritesRepository", awilix.asFunction(require('./data-access-layer/favourites-repository')))
+container.register("watchlistRepository", awilix.asFunction(require('./data-access-layer/watchlist-repository')))
+container.register("reviewsRepository", awilix.asFunction(require('./data-access-layer/reviews-repository')))
+container.register("movieTrendingRepository", awilix.asFunction(require('./data-access-layer/trending-repository')))
+container.register("movieManager", awilix.asFunction(require('./business-logic-layer/movie-manager')))
+container.register("movieRouter", awilix.asFunction(require('./presentation-layer/routers/movies-router')))
+//API
+container.register("apiRepository", awilix.asFunction(require('./data-access-layer/api-repository')))
+container.register('apiManager', awilix.asFunction(require('./business-logic-layer/api-manager')))
 
-container.register("accountRepository", awilix.asFunction(accountRepository))
-container.register("accountValidator", awilix.asFunction(accountValidator))
-container.register("accountManager", awilix.asFunction(accountManager))
-container.register("accountRouter", awilix.asFunction(accountRouter))
+container.register("variousRouter", awilix.asFunction(require('./presentation-layer/routers/various-router')))
 
-container.register("variousRouter", awilix.asFunction(variousRouter))
-
-container.register("movieRepository", awilix.asFunction(movieRepository))
-container.register("movieManager", awilix.asFunction(movieManager))
-container.register("movieRouter", awilix.asFunction(movieRouter))
-
-container.register('moviesRouterRESTAPI', awilix.asFunction(moviesRouterRESTAPI))
-container.register('reviewsRouterRESTAPI', awilix.asFunction(reviewsRouterRESTAPI))
+//const appRESTAPI = require('./presentation-layer-rest-api/rest-api-app')
+container.register('moviesRouterRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/routers/movies-router-rest-api')))
+container.register('reviewsRouterRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/routers/reviews-router-rest-api')))
 container.register('appRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/rest-api-app.js')))
 
 container.register('app', awilix.asFunction(require('./presentation-layer/app.js')))
