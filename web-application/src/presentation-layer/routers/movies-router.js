@@ -3,7 +3,7 @@ const apiManager = require('../../business-logic-layer/api-manager')
 //const movieManager = require('../../business-logic-layer/movie-manager')
 //const imdbMovieManager = require('../../business-logic-layer/api-manager')
 
-module.exports = function({movieManager, apiManager}){
+module.exports = function({movieManager, apiManager, apiRepository}){
 	const router = express.Router()
 	// Make the session avaliable in views:
 	router.use(function(request, response, next) {
@@ -22,7 +22,7 @@ module.exports = function({movieManager, apiManager}){
 	})
 	
 	router.get("/trendingMovies", function(request, response){
-		imdbMovieManager.getMostPopularMovies(function(errors, trendingMovies){
+		apiRepository.getMostPopularMovies(function(errors, trendingMovies){
 			const model = {
 				errors: errors,
 				movies: trendingMovies
