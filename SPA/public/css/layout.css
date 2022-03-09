@@ -5,10 +5,7 @@ html{
 header{
 	margin-bottom: 1rem;
 }
-.navbar{
-	border-radius: 0.5rem;
-	margin-bottom: 1rem;
-}
+
 
 body{
 	min-height: 100%;
@@ -16,15 +13,6 @@ body{
 	color: #e8e8e8;
 }
 
-.modal ul{
-	list-style: none;
-}
-
-.limit-text{
-	text-overflow: ellipsis;
-	overflow: hidden;
-	height: 4.5rem;
-}
 
 #entire-page{
 	max-width: 60vw;
@@ -37,7 +25,13 @@ body{
 }
 
 main{
-	padding: 8px;
+
+	height: 70vh;
+	margin-bottom: 1rem;
+}
+
+main > .box{
+	height: 70vh;
 }
 
 .content{
@@ -48,4 +42,3 @@ main{
 	border-radius: 0.5rem;
 	padding: 1rem 1.5rem;
 }
-
