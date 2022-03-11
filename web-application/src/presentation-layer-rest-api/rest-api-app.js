@@ -15,9 +15,9 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI}){
 	api.use('/movies', moviesRouterRESTAPI)
 	api.use('/reviews', reviewsRouterRESTAPI)
 
-	api.listen(9000, function(){
-		console.log('Running api on 9000!')
-	})
+	// api.listen(9000, function(){
+	// 	console.log('Running api on 9000!')
+	// })
 
 	return api
 }

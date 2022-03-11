@@ -22,5 +22,34 @@ module.exports = function({movieManager, apiManager}){
         })
     })
 
+    router.get('/top250', function(request, response){
+        console.log("response for 250")
+        movieManager.getAllMoviesFromTop250(request, function(error, results){
+            if(error.length > 0){
+                response.status(500).end()
+                console.log(error)
+            } else {
+                response.status(200).json(results)
+            }
+        })
+    })
+
+    router.get('/trending', function(request, response){
+        console.log("response for trending")
+        movieManager.getAllMoviesFromTrending(request, function(error, results){
+            if(error.length > 0){
+                response.status(500).end()
+                console.log(error)
+            } else {
+                response.status(200).json(results)
+            }
+        })
+    })
+
+
+
+
+
+
     return router
 }
