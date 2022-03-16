@@ -10,6 +10,13 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI}){
 		response.status(200).end()
 	})*/
 
+	api.use(function(request, response, next){
+		response.setHeader("Access-Control-Allow-Origin", "*")
+		response.setHeader("Access-Control-Allow-Methods", "*")
+		response.setHeader("Access-Control-Allow-Headers", "*")
+		response.setHeader("Access-Control-Expose-Headers", "*")
+		next()
+	})
 
 
 	api.use('/movies', moviesRouterRESTAPI)

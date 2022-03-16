@@ -48,7 +48,8 @@ CREATE TABLE UserFavourites (
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userFavourites
 	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId VARCHAR(25)
+	movieId VARCHAR(25),
+    movieTitle VARCHAR(100)
 );
 
 
@@ -59,7 +60,9 @@ CREATE TABLE UserWatchlist (
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userWatchlist
 	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId VARCHAR(25)
+	movieId VARCHAR(25),
+	movieTitle VARCHAR(100)
+
 );
 
 -- Create a dummy account for testing.

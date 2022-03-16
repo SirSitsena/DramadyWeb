@@ -18,10 +18,10 @@ module.exports = function({db}){
 
             SUCCESS: RETURNS ID OF FAVOURITE.
         */
-        createUserFavourites: function(userId, movieId, date, callback) {
+        createUserFavourites: function(userId, movieId,movieTitle, date, callback) {
 
-            const query = 'INSERT INTO UserFavourites (dateAdded, userId, movieId) VALUES (?, ?, ?)'
-            const values = [date, userId, movieId]
+            const query = 'INSERT INTO UserFavourites (dateAdded, userId, movieId, movieTitle) VALUES (?, ?, ?, ?)'
+            const values = [date, userId, movieId, movieTitle]
 
             db.query(query, values, function(error, results){
                 if(error){

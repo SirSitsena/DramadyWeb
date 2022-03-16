@@ -54,9 +54,10 @@ module.exports = function({movieManager, apiManager}){
 		})
 	})
 
-	router.get('/favourite/:titleId', function(request, response){
+	router.get('/favourite/:titleId/:movieTitle', function(request, response){
 		const titleId = request.params.titleId
-		movieManager.favourite(request, titleId, function(errors, results){
+		const movieTitle = request.params.movieTitle
+		movieManager.favourite(request, titleId, movieTitle, function(errors, results){
 			if(errors.length == 0){
 				response.redirect('back')
 			} else {
@@ -75,9 +76,11 @@ module.exports = function({movieManager, apiManager}){
 		})
 	})
 
-	router.get('/watchlist/:titleId', function(request, response){
+	router.get('/watchlist/:titleId/:movieTitle', function(request, response){
 		const titleId = request.params.titleId
-		movieManager.watchlist(request, titleId, function(errors, results){
+		const movieTitle = request.params.movieTitle
+
+		movieManager.watchlist(request, titleId, movieTitle, function(errors, results){
 			if(errors.length == 0){
 				response.redirect('back')
 			} else {

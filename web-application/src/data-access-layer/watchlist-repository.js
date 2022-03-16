@@ -20,10 +20,10 @@ module.exports = function({db}) {
 
             SUCCESS: RETURNS ID OF watchlist item.
         */
-        createUserWatchlist: function(userId, movieId, date, callback) {
+        createUserWatchlist: function(userId, movieId, movieTitle, date, callback) {
 
-            const query = 'INSERT INTO UserWatchlist (dateAdded, userId, movieId) VALUES (?, ?, ?)'
-            const values = [date, userId, movieId]
+            const query = 'INSERT INTO UserWatchlist (dateAdded, userId, movieId, movieTitle) VALUES (?, ?, ?, ?)'
+            const values = [date, userId, movieId, movieTitle]
 
             db.query(query, values, function(error, results){
                 if(error){
