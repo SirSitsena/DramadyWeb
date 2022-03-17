@@ -3,8 +3,6 @@ const express = require('express')
 module.exports = function({movieManager, apiManager}){
     const router = express.Router()
 
-    router.use(express.json())
-
     router.get('/', function(request, response){
         console.log("test")
     })

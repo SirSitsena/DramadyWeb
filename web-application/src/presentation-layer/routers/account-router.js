@@ -1,5 +1,5 @@
 const express = require('express')
-//const accountManager = require('../../business-logic-layer/account-manager')
+const bcrypt = require('bcrypt')
 
 module.exports = function({accountManager}){
 	const router = express.Router()
@@ -46,7 +46,12 @@ module.exports = function({accountManager}){
 		account.username = request.body.username
 		account.password = request.body.password
 
-		accountManager.signIn(account, request, function(errors, message) {
+		accountManager.signIn(account, function(errors, account) {
+			var message
+			if(account != null){
+				message = "Logged in"
+				request.session.accountId = account.id
+			}
 			const model = {
 				errors: errors,
 				message: message
@@ -71,6 +76,13 @@ module.exports = function({accountManager}){
 			const model = {
 				errors: errors,
 				accounts: accounts
+			}
+			for(var account of accounts){
+				console.log(account.password)
+				bcrypt.hash(account.password, 10, function(error, hash){
+					console.log(hash)
+					console.log(hash.length)
+				})
 			}
 			response.render("accounts-list-all.hbs", model)
 		})

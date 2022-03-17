@@ -3,7 +3,7 @@ CREATE TABLE accounts (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(50) NOT NULL,
 	isAdministrator BOOLEAN DEFAULT FALSE,
-	password VARCHAR(30) NOT NULL,
+	hash VARCHAR(100) NOT NULL,
 	CONSTRAINT usernameUnique UNIQUE (username)
 );
 
@@ -38,7 +38,10 @@ CREATE TABLE comments (
 CREATE TABLE publicReviews (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	content VARCHAR(500) NOT NULL,
-	titleId VARCHAR(50) NOT NULL
+	titleId VARCHAR(50) NOT NULL,
+	userId INT UNSIGNED,
+	CONSTRAINT fk_userReviews
+	FOREIGN KEY (userId) REFERENCES accounts(id)
 );
 
 -- CREATE FAVOURITE LIST
@@ -63,12 +66,12 @@ CREATE TABLE UserWatchlist (
 );
 
 -- Create a dummy account for testing.
-INSERT INTO accounts (username, password) VALUES ("Alice", "abc123");
+INSERT INTO accounts (username, hash) VALUES ("Alice", "$2b$10$LpsPsPPT5XlhcyggSh1kCO5VAjTG7aqOnDal.i.9Gdxk9prjmeR7C");
 -- Create an account with elevated permission:
-INSERT INTO accounts (username, password, isAdministrator) VALUES ("Edvin", "abc123", TRUE);
-INSERT INTO accounts (username, password, isAdministrator) VALUES
-('rasmus','hej12345', TRUE),
-('anestis', 'hej12345', TRUE);
+INSERT INTO accounts (username, hash, isAdministrator) VALUES ("Edvin", "$2b$10$LpsPsPPT5XlhcyggSh1kCO5VAjTG7aqOnDal.i.9Gdxk9prjmeR7C", TRUE);
+INSERT INTO accounts (username, hash, isAdministrator) VALUES
+('rasmus','$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE),
+('anestis', '$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE);
 
 
 -- Creates the top250 and trending movie tables

@@ -1,7 +1,9 @@
 //const movieRepository = require('../data-access-layer/movie-repository')
 // const movieValidator = require('./movie-validator')
 
-module.exports = function({movieTop250Repository, movieTrendingRepository, favouritesRepository, watchlistRepository, reviewsRepository}){
+const { fips } = require("crypto")
+
+module.exports = function({movieTop250Repository, movieTrendingRepository, favouritesRepository, watchlistRepository, reviewsRepository, apiRepository}){
 	return {
 		getAllMoviesFromTop250: function(request, callback){
 			movieTop250Repository.getAllMovies(function(errors, movies){
@@ -56,7 +58,9 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 				Viewing an accounts favourites list.
 			*/
 			if(request.session.accountId){
-				favouritesRepository.getUsersFavourites(request.session.accountId, callback)
+				favouritesRepository.getUsersFavourites(request.session.accountId, function(error, results){
+					console.log(results)
+				})
 			} else {
 				callback(['Please log in to view this page.'], null)
 			}
@@ -95,17 +99,58 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 		},
 		
 		/*						 WATCHLIST FUNCTIONALITY						*/
+
+		promiseWatchlistMovie: function(id){
+			return new Promise(function(resolve, reject) {
+				apiRepository.getMovieByTitleId(id, function(error, movie){
+					if(error){
+						reject(error)
+					} else {
+						console.log(movie)
+						resolve(movie)
+					}
+				})
+			})
+		},
+
 		viewWatchlist: function(request, callback){
 			/*
 				Viewing an accounts watchlist.
 			*/
 			if(request.session.accountId){
-				watchlistRepository.getUsersWatchlist(request.session.accountId, callback)
+				watchlistRepository.getUsersWatchlist(request.session.accountId, function(error, results){
+					/* calling the api to fetch more info on each movie, maybe it will not be used.
+					for(var mov of results){
+						//console.log(mov.movieId)
+						moviePromises.push( new Promise(function(resolve, reject) {
+							apiRepository.getMovieByTitleId(mov.movieId, function(error, movie){
+								if(error){
+									reject(error)
+								} else {
+									//console.log(movie)
+									resolve(movie)
+								}
+							})
+						})) 
+					}
+					Promise.all(moviePromises).then((movies) => {
+						console.log("promises resolved")
+						for(var aMovie of movies){
+							console.log(aMovie.title)
+						}
+					})*/
+
+					//console.log(movieIds)
+					if(error.length > 0){
+						callback(error, null)
+					} else {
+						callback([], results)
+					}
+				})
 			} else {
 				callback(['Please log in to view this page.'], null)
 			}
 		},
-		
 		watchlist: function(request, titleId, callback){
 			// TODO: Check if user logged in
 			// TODO ERROR HANDLING
@@ -139,8 +184,11 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 
 		/* 						PUBLIC REVIEWS 					*/
 
-		createPublicReview: function(review, titleId, callback){
-			reviewsRepository.createPublicReview(review, titleId, callback)
+		createPublicReview: function(accountId, review, titleId, callback){
+			reviewsRepository.createPublicReview(accountId, review, titleId, callback)
+		},
+		updatePublicReview: function(id, accountId, review, titleId, callback){
+			reviewsRepository.updatePublicReview(id, accountId, review, titleId, callback)
 		},
 
 		getPublicReviewById: function(reviewId, callback){

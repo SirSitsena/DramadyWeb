@@ -1,5 +1,8 @@
 //const accountRepository = require('../data-access-layer/account-repository')
 //const accountValidator = require('./account-validator')
+const bcrypt = require('bcrypt')
+const saltRounds = 10
+
 
 module.exports = function({accountRepository, accountValidator}){
 	
@@ -17,20 +20,37 @@ module.exports = function({accountRepository, accountValidator}){
 				callback(errors, null)
 				return
 			}
-			
-			accountRepository.createAccount(account, callback)
+			bcrypt.hash(account.password, saltRounds, function(error, hash){
+				if(error){
+					callback(["Internal server error"], null)
+				} else {
+					account.hash = hash
+					accountRepository.createAccount(account, callback)
+				}
+			})
 		},
 	/*									SIGNING IN TO AN ACCOUNT									*/
-		signIn: function(account, request, callback){
+		signIn: function(account, callback){
 			accountRepository.signIn(account, function(errors, result){
 				if(result.length > 0) {
-					request.session.accountId = result[0].id
-					callback(errors, result)
+					let acc = result[0]
+					bcrypt.compare(account.password, acc.hash, function(error, result) {
+						if(error){
+							callback(["Internal unexplained server error."], null)
+						} else {
+							if(result == true){
+								callback([], acc)
+							} else {
+								callback(["Password incorrect for user [" + acc.username + "]"])
+							}
+						}
+						
+					})
 				} else {
 					if(errors.length > 0){
-						callback(errors, [])
+						callback(errors, null)
 					} else {
-						callback(["Username or Password incorrect"], [])
+						callback(["User not found"], null)
 					}
 				}
 			})

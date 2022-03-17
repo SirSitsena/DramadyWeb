@@ -1,10 +1,10 @@
 module.exports = function({db}){
     return{
         /*************************************** PUBLIC REVIEWS**************************************** */
-        createPublicReview: function(review, titleId, callback){
+        createPublicReview: function(accountId, review, titleId, callback){
             console.log("Review2", review)
-            const query = 'INSERT INTO publicReviews (content, titleId) VALUES (?, ?)'
-            const values = [review, titleId]
+            const query = 'INSERT INTO publicReviews (userId, content, titleId) VALUES (?, ?, ?)'
+            const values = [accountId, review, titleId]
 
             db.query(query, values, function(error, results){
                 if(error){
@@ -12,6 +12,20 @@ module.exports = function({db}){
                     callback(['databaseError'], null)
                 } else {
                     callback([], results.insertId)
+                }
+            })
+        },
+
+        updatePublicReview: function(id, accountId, review, titleId, callback) {
+            const query = "UPDATE publicReviews SET content = ?, titleId = ? WHERE id = ? AND userId = ?"
+            const values = [review, titleId, id, accountId]
+
+            db.query(query, values, function(error, result){
+                if(error){
+                    console.log(error)
+                    callback(['databaseError'], null)
+                } else {
+                    callback([], result)
                 }
             })
         },
