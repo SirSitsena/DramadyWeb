@@ -66,7 +66,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 			}
 		},
 		
-		favourite: function(request, titleId, callback){
+		favourite: function(request, titleId, movieTitle, callback){
 			// TODO: Check if user logged in
 			// TODO ERROR HANDLING
 			
@@ -88,7 +88,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 							//Get current time
 							const date = new Date().toJSON().slice(0, 10)
 							//console.log("added to favourites")
-							favouritesRepository.createUserFavourites(accountId, titleId, date, callback)
+							favouritesRepository.createUserFavourites(accountId, titleId, movieTitle, date, callback)
 						}
 					}
 				})
@@ -151,7 +151,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 				callback(['Please log in to view this page.'], null)
 			}
 		},
-		watchlist: function(request, titleId, callback){
+		watchlist: function(request, titleId, movieTitle, callback){
 			// TODO: Check if user logged in
 			// TODO ERROR HANDLING
 			if(request.session.accountId){
@@ -172,7 +172,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 							//Get current time
 							const date = new Date().toJSON().slice(0, 10)
 							//console.log("added to favourites")
-							watchlistRepository.createUserWatchlist(accountId, titleId, date, callback)
+							watchlistRepository.createUserWatchlist(accountId, titleId, movieTitle, date, callback)
 						}
 					}
 				})
