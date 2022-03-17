@@ -50,8 +50,8 @@ module.exports = function({}){
 		*/
 		createAccount: function(account, callback){
 			
-			const query = `INSERT INTO accounts (username, password) VALUES (?, ?)`
-			const values = [account.username, account.password]
+			const query = `INSERT INTO accounts (username, hash) VALUES (?, ?)`
+			const values = [account.username, account.hash]
 			
 			db.query(query, values, function(error, results){
 				if(error){
@@ -69,8 +69,8 @@ module.exports = function({}){
 		*/
 		signIn: function(account, callback) {
 			
-			const query = 'SELECT * FROM accounts WHERE username = ? AND password = ?'
-			const values = [account.username, account.password]
+			const query = 'SELECT * FROM accounts WHERE username = ?'
+			const values = [account.username]
 
 			db.query(query, values, function(error, result) {
 				if(error){
