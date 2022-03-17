@@ -77,13 +77,6 @@ module.exports = function({accountManager}){
 				errors: errors,
 				accounts: accounts
 			}
-			for(var account of accounts){
-				console.log(account.password)
-				bcrypt.hash(account.password, 10, function(error, hash){
-					console.log(hash)
-					console.log(hash.length)
-				})
-			}
 			response.render("accounts-list-all.hbs", model)
 		})
 	})
