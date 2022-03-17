@@ -7,11 +7,26 @@ const API_KEY_1 = "k_9t0l0iej"
 module.exports = function({}){
     return {
         getSearchMovieByTitle: function(keywords, callback){
-            request('https://imdb-api.com/en/API/SearchMovie/'+API_KEY_1+'/'+keywords, { json: true}, (error, responsee, body) => {
-                if(error || body.errorMessage != ""){
+            request('https://imdb-api.com/en/API/SearchMovie/'+API_KEY_1+'/'+keywords, { json: true}, (error, response, body) => {
+                /*if(error || body.errorMessage != ""){
                     callback(error, null)
                 } else {
                     callback(null, body)
+                } */
+                console.log("keywords: ", keywords)
+                if(error != null){
+                    console.log("error: ", error)
+                    if(error.length > 0){
+                        callback(["Error making request"], null)
+                    }
+                } else {
+                    if(body.errorMessage != ""){
+                        console.log("bodyerr:" +body.errorMessage)
+                        callback(["Server error"], null)
+                    } else {
+                        console.log("body: ",  body)
+                        callback([], body)
+                    }
                 }
             })
         },

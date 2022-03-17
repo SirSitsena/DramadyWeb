@@ -5,7 +5,8 @@ module.exports = function({apiRepository}){
         getSearchMovieByTitle:  function(keywords, callback){
             const acceptableKeywords = encodeURIComponent(keywords.trim())
             apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, results){
-                if(error){
+                if(error.length > 0){
+                    console.log(error)
                     callback(['There is a problem with the API we are using'], null)
                 } else {
                     callback([], results)

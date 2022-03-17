@@ -1,7 +1,4 @@
 const express = require('express')
-// const apiManager = require('../../business-logic-layer/api-manager')
-//const movieManager = require('../../business-logic-layer/movie-manager')
-//const imdbMovieManager = require('../../business-logic-layer/api-manager')
 
 module.exports = function({movieManager, apiManager}){
 	const router = express.Router()
@@ -89,10 +86,27 @@ module.exports = function({movieManager, apiManager}){
 		})
 	})
 	
-	router.get('/search/:keywords', function(request, response){
-		const words = request.params.keywords
-		apiManager.getSearchMovieByTitle(words, function(error, results) {
-			response.status(200).end()
+	router.get('/search', function(request, response){
+		var url = require("url")
+		let urlParts = url.parse(request.url)
+		const query = decodeURI(urlParts.query)
+		console.log("urlParts : " + query)
+		let string = query.split('=')
+		const keywords = string[1].replace('+', ' ')
+		console.log("keywords:" +keywords)
+		
+		apiManager.getSearchMovieByTitle(keywords, function(error, results) {
+			//IMPROVE ERROR HANDLING
+
+			if(error.length > 0){
+				console.log(error)
+			} else {
+				console.log(results)
+				const model = {
+					movies: results.results
+				}
+				response.render('home.hbs', model)
+			}
 		})
 	})
 
