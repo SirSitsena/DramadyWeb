@@ -19,8 +19,7 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI}){
 		response.setHeader("Access-Control-Expose-Headers", "*")
 		next()
 	})
-
-	const api = express()
+	
 	api.use(express.json())
 	api.use(express.urlencoded({
 		extended: false,

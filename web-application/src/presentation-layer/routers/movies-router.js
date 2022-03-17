@@ -12,7 +12,7 @@ module.exports = function({movieManager, apiManager}){
 	})
 
 	router.get("/top250", function(request, response){
-		movieManager.getAllMoviesFromTop250(request, function(errors, top250Movies){
+		movieManager.getAllMoviesFromTop250(request.session.accountId, function(errors, top250Movies){
 			const model = {
 				errors: errors,
 				movies: top250Movies
@@ -22,7 +22,7 @@ module.exports = function({movieManager, apiManager}){
 	})
 	
 	router.get("/trendingMovies", function(request, response){
-		movieManager.getAllMoviesFromTrending(request, function (errors, trendingMovies){
+		movieManager.getAllMoviesFromTrending(request.session.accountId, function (errors, trendingMovies){
 			const model = {
 				errors: errors,
 				movies: trendingMovies
