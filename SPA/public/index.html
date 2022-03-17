@@ -8,30 +8,68 @@
 	<link rel="stylesheet" href="/css/layout.css">
 	<script src="https://kit.fontawesome.com/2ef5d5f5df.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-<div id="entire-page">
-	<header class="is-size-3 has-text-centered">
-		Dramady SPA
-	</header>
+<div class="container">
+	<div class="header">
+		Dramady-SPA
+	</div>
+	<div class="auth-block">
+		<nav>
+			<ul>
+				<li>
+					<button class="button">Sign In</button>
+					<form action="/accounts/sign-in" method="POST">
+						Username: <input type="text" name="username"><br>
+						Password: <input type="password" name="password"><br>
+						<input type="submit" value="login!">
+					</form>
+				</li>
+				<li>
+					<button class="button">Sign Up</button>
+					<form action="/accounts/sign-up" method="POST">
+						Username: <input type="text" name="username"><br>
+						FullName: <input type="text" name="fullname"><br>
+						Password: <input type="password" name="password"><br>
+						<input type="submit" value="Register!">
+					</form>
+				</li>
+				<li>
+					<h2>Sign out here:</h2>
+					<form method="POST" action="/accounts/sign-out" style="display:inline-block;">
+						<input type="hidden" name="refUrl" value="{{ref}}">
+						<button type="submit" class="button is-primary">Sign out</button>
+					</form>
 
-	<main>
-		<div class="box">
-
-		</div>
-	</main>
-
-	<footer class="footer">
-		<div class="content has-text-centered">
-			Copyright © DRAMADY-SPA 2042
-		</div>
-	</footer>
-
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="updater-block">
+		Update Functionality Buttons
+	</div>
+	<div class="fav-list-block">
+		Favourites
+	</div>
+	<div class="watch-list-block">
+		WatchListed
+	</div>
+	<div class="reviews-view">Chosen movie reviews</div>
+	<div class="review-edit">
+		CRUD on selected review
+	</div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 		integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 		crossorigin="anonymous" referrerpolicy="no-referrer">
 </script>
 <script src="/src/script.js"></script>
+<footer class="footer">
+	<div class="content has-text-centered">
+		Copyright © DRAMADY-SPA 2042
+	</div>
+</footer>
 </body>
 </html>

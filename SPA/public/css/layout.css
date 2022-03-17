@@ -1,44 +1,138 @@
-html{
+/*html{*/
+/*	height: 100%;*/
+/*}*/
+
+/*header{*/
+/*	margin-bottom: 1rem;*/
+/*}*/
+
+
+/*body{*/
+/*	min-height: 100%;*/
+/*	background: center/80% url("/img/Background.jpg") repeat;*/
+/*	color: #e8e8e8;*/
+/*}*/
+
+
+/*#entire-page{*/
+/*	max-width: 60vw;*/
+/*	margin: 0 auto;*/
+/*	background: rgba(0,0,0,0.5);*/
+/*	border-radius: 1rem;*/
+/*	border: 0.1rem solid rgba(0,0,0,0.8);*/
+/*	padding: 0.7rem;*/
+
+/*}*/
+
+/*main{*/
+
+/*	height: 70vh;*/
+/*	margin-bottom: 1rem;*/
+/*}*/
+
+/*main > .box{*/
+/*	height: 70vh;*/
+/*}*/
+
+/*.container {*/
+/*	display: flex;*/
+/*}*/
+
+/*.login-part {*/
+/*	!*width: 50%;*!*/
+/*	background-color: darkgrey;*/
+/*}*/
+/*.body-part{*/
+/*	!*width: 50%;*!*/
+/*	background-color: white;*/
+/*}*/
+
+/*.content{*/
+/*	color: #4a4a4a;*/
+/*}*/
+
+/*.footer{*/
+/*	border-radius: 0.5rem;*/
+/*	padding: 1rem 1.5rem;*/
+/*}*/
+/*-------------------------------------------*/
+/*#page {*/
+/*	display: grid;*/
+/*	width: 100%;*/
+/*	height: 100%;*/
+/*	grid-template-areas: "head head"*/
+/*                       "nav main"*/
+/*                       "nav foot";*/
+/*	grid-template-rows: 50px 1fr 30px;*/
+/*	grid-template-columns: 190px 1fr;*/
+/*}*/
+
+/*#page > header {*/
+/*	grid-area: head;*/
+/*	background-color: #8ca0ff;*/
+/*}*/
+
+/*#page > nav {*/
+/*	grid-area: nav;*/
+/*	background-color: #ffa08c;*/
+/*}*/
+
+/*#page > main {*/
+/*	grid-area: main;*/
+/*	background-color: #ffff64;*/
+/*}*/
+
+/*#page > footer {*/
+/*	grid-area: foot;*/
+/*	background-color: #8cffa0;*/
+/*}*/
+
+/*!*-------------------*!*/
+
+.container {
+	display: grid;
+	grid-template-columns: 0.7fr 0.6fr 1.7fr;
+	grid-template-rows: 0.3fr 1.4fr 1.3fr;
+	gap: 0px 0px;
+	grid-auto-flow: row;
+	grid-template-areas:
+    "header header header"
+    "auth-block fav-list-block reviews-view"
+    "updater-block watch-list-block review-edit";
+	width: 100%;
 	height: 100%;
 }
 
-header{
-	margin-bottom: 1rem;
+.header {
+	background-color: red;
+	grid-area: header;
 }
 
-
-body{
-	min-height: 100%;
-	background: center/80% url("/img/Background.jpg") repeat;
-	color: #e8e8e8;
+.auth-block {
+	background-color: green;
+	grid-area: auth-block;
 }
 
-
-#entire-page{
-	max-width: 60vw;
-	margin: 0 auto;
-	background: rgba(0,0,0,0.5);
-	border-radius: 1rem;
-	border: 0.1rem solid rgba(0,0,0,0.8);
-	padding: 0.7rem;
-
+.updater-block {
+	background-color: grey;
+	grid-area: updater-block;
 }
 
-main{
-
-	height: 70vh;
-	margin-bottom: 1rem;
+.fav-list-block {
+	grid-area: fav-list-block;
 }
 
-main > .box{
-	height: 70vh;
+.watch-list-block {
+	background-color: yellow;
+	grid-area: watch-list-block;
 }
 
-.content{
-	color: #4a4a4a;
+.reviews-view {
+	background-color: purple;
+	grid-area: reviews-view;
 }
 
-.footer{
-	border-radius: 0.5rem;
-	padding: 1rem 1.5rem;
+.review-edit {
+	background-color: #4366e5;
+	grid-area: review-edit;
 }
