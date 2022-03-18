@@ -94,17 +94,14 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 
 
 		/* 						FAVOURITES FUNCTIONALITY 					*/
-		viewFavourites: function(request, callback){
-			/*
-				Viewing an accounts favourites list.
-			*/
-			if(request.session.accountId){
-				favouritesRepository.getUsersFavourites(request.session.accountId, function(error, results){
-					callback(error, results)
-				})
-			} else {
-				callback(['Please log in to view this page.'], null)
-			}
+		viewFavourites: function(accountId, callback){
+		/*
+			Viewing an accounts favourites list.
+		*/
+			favouritesRepository.getUsersFavourites(accountId, function(error, results){
+				callback(error, results)
+			})
+
 		},
 		
 		favourite: function(request, titleId, movieTitle, callback){
@@ -153,21 +150,18 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 			})
 		},
 
-		viewWatchlist: function(request, callback){
+		viewWatchlist: function(accountId, callback){
 			/*
 				Viewing an accounts watchlist.
 			*/
-			if(request.session.accountId){
-				watchlistRepository.getUsersWatchlist(request.session.accountId, function(error, results){
+				watchlistRepository.getUsersWatchlist(accountId, function(error, results){
 					if(error.length > 0){
 						callback(error, null)
 					} else {
 						callback([], results)
 					}
 				})
-			} else {
-				callback(['Please log in to view this page.'], null)
-			}
+
 		},
 		watchlist: function(request, titleId, movieTitle, callback){
 			// TODO: Check if user logged in

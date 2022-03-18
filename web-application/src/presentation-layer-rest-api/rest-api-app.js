@@ -77,7 +77,7 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI, accountMan
 						if(error){
 							//ERROR
 						} else {
-							response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true})
+							response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true, accountId: accountId})
 						}
 					})
 				} else {

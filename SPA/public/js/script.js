@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log(data);
             if( JSON.parse(data).isLoggedIn == true ){
                 // should be in callback function after ajax success or in it
-
+                console.log(JSON.parse(data).accountId)
                 successFullAjax(data);
 
             }

@@ -41,8 +41,9 @@ module.exports = function({movieManager, apiManager}){
 	})*/
 
 	router.get('/favourites', function(request, response){
-		//TODO
-		movieManager.viewFavourites(request, function(errors, movies){
+		//Check if logged in
+		const accountId = request.session.accountId
+		movieManager.viewFavourites(accountId, function(errors, movies){
 			const model = {
 				errors: errors,
 				movies: movies
@@ -64,7 +65,9 @@ module.exports = function({movieManager, apiManager}){
 	})
 
 	router.get('/watchlist', function(request, response){
-		movieManager.viewWatchlist(request, function(errors, movies){
+		//Check if logged in
+		const accountId = request.session.accountId
+		movieManager.viewWatchlist(accountId, function(errors, movies){
 			const model = {
 				errors: errors,
 				movies: movies

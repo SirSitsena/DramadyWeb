@@ -46,11 +46,11 @@ module.exports = function({accountManager}){
 		account.username = request.body.username
 		account.password = request.body.password
 
-		accountManager.signIn(account, function(errors, account) {
+		accountManager.signIn(account, function(errors, accountId) {
 			var message
-			if(account != null){
+			if(accountId != null){
 				message = "Logged in"
-				request.session.accountId = account.id
+				request.session.accountId = accountId
 			}
 			const model = {
 				errors: errors,
