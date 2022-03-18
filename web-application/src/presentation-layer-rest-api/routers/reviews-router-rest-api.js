@@ -75,7 +75,6 @@ module.exports = function({movieManager}){
                             response.status(200).end()
                         }
                     })
-                    //const accountId = request.body.accountId ?????????????
                 } else {
                     response.status(400).json({
                         error: "Form input incomplete"

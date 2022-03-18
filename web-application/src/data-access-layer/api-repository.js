@@ -37,7 +37,7 @@ module.exports = function({}){
         getMovieByTitleId: function(titleId, callback){
             request('https://imdb-api.com/en/API/Title/'+API_KEY_1+'/'+titleId, { json:true }, (err, res, body) => {
 
-                // TODOO:
+                // TODOO: error handling
                 if(err != null){
                     console.log("err: " + err)
                     if(err.length > 0){
@@ -48,7 +48,7 @@ module.exports = function({}){
                         console.log(body.errorMessage)
                     }
                     //console.log(body.title)
-                    callback(null, body)
+                    callback([], body)
                 }
                 /*if(err || body.errorMessage != ""){
                     console.log(body.errorMessage, "test2")
@@ -70,7 +70,7 @@ module.exports = function({}){
                     callback(err, null)
                 } else {
                     //console.log(body.items)
-                    callback(null, body.items)
+                    callback([], body.items)
                 }
                 // console.log(body.url);
                 // console.log(body.explanation);

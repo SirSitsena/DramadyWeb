@@ -44,7 +44,17 @@ module.exports = function({movieManager, apiManager}){
         })
     })
 
-    
+    router.get('/id/:titleId', function(request, response){
+        const titleId = request.params.titleId
+        apiManager.getMovieByTitleId(titleId, function(errors, results){
+            if(errors.length > 0){
+                response.status(500).end()
+                console.log(error)
+            } else {
+                response.status(200).json(results)
+            }
+        })
+    })
 
 
 
