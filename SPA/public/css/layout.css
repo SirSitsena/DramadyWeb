@@ -124,17 +124,17 @@
 }
 
 .watch-list-block {
-	background-color: #bbdb93;
+	background-color: #5a9696;
 	grid-area: watch-list-block;
 }
 
 .reviews-view {
-	background-color: #5a9696;
+	background-color: #4366e5;
 	grid-area: reviews-view;
 }
 
 .review-edit {
-	background-color: #4366e5;
+	background-color: #e0e8e5;
 	grid-area: review-edit;
 }
 
