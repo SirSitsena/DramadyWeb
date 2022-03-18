@@ -17,6 +17,7 @@ module.exports = function({apiRepository}){
 
         // Get movie by its imdb id:
         getMovieByTitleId: function(titleId, callback){
+            //Add error handling for titleId null
         	apiRepository.getMovieByTitleId(titleId, callback)
         }
     }

@@ -39,7 +39,7 @@ module.exports = function({accountRepository, accountValidator}){
 							callback(["Internal unexplained server error."], null)
 						} else {
 							if(result == true){
-								callback([], acc)
+								callback([], acc.id)
 							} else {
 								callback(["Password incorrect for user [" + acc.username + "]"])
 							}
