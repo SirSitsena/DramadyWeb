@@ -104,36 +104,37 @@
 }
 
 .header {
-	background-color: red;
+	background-color: #5a9696;
 	grid-area: header;
 }
 
 .auth-block {
-	background-color: green;
+	background-color: #e0e8e5;
 	grid-area: auth-block;
 }
 
 .updater-block {
-	background-color: grey;
+	background-color: #d6e4ba;
 	grid-area: updater-block;
 }
 
 .fav-list-block {
+	background-color: #d6e4ba;
 	grid-area: fav-list-block;
 }
 
 .watch-list-block {
-	background-color: yellow;
+	background-color: #5a9696;
 	grid-area: watch-list-block;
 }
 
 .reviews-view {
-	background-color: purple;
+	background-color: #4366e5;
 	grid-area: reviews-view;
 }
 
 .review-edit {
-	background-color: #4366e5;
+	background-color: #e0e8e5;
 	grid-area: review-edit;
 }
 
