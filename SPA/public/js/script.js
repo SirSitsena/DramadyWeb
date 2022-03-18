@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", function(){
     var signUpButton = document.getElementById("sign-up-button");
     var actionPath = "http://localhost:8000/";
 
-
-
     // for later times
 
     // function checkCookie() {
@@ -151,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         var login = document.getElementById("user-sign-in-name").value;
         var password  =document.getElementById("user-sign-in-password").value;
-        var loginPath = actionPath+'api/tokens';
+        var loginPath = actionPath+'api/accounts/tokens';
 
         postAjax(loginPath,  { username: login, password: password, grant_type: 'password' } , function(data){
             console.log(data);
@@ -159,9 +157,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 // should be in callback function after ajax success or in it
                 console.log(JSON.parse(data).accountId)
                 successFullAjax(data);
-
             }
-
         });
 
         console.log('login');
@@ -176,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function(){
     function logout(){
 
 
-        logoutPath = actionPath+'api/sign-out';
+        logoutPath = actionPath+'api/accounts/sign-out';
 
         postAjax(logoutPath,  false , function(data){
 
@@ -198,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function(){
     function userRegister(){
 
 
-        registerPath = actionPath+'api/sign-up';
+        registerPath = actionPath+'api/accounts/sign-up';
 
 
         var loginNew = document.getElementById("user-sign-up-username").value;

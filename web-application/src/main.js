@@ -25,6 +25,7 @@ container.register("variousRouter", awilix.asFunction(require('./presentation-la
 //const appRESTAPI = require('./presentation-layer-rest-api/rest-api-app')
 container.register('moviesRouterRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/routers/movies-router-rest-api')))
 container.register('reviewsRouterRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/routers/reviews-router-rest-api')))
+container.register('accountsRouterRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/routers/accounts-router-rest-api'))) /*NEW NEW NEW NEW NEW NEW NEW*/
 container.register('appRESTAPI', awilix.asFunction(require('./presentation-layer-rest-api/rest-api-app.js')))
 
 container.register('app', awilix.asFunction(require('./presentation-layer/app.js')))

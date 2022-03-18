@@ -57,7 +57,9 @@ module.exports = function({accountManager}){
 				message: message
 			}
 			response.render("accounts-sign-in.hbs", model)
+			// response.setHeader("Access-Control-Allow-Origin", "*")
 		})
+		// response.setHeader("Access-Control-Allow-Origin", "*")
 	})
 
 	//Signing out of an account
@@ -94,6 +96,16 @@ module.exports = function({accountManager}){
 		})
 		
 	})
+
+
+	// router.use(function(request, response, next){
+	// 	response.setHeader("Access-Control-Allow-Origin", "*")
+	// 	response.setHeader("Access-Control-Allow-Methods", "*")
+	// 	response.setHeader("Access-Control-Allow-Headers", "*")
+	// 	response.setHeader("Access-Control-Expose-Headers", "*")
+	// 	response.setHeader('Access-Control-Allow-Credentials', true);
+	// 	next()
+	// })
 
 	return router
 }
