@@ -20,7 +20,7 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI, accountMan
 		response.setHeader("Access-Control-Expose-Headers", "*")
 		next()
 	})
-	
+
 	api.use(express.json())
 	api.use(express.urlencoded({
 		extended: false,
@@ -28,10 +28,11 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI, accountMan
 	api.use(cookieParser())
 	api.use('/movies', moviesRouterRESTAPI)
 	api.use('/reviews', reviewsRouterRESTAPI)
-	
+
 	api.post('/sign-up', function(request, response) {
 		const account = {}
 		account.username = request.body.username
+		account.fullname = request.body.fullname
 		account.password = request.body.password
 
 		accountManager.createAccount(account, function(errors, accountId) {
@@ -50,7 +51,7 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI, accountMan
 							if(error){
 								//Error
 							} else {
-								response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in"})
+								response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true})
 							}
 						})
 					}
@@ -76,10 +77,10 @@ module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI, accountMan
 						if(error){
 							//ERROR
 						} else {
-							response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in"})
+							response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true})
 						}
 					})
-				} else {		
+				} else {
 					// SEND CORRECT RESPONE ACCORDING TO AUTH2.0
 					response.status(400).end()
 				}
