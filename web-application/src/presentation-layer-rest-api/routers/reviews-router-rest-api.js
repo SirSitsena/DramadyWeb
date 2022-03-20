@@ -1,11 +1,13 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 const secret = "uasnbdiunasiuduianisudnianiusdnpwioperjwer"
 
 module.exports = function({movieManager}){
     const router = express.Router()
 
     router.use(express.json())
+    router.use(cookieParser())
 
     router.get('/', function(request, response){
         console.log("test")
@@ -24,6 +26,10 @@ module.exports = function({movieManager}){
 
     router.post('/create', function(request, response){
         const token = request.cookies.token
+        console.log(token)
+        console.log('++++++')
+        console.log(request.cookies)
+        console.log('++++++')
         if(token != null) {
             jwt.verify(token, secret, function(error, payload){
                 if(error){
@@ -31,7 +37,7 @@ module.exports = function({movieManager}){
                     response.status(401).end()
                 } else {
                     //console.log(payload)
-                    if(request.body.review != null && request.body.review.length > 0 && request.body.titleId.length > 0 && request.body.titleId != null){    
+                    if(request.body.review != null && request.body.review.length > 0 && request.body.titleId.length > 0 && request.body.titleId != null){
                         const review = request.body.review
                         const titleId = request.body.titleId
                         //console.log("payload account id:" +payload.accountId)
@@ -49,16 +55,14 @@ module.exports = function({movieManager}){
                             error: "Review or Title input incomplete."
                         })
                     }
-                    
                 }
             })
         } else {
             response.status(401).end()
         }
-        
     })
 
-    router.post('/update', function(request, response){
+    router.post('/update/:reviewId', function(request, response){
         const token = request.cookies.token
         if(token != null){
             jwt.verify(token, secret, function(error, payload){

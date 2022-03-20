@@ -60,8 +60,8 @@ module.exports = function({movieManager, apiManager}){
     //----------------------------------------------------- NEW ----
 
     router.get('/favourites/:accountId', function(request, response){
-        const userId = request.params.accountId
-        movieManager.viewFavourites(userId, function(errors, results){
+        const accountId = request.params.accountId
+        movieManager.viewFavourites(accountId, function(errors, results){
             if(errors.length > 0){
                 response.status(500).end()
                 console.log(error)
