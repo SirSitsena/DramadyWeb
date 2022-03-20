@@ -75,6 +75,11 @@ INSERT INTO accounts (username, hash, isAdministrator) VALUES ("Edvin", "$2b$10$
 INSERT INTO accounts (username, hash, isAdministrator) VALUES
 ('rasmus','$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE),
 ('anestis', '$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE);
+INSERT INTO publicReviews (content, titleId, userId) VALUES
+('TestCommentUser4','tt1877830', 4),
+('TestCommentUser3','tt1877830', 3),
+('TestCommentUser2','tt1877830', 2),
+('TestCommentUser1','tt1877830', 1);
 
 
 -- Creates the top250 and trending movie tables
@@ -99,7 +104,6 @@ CREATE TABLE IF NOT EXISTS top250Movies (
     imDbRatingVotes INT NULL,
     metacriticRating INT NULL,
 	PRIMARY KEY (id)
-
 );
 
 INSERT INTO top250Movies VALUES
