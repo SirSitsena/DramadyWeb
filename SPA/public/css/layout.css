@@ -91,14 +91,14 @@
 
 .container {
 	display: grid;
-	grid-template-columns: 0.7fr 0.6fr 1.7fr;
-	grid-template-rows: 0.3fr 1.4fr 1.3fr;
+	/*grid-template-columns: 0.7fr 0.6fr 1.7fr;*/
+	/*grid-template-rows: 0.3fr 1.4fr 1.3fr;*/
 	gap: 0px 0px;
 	grid-auto-flow: row;
 	grid-template-areas:
-    "header header header"
-    "auth-block fav-list-block reviews-view"
-    "updater-block watch-list-block review-edit";
+    "header header header header header"
+    "auth-block fav-list-block fav-list-block reviews-view reviews-view"
+    "updater-block watch-list-block watch-list-block review-edit review-edit";
 	width: 100%;
 	height: 100%;
 }
@@ -106,36 +106,51 @@
 .header {
 	background-color: #5a9696;
 	grid-area: header;
+	padding: 15px;
 }
 
 .auth-block {
 	background-color: #e0e8e5;
 	grid-area: auth-block;
+	padding: 15px;
 }
 
 .updater-block {
 	background-color: #d6e4ba;
 	grid-area: updater-block;
+	padding: 15px;
 }
 
 .fav-list-block {
 	background-color: #d6e4ba;
 	grid-area: fav-list-block;
+	padding: 15px;
+	overflow: auto;
+	height: 300px;
 }
 
 .watch-list-block {
 	background-color: #5a9696;
 	grid-area: watch-list-block;
+	padding: 15px;
+	overflow: auto;
+	height: 300px;
 }
 
 .reviews-view {
 	background-color: #4366e5;
 	grid-area: reviews-view;
+	padding: 15px;
+	overflow: auto;
+	height: 300px;
 }
 
 .review-edit {
 	background-color: #e0e8e5;
 	grid-area: review-edit;
+	padding: 15px;
+	overflow: auto;
+	height: 300px;
 }
 
 .hideMe{
