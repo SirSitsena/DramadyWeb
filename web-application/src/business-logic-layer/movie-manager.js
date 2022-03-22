@@ -199,8 +199,13 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 		createPublicReview: function(accountId, review, titleId, callback){
 			reviewsRepository.createPublicReview(accountId, review, titleId, callback)
 		},
+
 		updatePublicReview: function(id, accountId, review, titleId, callback){
 			reviewsRepository.updatePublicReview(id, accountId, review, titleId, callback)
+		},
+
+		deletePublicReview: function(id, accountId, callback){
+			reviewsRepository.deletePublicReview(id, accountId, callback)
 		},
 
 		getPublicReviewById: function(reviewId, callback){

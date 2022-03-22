@@ -70,7 +70,8 @@ module.exports = function({movieManager}){
                     console.log(error.name)
                     response.status(401).end()
                 } else {
-                    if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){ //&& request.body.accountId){
+                    // if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){ //&& request.body.accountId){
+                    if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null && request.body.accountId){
                         const reviewId = request.body.reviewId
                         const review = request.body.review
                         const titleId = request.body.titleId
@@ -94,6 +95,41 @@ module.exports = function({movieManager}){
         }
         
     })
+    //-----------------------------------DELETE ALPHA
+
+    router.post('/delete/:reviewId', function(request, response){
+        const token = request.cookies.token
+        if(token != null){
+            jwt.verify(token, secret, function(error, payload){
+                if(error){
+                    console.log(error.name)
+                    response.status(401).end()
+                } else {
+                    if(request.body.reviewId != null && request.body.accountId){
+                        const reviewId = request.body.reviewId
+                        movieManager.deletePublicReview(reviewId, payload.accountId, function(error, result) {
+                            if(error.length > 0){
+                                console.log(error)
+                            } else {
+                                //Another code?
+                                response.status(200).end()
+                            }
+                        })
+                    } else {
+                        response.status(400).json({
+                            error: "Form input incomplete"
+                        })
+                    }
+                }
+            })
+        } else {
+            response.status(401).end()
+        }
+
+    })
+
+
+    //-------------------------------------DELETE FUNC
 
     router.get('/:id', function(request, response){
         const reviewId = request.params.id

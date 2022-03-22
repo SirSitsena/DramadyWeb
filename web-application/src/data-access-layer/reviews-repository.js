@@ -29,6 +29,21 @@ module.exports = function({db}){
                 }
             })
         },
+
+        deletePublicReview: function(id, accountId, callback) {
+            const query = "DELETE FROM publicReviews WHERE id = ? AND userId = ?"
+            const values = [id, accountId]
+
+            db.query(query, values, function(error, result){
+                if(error){
+                    console.log(error)
+                    callback(['databaseError'], null)
+                } else {
+                    callback([], result)
+                }
+            })
+        },
+
         getPublicReviewById: function(reviewId, callback){
             const query = 'SELECT * FROM publicReviews WHERE id = ?'
             const values = [reviewId]
