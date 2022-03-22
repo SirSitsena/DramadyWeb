@@ -32,8 +32,9 @@ module.exports = function({accountRepository, accountValidator}){
 	/*									SIGNING IN TO AN ACCOUNT									*/
 		signIn: function(account, callback){
 			accountRepository.signIn(account, function(errors, result){
-				if(result.length > 0) {
-					let acc = result[0]
+				if(result != null) {
+					console.log(result)
+					let acc = result.dataValues
 					bcrypt.compare(account.password, acc.hash, function(error, result) {
 						if(error){
 							callback(["Internal unexplained server error."], null)

@@ -1,8 +1,21 @@
-module.exports = function({db}){
+const { rejects } = require("assert")
+
+module.exports = function({db, models}){
     return{
         /*************************************** PUBLIC REVIEWS**************************************** */
         createPublicReview: function(accountId, review, titleId, callback){
             console.log("Review2", review)
+
+            models.PublicReviews.create({
+                userId: accountId,
+                content: review,
+                titleId: titleId
+            }).then(function(PublicReview){
+                callback([], PublicReview.id)
+            }).catch(function(error){
+                callback(['databaseError'], null)
+            })
+            /*
             const query = 'INSERT INTO publicReviews (userId, content, titleId) VALUES (?, ?, ?)'
             const values = [accountId, review, titleId]
 
@@ -13,10 +26,24 @@ module.exports = function({db}){
                 } else {
                     callback([], results.insertId)
                 }
-            })
+            })*/
         },
 
         updatePublicReview: function(id, accountId, review, titleId, callback) {
+            models.PublicReviews.update({
+                content: review,
+                titleId: titleId
+            }, {
+                where: {
+                    id: id,
+                    userId: accountId
+                }
+            }).then(function(result){
+                callback([], result)
+            }).catch(function(error){
+                callback(['databaseError'], null)
+            })
+            /*
             const query = "UPDATE publicReviews SET content = ?, titleId = ? WHERE id = ? AND userId = ?"
             const values = [review, titleId, id, accountId]
 
@@ -27,41 +54,35 @@ module.exports = function({db}){
                 } else {
                     callback([], result)
                 }
-            })
+            })*/
         },
         getPublicReviewById: function(reviewId, callback){
-            const query = 'SELECT * FROM publicReviews WHERE id = ?'
-            const values = [reviewId]
-
-            db.query(query, values, function(error, results){
-                if(error){
-                    callback(['databaseError'], null)
-                } else {
-                    callback([], results)
+            models.PublicReviews.findOne({
+                where: {
+                    id: reviewId
                 }
+            }).then(function(review){
+                callback([], review)
+            }).catch(function(error){
+                callback(['databaseError'], null)
             })
         },
         getReviewsByTitleId: function(titleId, callback){
-            const query = 'SELECT * FROM publicReviews WHERE titleId = ?'
-            const values = [titleId]
-
-            db.query(query, values, function(error, results){
-                if(error){
-                    callback(['databaseError'], null)
-                } else {
-                    callback([], results)
+            models.PublicReviews.findAll({
+                where: {
+                    titleId: titleId
                 }
+            }).then(function(reviews) {
+                callback([], reviews)
+            }).catch(function(error) {
+                callback(['databaseError'], null)
             })
         },
         getAllPublicReviews: function(callback){
-            const query = 'SELECT * FROM publicReviews'
-
-            db.query(query, function(error, results){
-                if(error){
-                    callback(['databaseError'], null)
-                } else {
-                    callback([], results)
-                }
+            models.PublicReviews.findAll().then(function(reviews){
+                callback([], reviews)
+            }).catch(function(errors) {
+                callback(['databaseError'], null)
             })
         }
     }

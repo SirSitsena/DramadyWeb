@@ -1,15 +1,14 @@
-module.exports = function({db}){
+module.exports = function({db, models}){
     return{
         getUsersFavourites: function(userId, callback){
-            const query = "SELECT * FROM UserFavourites WHERE userId = ?"
-            const values = [userId]
-
-            db.query(query, values, function(errors, results){
-                if(errors){
-                    callback(['databaseError'], null)
-                } else {
-                    callback([], results)
+            models.UserFavourites.findAll({
+                where: {
+                    userId: userId
                 }
+            }).then(function(favourites){
+                callback([], favourites)
+            }).catch(function(error){
+                callback(['databaseError'], null)
             })
         },
 
@@ -18,20 +17,15 @@ module.exports = function({db}){
 
             SUCCESS: RETURNS ID OF FAVOURITE.
         */
-        createUserFavourites: function(userId, movieId,movieTitle, date, callback) {
-
-            const query = 'INSERT INTO UserFavourites (dateAdded, userId, movieId, movieTitle) VALUES (?, ?, ?, ?)'
-            const values = [date, userId, movieId, movieTitle]
-
-            db.query(query, values, function(error, results){
-                if(error){
-                    // TODO: Look for usernameUnique violation.
-                    console.log(error)
-                    callback(['databaseError'], null)
-                }else{
-                    console.log(results.insertId)
-                    callback([], results.insertId)
-                }
+        createUserFavourites: function(userId, movieId, movieTitle, callback) {
+            models.UserFavourites.create({
+                userId: userId,
+                movieId: movieId,
+                movieTitle: movieTitle
+            }).then(function(result){
+                callback([], result.id)
+            }).catch(function(error) {
+                callback(['databaseError'], null)
             })
         },
 
@@ -41,16 +35,15 @@ module.exports = function({db}){
             SUCCESS: RETURNS (1) DELETED ROW
         */
         deleteUserFavourite: function(userId, movieId, callback) {
-            const query = 'DELETE FROM UserFavourites WHERE userId = ? AND movieId = ?'
-            const values = [userId, movieId]
-
-            db.query(query, values, function(error, results){
-                if(error){
-                    //TODO: LOOK FOR ERRORS :
-                    callback(['databaseError'], null)
-                }else{
-                    callback([], results.affectedRows)
+            models.UserFavourites.destroy({
+                where: {
+                    userId: userId,
+                    movieId: movieId
                 }
+            }).then(function(result) {
+                callback([], result)
+            }).catch(function(error) {
+                callback(['databaseError'], null)
             })
         },
 
@@ -61,15 +54,15 @@ module.exports = function({db}){
         */
 
         checkIfFavourited: function(userId, titleId, callback){
-            const query = 'SELECT * FROM UserFavourites WHERE userId = ? AND movieId = ?'
-            const values = [userId, titleId]
-
-            db.query(query, values, function(error, results){
-                if(error){
-                    callback(['databaseError'], null)
-                } else {
-                    callback([], results)
+            models.UserFavourites.findAll({
+                where: {
+                    userId: userId,
+                    movieId: titleId
                 }
+            }).then(function(favourites){
+                callback([], favourites)
+            }).catch(function(error) {
+                callback(['databaseError'], null)
             })
         }
     }

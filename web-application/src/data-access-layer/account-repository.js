@@ -1,6 +1,4 @@
-const db = require('./db')
-
-module.exports = function({}){
+module.exports = function({models}){
 	return {
 		/*
 			Retrieves all accounts ordered by username.
@@ -8,18 +6,13 @@ module.exports = function({}){
 			Success value: The fetched accounts in an array.
 		*/
 		getAllAccounts: function(callback){
-			
-			const query = `SELECT * FROM accounts ORDER BY username`
-			const values = []
-			
-			db.query(query, values, function(error, accounts){
-				if(error){
-					callback(['databaseError'], null)
-				}else{
-					callback([], accounts)
-				}
+			models.Accounts.findAll({
+				order: ["username"]
+			}).then(function(accounts){
+				callback([], accounts)
+			}).catch(function(error){
+				callback(['databaseError'], null)
 			})
-			
 		},
 
 		/*
@@ -28,18 +21,15 @@ module.exports = function({}){
 			Success value: The fetched account, or null if no account has that username.
 		*/
 		getAccountByUsername: function(username, callback){
-			
-			const query = `SELECT * FROM accounts WHERE username = ? LIMIT 1`
-			const values = [username]
-			
-			db.query(query, values, function(error, accounts){
-				if(error){
-					callback(['databaseError'], null)
-				}else{
-					callback([], accounts[0])
+			models.Accounts.findOne({
+				where: {
+					username: username
 				}
+			}).then(function(account){
+				callback([], account)
+			}).catch(function(error){
+				callback(['databaseError'], null)
 			})
-			
 		},
 
 		/*
@@ -49,36 +39,28 @@ module.exports = function({}){
 			Success value: The id of the new account.
 		*/
 		createAccount: function(account, callback){
-			
-			const query = `INSERT INTO accounts (username, hash) VALUES (?, ?)`
-			const values = [account.username, account.hash]
-			
-			db.query(query, values, function(error, results){
-				if(error){
-					// TODO: Look for usernameUnique violation.
-					callback(['databaseError'], null)
-				}else{
-					callback([], results.insertId)
-				}
+			models.Accounts.create({
+				username: account.username,
+				hash: account.hash
+			}).then(function(account){
+				callback([], account.id)
+			}).catch(function(error){
+				callback(['databaseError'], null)
 			})
-			
 		},
 
 		/*
 			Log in to an account
 		*/
 		signIn: function(account, callback) {
-			
-			const query = 'SELECT * FROM accounts WHERE username = ?'
-			const values = [account.username]
-
-			db.query(query, values, function(error, result) {
-				if(error){
-					// TODO: Look for usernameUnique violation.
-					callback(['databaseError'], null)
-				}else{
-					callback([], result)
+			models.Accounts.findOne({
+				where: {
+					username: account.username
 				}
+			}).then(function(account){
+				callback([], account)
+			}).catch(function(error){
+				callback(['databaseError'], null)
 			})
 		}
 	}

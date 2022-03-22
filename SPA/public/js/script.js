@@ -421,7 +421,8 @@ document.addEventListener("DOMContentLoaded", function(){
         var loginPath = actionPath+'api/accounts/tokens';
 
         postAjax(loginPath,  { username: login, password: password, grant_type:'password' } , function(data){
-            console.log(data);
+            console.log("test")
+            console.log("data: ", data);
             if( JSON.parse(data).isLoggedIn == true ){
                 // should be in callback function after ajax success or in it
                 console.log(JSON.parse(data).accountId)

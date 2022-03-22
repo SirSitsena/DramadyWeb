@@ -1,4 +1,4 @@
-module.exports = function({db}){
+module.exports = function({db, models}){
     return {
         /*
             Retrieves the movie with the given id.
@@ -6,16 +6,14 @@ module.exports = function({db}){
             Success value: The fetched movie, or null if no movie has that id.
         */
         getMovieById: function(id, callback){
-
-            const query = `SELECT * FROM trendingMovies WHERE id = ? LIMIT 1`
-            const values = [id]
-
-            db.query(query, values, function(error, movies){
-                if(error){
-                    callback(['databaseError'], null)
-                }else{
-                    callback([], movies[0])
+            models.TrendingMovies.findOne({
+                where: {
+                    id: id
                 }
+            }).then(function(movie){
+                callback([], movie)
+            }).catch(function(error){
+                callback(['databaseError'], null)
             })
 
         },
@@ -26,16 +24,12 @@ module.exports = function({db}){
             Success value: The fetched movies in an array.
         */
         getAllMovies: function(callback){
-
-            const query = `SELECT * FROM trendingMovies ORDER BY rank`
-            const values = []
-
-            db.query(query, values, function(error, movies){
-                if(error){
-                    callback(['databaseError'], null)
-                }else{
-                    callback([], movies)
-                }
+            models.TrendingMovies.findAll({
+                order: ['rank']
+            }).then(function(movies) {
+                callback([], movies)
+            }).catch(function(error) {
+                callback(['databaseError'], null)
             })
 
         },
@@ -46,18 +40,15 @@ module.exports = function({db}){
             Success value: The fetched movie, or null if no movie has that rank.
         */
         getMovieByRank: function(rank, callback){
-
-            const query = `SELECT * FROM trendingMovies WHERE rank = ? LIMIT 1`
-            const values = [rank]
-
-            db.query(query, values, function(error, movies){
-                if(error){
-                    callback(['databaseError'], null)
-                }else{
-                    callback([], movies[0])
+            models.TrendingMovies.findOne({
+                where: {
+                    rank: rank
                 }
+            }).then(function(movie){
+                callback([], movie)
+            }).catch(function(error){
+                callback(['databaseError'], null)
             })
-
         },
 
 
@@ -67,18 +58,15 @@ module.exports = function({db}){
             Success value: The fetched movie, or null if no movie has that year.
         */
         getMovieByYear: function(year, callback){
-
-            const query = `SELECT * FROM trendingMovies WHERE year = ?`
-            const values = [year]
-
-            db.query(query, values, function(error, movies){
-                if(error){
-                    callback(['databaseError'], null)
-                }else{
-                    callback([], movies)
+            models.TrendingMovies.findAll({
+                where: {
+                    year: year
                 }
+            }).then(function(movies){
+                callback([], movies)
+            }).catch(function(error) {
+                callback(['databaseError'], null)
             })
-
         }
     }
 }
