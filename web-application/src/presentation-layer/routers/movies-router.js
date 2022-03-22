@@ -79,12 +79,15 @@ module.exports = function({movieManager, apiManager}){
 	router.get('/watchlist/:titleId/:movieTitle', function(request, response){
 		const titleId = request.params.titleId
 		const movieTitle = request.params.movieTitle
-
+		console.log("test")
 		movieManager.watchlist(request, titleId, movieTitle, function(errors, results){
-			if(errors.length == 0){
+			if(errors.length == 0 || errors == null){
+				console.log("test")
 				response.redirect('back')
 			} else {
+				console.log("error: ", errors)
 				//ERROR
+				//console.log(errors)
 			}
 		})
 	})

@@ -4,6 +4,8 @@ CREATE TABLE accounts (
 	username VARCHAR(50) NOT NULL,
 	isAdministrator BOOLEAN DEFAULT FALSE,
 	hash VARCHAR(100) NOT NULL,
+	createdAt DATE,
+	updatedAt DATE,
 	CONSTRAINT usernameUnique UNIQUE (username)
 );
 
@@ -19,7 +21,9 @@ CREATE TABLE movies (
 	image VARCHAR(255),
 	releaseDate VARCHAR(30),
 	runtimeStr VARCHAR(30),
-	plot VARCHAR(5000)
+	plot VARCHAR(5000),
+	createdAt DATE,
+	updatedAt DATE
 );
 
 -- Create comments table
@@ -27,6 +31,8 @@ CREATE TABLE comments (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	content VARCHAR(500),
 	isPublic BOOLEAN DEFAULT FALSE,
+	createdAt DATE,
+	updatedAt DATE,
 	userId INT UNSIGNED,
 	CONSTRAINT fk_user
 	FOREIGN KEY (userId) REFERENCES accounts(id),
@@ -39,6 +45,8 @@ CREATE TABLE publicReviews (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	content VARCHAR(500) NOT NULL,
 	titleId VARCHAR(50) NOT NULL,
+	createdAt DATE,
+	updatedAt DATE,
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userReviews
 	FOREIGN KEY (userId) REFERENCES accounts(id)
@@ -47,25 +55,26 @@ CREATE TABLE publicReviews (
 -- CREATE FAVOURITE LIST
 CREATE TABLE UserFavourites (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	dateAdded DATE,
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userFavourites
 	FOREIGN KEY (userId) REFERENCES accounts(id),
 	movieId VARCHAR(25),
-    movieTitle VARCHAR(100)
+    movieTitle VARCHAR(100),
+	createdAt DATE,
+	updatedAt DATE
 );
 
 
 -- CREATE WATCHLIST
 CREATE TABLE UserWatchlist (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	dateAdded DATE,
 	userId INT UNSIGNED,
 	CONSTRAINT fk_userWatchlist
 	FOREIGN KEY (userId) REFERENCES accounts(id),
 	movieId VARCHAR(25),
-	movieTitle VARCHAR(100)
-
+	movieTitle VARCHAR(100),
+	createdAt DATE,
+	updatedAt DATE
 );
 
 -- Create a dummy account for testing.

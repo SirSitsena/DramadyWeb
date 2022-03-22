@@ -45,7 +45,7 @@ module.exports = function({accountManager}){
 		let account = {}
 		account.username = request.body.username
 		account.password = request.body.password
-
+		console.log("received request")
 		accountManager.signIn(account, function(errors, accountId) {
 			var message
 			if(accountId != null){
