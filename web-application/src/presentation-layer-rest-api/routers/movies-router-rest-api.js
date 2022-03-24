@@ -10,7 +10,7 @@ module.exports = function({movieManager, apiManager}){
     router.get('/search/:keywords', function(request, response){
         console.log("search recieved")
         const keywords = request.params.keywords
-        apiManager.getSearchMovieByTitle(keywords, function(error, results){
+        apiManager.getSearchMovieByTitle(null, keywords, function(error, results){
             if(error.length > 0){
                 response.status(500).end()
                 console.log(error)
