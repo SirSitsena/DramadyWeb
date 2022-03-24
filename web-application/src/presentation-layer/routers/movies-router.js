@@ -96,20 +96,20 @@ module.exports = function({movieManager, apiManager}){
 		var url = require("url")
 		let urlParts = url.parse(request.url)
 		const query = decodeURI(urlParts.query)
-		console.log("urlParts : " + query)
 		let string = query.split('=')
 		const keywords = string[1].replace('+', ' ')
-		console.log("keywords:" +keywords)
 		
-		apiManager.getSearchMovieByTitle(keywords, function(error, results) {
+		const accountId = request.session.accountId
+
+		apiManager.getSearchMovieByTitle(accountId, keywords, function(error, movies) {
 			//IMPROVE ERROR HANDLING
 
 			if(error.length > 0){
 				console.log(error)
 			} else {
-				console.log(results)
+				//console.log(results)
 				const model = {
-					movies: results.results
+					movies: movies
 				}
 				response.render('home.hbs', model)
 			}

@@ -1,26 +1,68 @@
 <div class="content">
-<h1>Account</h1>
 {{#if errors.length}}
-	<p>Oh no, something went wrong:</p>
-	<ul>
-		{{#each errors}}
-			<li>{{this}}</li>
-		{{/each}}
-	</ul>
+	<div class="notification is-danger">
+        <p><strong>An issue appeared: </strong></p>
+        <ul>
+            {{#each errors}}
+                <li>{{this}}</li> 
+            {{/each}}
+        </ul>
+    </div>
 {{else}}
 	
 	{{#if account}}
-		<dl>
-			
-			<dt>Id:</dt>
-			<dd>{{account.id}}</dd>
-			
-			<dt>Username:</dt>
-			<dd>{{account.username}}</dd>
-			
-			<dt>Is an admin:</dt>
-			<dd>{{account.isAdministrator}}</dd>
-		</dl>
+	<h1 style="color: white;">{{account.dataValues.username}}</h1>
+		{{#if account.isOwner}}
+			{{#if account.dataValues.isPublic}}
+			<!--
+				<form action="/accounts/sign-in" method="POST" class="sign-up">
+            Username: <input type="text" name="username" class="input" style="margin-bottom: 15px;"><br>
+            Password: <input type="password" name="password" class="input"><br>
+            <input type="submit" value="login!" class="button sign-up-button">
+        </form>
+				-->
+				<form action="/accounts/privacy" method="POST">
+					<input type="submit" value="Make private" class="button">
+				</form>
+			{{else}}
+				<form action="/accounts/privacy" method="POST">
+					<input type="submit" value="Make public" class="button">
+				</form>
+			{{/if}}
+			 <!-- create pop up -->
+		{{/if}}
+		{{#if account.favourites.length}}
+			{{#if account.watchlist.length}}
+				<div class="columns">
+					<div class="column is-half">
+						<h1 style="color: white;">Favourites:</h1>
+						<ul>
+							{{#each account.favourites}}
+								<div class="box">
+									{{dataValues.movieTitle}}
+								</div>
+							{{/each}}
+						</ul>
+					</div>
+					<div class="column is-half">
+						<h1 style="color: white;">Watchlist:</h1>
+						<ul>
+							{{#each account.watchlist}}
+								<div class="box">
+									{{dataValues.movieTitle}}
+								</div>
+							{{/each}}
+						</ul>
+					</div>
+			{{else}}
+				<div class="column is-half">
+					<div class="notification is-dark mr-bottom">
+						<p>No movies on watchlist yet.</p>
+					</div>
+				</div>
+				</div>
+			{{/if}}
+		{{/if}}
 	{{else}}
 		<p>No, that account doesn't exist.</p>
 	{{/if}}

@@ -18,6 +18,7 @@ module.exports = function({}){
         username: Sequelize.TEXT,
         isAdministrator: Sequelize.BOOLEAN,
         hash: Sequelize.TEXT,
+        isPublic: Sequelize.BOOLEAN
     })
 
     models.Movies = sequelize.define('movies', {

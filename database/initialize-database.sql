@@ -4,6 +4,7 @@ CREATE TABLE accounts (
 	username VARCHAR(50) NOT NULL,
 	isAdministrator BOOLEAN DEFAULT FALSE,
 	hash VARCHAR(100) NOT NULL,
+	isPublic BOOLEAN,
 	createdAt DATE,
 	updatedAt DATE,
 	CONSTRAINT usernameUnique UNIQUE (username)
@@ -80,12 +81,12 @@ CREATE TABLE UserWatchlist (
 -- Create a dummy account for testing.
 INSERT INTO accounts (username, hash) VALUES ("Alice", "$2b$10$LpsPsPPT5XlhcyggSh1kCO5VAjTG7aqOnDal.i.9Gdxk9prjmeR7C");
 -- Create an account with elevated permission:
-INSERT INTO accounts (username, hash, isAdministrator) VALUES ("Edvin", "$2b$10$LpsPsPPT5XlhcyggSh1kCO5VAjTG7aqOnDal.i.9Gdxk9prjmeR7C", TRUE);
-INSERT INTO accounts (username, hash, isAdministrator) VALUES
-('rasmus','$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE),
-('anestis', '$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE);
+INSERT INTO accounts (username, hash, isAdministrator, isPublic) VALUES
+('rasmus','$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE, TRUE),
+('anestis', '$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE, TRUE);
+
+
 INSERT INTO publicReviews (content, titleId, userId) VALUES
-('TestCommentUser4','tt1877830', 4),
 ('TestCommentUser3','tt1877830', 3),
 ('TestCommentUser2','tt1877830', 2),
 ('TestCommentUser1','tt1877830', 1);

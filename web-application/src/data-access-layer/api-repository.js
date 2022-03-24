@@ -24,7 +24,7 @@ module.exports = function({}){
                         console.log("bodyerr:" +body.errorMessage)
                         callback(["Server error"], null)
                     } else {
-                        console.log("body: ",  body)
+                        //console.log("body: ",  body)
                         callback([], body)
                     }
                 }

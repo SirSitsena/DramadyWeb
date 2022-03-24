@@ -1,8 +1,8 @@
 <h1 class="is-size-1"><em>Welcome!</em></h1>
 <p>Here you will be able to search for movies, browse our lists of Trending and All Time Best Movies and favourite or add them to the watchlist.</p>
 
-<form id="search-page" action="/movies/search">
-    <input type="text" placeholder="Search.." name="keywords">
+<form id="search-page" action="/movies/search" class="search-container">
+    <input type="text" placeholder="Search.." name="keywords" class="input search-input">
     <button type="submit"><i class="fas fa-search"></i></button>
 </form>
 {{#if movies}}

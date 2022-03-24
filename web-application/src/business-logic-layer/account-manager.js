@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 
-module.exports = function({accountRepository, accountValidator}){
+module.exports = function({accountRepository, accountValidator, favouritesRepository, watchlistRepository}){
 	
 	return {
 		getAllAccounts: function(callback){
@@ -29,11 +29,26 @@ module.exports = function({accountRepository, accountValidator}){
 				}
 			})
 		},
+		switchPrivacy: function(accountId, callback){
+			accountRepository.getPrivacy(accountId, function(errors, result){
+				if(errors.length > 0){
+					callback(errors, null)
+				} else {
+					let isPublic = result.dataValues.isPublic
+					if(isPublic == true){
+						accountRepository.makePrivate(accountId, callback)
+					} else if (isPublic == false) {
+						accountRepository.makePublic(accountId, callback)
+					} else {
+						callback(["Internal server error"], null)
+					}
+				}
+			})
+		},
 	/*									SIGNING IN TO AN ACCOUNT									*/
 		signIn: function(account, callback){
 			accountRepository.signIn(account, function(errors, result){
 				if(result != null) {
-					console.log(result)
 					let acc = result.dataValues
 					bcrypt.compare(account.password, acc.hash, function(error, result) {
 						if(error){
@@ -73,7 +88,32 @@ module.exports = function({accountRepository, accountValidator}){
 		},
 
 		getAccountByUsername: function(username, callback){
-			accountRepository.getAccountByUsername(username, callback)
+			accountRepository.getAccountByUsername(username, function(errors, account){
+				if(errors.length > 0){
+					callback(errors, null)
+				} else {
+					let accountId = account.dataValues.id
+					if(account.dataValues.isPublic == true){
+						favouritesRepository.getUsersFavourites(accountId, function(errors, favourites){
+							if(errors.length > 0){
+								callback(errors, account)
+							} else {
+								watchlistRepository.getUsersWatchlist(accountId, function(errors, watchlist){
+									if(errors.length > 0){
+										callback(errors, account)
+									} else {
+										account.watchlist = watchlist
+										account.favourites = favourites
+										callback([], account)
+									}
+								})
+							}
+						})
+					} else {
+						callback([], account)
+					}
+				}
+			})
 		}
 	}
 }

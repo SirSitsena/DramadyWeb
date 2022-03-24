@@ -1,9 +1,9 @@
 module.exports = function({db, models}){
     return{
-        getUsersFavourites: function(userId, callback){
+        getUsersFavourites: function(accountId, callback){
             models.UserFavourites.findAll({
                 where: {
-                    userId: userId
+                    userId: accountId
                 }
             }).then(function(favourites){
                 callback([], favourites)
