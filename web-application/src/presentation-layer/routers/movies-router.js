@@ -29,16 +29,7 @@ module.exports = function({movieManager, apiManager}){
 	
 	})
 	
-	/*
-	router.get('/:titleId', function(request, response){
-		movieManager.getMovieByTitleId(request.params.titleId, function(errors, movie){
-			const model = {
-				errors: errors,
-				movie: movie
-			}
-			response.render('movie.hbs', model)
-		})
-	})*/
+
 
 	router.get('/favourites', function(request, response){
 		//Check if logged in

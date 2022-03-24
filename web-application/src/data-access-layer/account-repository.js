@@ -47,7 +47,7 @@ module.exports = function({models}){
 				}
 			}).then(function(accs){
 				if(accs.length > 0){
-					callback(["User with that username already exists."], null)
+					callback(["User with that username already exists. Please try another username"], null)
 				} else {
 					models.Accounts.create({
 						username: account.username,

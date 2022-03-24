@@ -1,6 +1,7 @@
 const express = require('express');
 
 var csrf = require('csurf');
+const {NULL} = require("mysql/lib/protocol/constants/types");
 
 var csrfProtection = csrf();
 
@@ -75,6 +76,14 @@ module.exports = function({accountManager}){
 		})
 	})
 
+	router.get('/sign-out', function(request, response ){
+		const accountId = request.session.accountId
+		const model = {
+			accountId: accountId,
+			csrfToken:request.csrfToken
+		}
+		response.render("accounts-sign-out.hbs", model)
+	})
 
 
 	router.get("/", function(request, response){
@@ -83,44 +92,45 @@ module.exports = function({accountManager}){
 				errors: errors,
 				accounts: accounts
 			}
+			console.log(model)
+			console.log("model")
+
 			response.render("accounts-list-all.hbs", model)
 		})
 	})
 
 	router.get('/:username', function(request, response){
-		
+
 		const username = request.params.username
-		
+
 		accountManager.getAccountByUsername(username, function(errors, account){
-			if(account.dataValues.id == request.session.accountId){
-				account.isOwner = true
+			if(errors.length == 0 && account != null){
+				if(account.dataValues.id == request.session.accountId){
+					account.isOwner = true
+				}
 			}
 			const model = {
 				errors: errors,
-				account: account
+				account: account,
+				csrfToken:request.csrfToken
 			}
 			//console.log("isPublic: ", account)
 			response.render("accounts-show-one.hbs", model)
 		})
-		
+
 	})
 
 	router.post("/privacy", function(request, response){
+		console.log("testInnan", request.session.accountId)
 		accountManager.switchPrivacy(request.session.accountId, function(errors, result){
-			console.log("test")
-			response.redirect('back')
+			console.log("test", request.session.accountId)
+			response.redirect("back")
 		})
 	})
 
 
-	// router.use(function(request, response, next){
-	// 	response.setHeader("Access-Control-Allow-Origin", "*")
-	// 	response.setHeader("Access-Control-Allow-Methods", "*")
-	// 	response.setHeader("Access-Control-Allow-Headers", "*")
-	// 	response.setHeader("Access-Control-Expose-Headers", "*")
-	// 	response.setHeader('Access-Control-Allow-Credentials', true);
-	// 	next()
-	// })
+
+
 
 	return router
 }

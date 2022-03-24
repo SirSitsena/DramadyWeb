@@ -92,26 +92,34 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 				if(errors.length > 0){
 					callback(errors, null)
 				} else {
-					let accountId = account.dataValues.id
-					if(account.dataValues.isPublic == true){
-						favouritesRepository.getUsersFavourites(accountId, function(errors, favourites){
-							if(errors.length > 0){
-								callback(errors, account)
-							} else {
-								watchlistRepository.getUsersWatchlist(accountId, function(errors, watchlist){
-									if(errors.length > 0){
-										callback(errors, account)
-									} else {
-										account.watchlist = watchlist
-										account.favourites = favourites
-										callback([], account)
-									}
-								})
-							}
-						})
+					console.log(account)
+					if (account != null){
+						let accountId = account.dataValues.id
+						if(account.dataValues.isPublic == true){
+							favouritesRepository.getUsersFavourites(accountId, function(errors, favourites){
+								if(errors.length > 0){
+									callback(errors, account)
+								} else {
+									watchlistRepository.getUsersWatchlist(accountId, function(errors, watchlist){
+										if(errors.length > 0){
+											callback(errors, account)
+										} else {
+											account.watchlist = watchlist
+											account.favourites = favourites
+											callback([], account)
+										}
+									})
+								}
+							})
+						} else {
+							callback([], account)
+						}
+
 					} else {
-						callback([], account)
+						callback(["databaseError"], null)
 					}
+
+
 				}
 			})
 		}

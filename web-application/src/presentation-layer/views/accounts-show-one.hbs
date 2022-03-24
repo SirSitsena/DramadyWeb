@@ -11,25 +11,24 @@
 {{else}}
 	
 	{{#if account}}
-	<h1 style="color: white;">{{account.dataValues.username}}</h1>
+	<h1 style="color: white;">Account: {{account.dataValues.username}}</h1>
 		{{#if account.isOwner}}
 			{{#if account.dataValues.isPublic}}
-			<!--
-				<form action="/accounts/sign-in" method="POST" class="sign-up">
-            Username: <input type="text" name="username" class="input" style="margin-bottom: 15px;"><br>
-            Password: <input type="password" name="password" class="input"><br>
-            <input type="submit" value="login!" class="button sign-up-button">
-        </form>
-				-->
-				<form action="/accounts/privacy" method="POST">
-					<input type="submit" value="Make private" class="button">
-				</form>
+
+                <h1 style="color: white">Are you sure you want to switch your privacy setting?</h1>
+                <form method="POST" action="/accounts/privacy" style="display:inline-block;">
+                    <input type="hidden" name="refUrl" value="{{ref}}">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                    <button type="submit" class="button is-primary">Make private</button>
+                </form>
 			{{else}}
-				<form action="/accounts/privacy" method="POST">
-					<input type="submit" value="Make public" class="button">
-				</form>
+                <h1 style="color: white">Are you sure you want to switch your privacy setting?</h1>
+                <form method="POST" action="/accounts/privacy" style="display:inline-block;">
+                    <input type="hidden" name="refUrl" value="{{ref}}">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                    <button type="submit" class="button is-primary">Make Public</button>
+                </form>
 			{{/if}}
-			 <!-- create pop up -->
 		{{/if}}
 		{{#if account.favourites.length}}
 			{{#if account.watchlist.length}}

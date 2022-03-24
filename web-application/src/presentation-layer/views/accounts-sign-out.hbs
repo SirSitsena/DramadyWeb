@@ -19,4 +19,13 @@
         </script>
     {{/if}}
 {{/if}}
-<p>SEE YOU SOON!</p>
+
+{{#if accountId}}
+    <h1 style="color: white">Are you sure you want to logout?</h1>
+    <form method="POST" action="/accounts/sign-out" style="display:inline-block;">
+        <input type="hidden" name="refUrl" value="{{ref}}">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <button type="submit" class="button is-primary">Yes</button>
+    </form>
+    <a class="button is-primary" href="/">No</a>
+{{/if}}
