@@ -32,7 +32,6 @@ body{
 }
 
 #entire-page{
-	max-width: 60vw;
 	margin: 0 auto;
 	background: rgba(0,0,0,0.5);
 	border-radius: 1rem;

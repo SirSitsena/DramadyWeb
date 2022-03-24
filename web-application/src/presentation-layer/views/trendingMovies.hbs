@@ -68,13 +68,13 @@
 
                                 {{#if this.isFavourited}}
                                     <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{dataValues.id}}" style="color: inherit;">
+                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
                                                 <i class="fas fa-solid fa-star"></i>
                                             </a>
                                         </span>
                                 {{else}}
                                     <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{dataValues.id}}" style="color: inherit;">
+                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
                                                 <i class="fas fa-thin fa-star"></i>
                                             </a>
                                         </span>
@@ -82,13 +82,13 @@
 
                                 {{#if this.isWatchlisted}}
                                     <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}" style="color: inherit;">
+                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
                                                 <i class="fas fa-solid fa-eye"></i>
                                             </a>
                                         </span>
                                 {{else}}
                                     <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}" style="color: inherit;">
+                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
                                                 <i class="fas fa-solid fa-eye"></i>
                                             </a>
                                         </span>
