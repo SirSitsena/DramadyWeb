@@ -14,7 +14,7 @@ module.exports = function({apiRepository, favouritesRepository, watchlistReposit
 						const promises = []
 						const movs = []
                         console.log(movies)
-						for(let mov of movies){
+						for(let mov of result.results){
 							promises.push( new Promise(function(resolve, reject ) {
 								favouritesRepository.checkIfFavourited(accountId, mov.id, function(error, result) {
 									if(error.length > 0){
@@ -40,11 +40,11 @@ module.exports = function({apiRepository, favouritesRepository, watchlistReposit
 								})
 							}))
 						}
-						Promise.all(promises).then((result) => {
-							callback([], movies)
+						Promise.all(promises).then((res) => {
+							callback([], result)
 						})
 					} else {
-						callback([], movies)
+						callback([], result)
 					}
 
                     //callback([], results)

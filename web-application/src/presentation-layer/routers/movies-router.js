@@ -92,7 +92,7 @@ module.exports = function({movieManager, apiManager}){
 		
 		const accountId = request.session.accountId
 
-		apiManager.getSearchMovieByTitle(accountId, keywords, function(error, movies) {
+		apiManager.getSearchMovieByTitle(accountId, keywords, function(error, result) {
 			//IMPROVE ERROR HANDLING
 
 			if(error.length > 0){
@@ -100,7 +100,7 @@ module.exports = function({movieManager, apiManager}){
 			} else {
 				//console.log(results)
 				const model = {
-					movies: movies
+					movies: result.results
 				}
 				response.render('home.hbs', model)
 			}
