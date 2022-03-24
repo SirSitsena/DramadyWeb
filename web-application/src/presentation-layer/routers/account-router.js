@@ -121,9 +121,7 @@ module.exports = function({accountManager}){
 	})
 
 	router.post("/privacy", function(request, response){
-		console.log("testInnan", request.session.accountId)
 		accountManager.switchPrivacy(request.session.accountId, function(errors, result){
-			console.log("test", request.session.accountId)
 			response.redirect("back")
 		})
 	})

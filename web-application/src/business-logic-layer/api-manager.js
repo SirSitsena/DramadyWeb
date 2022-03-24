@@ -2,7 +2,7 @@
 module.exports = function({apiRepository, favouritesRepository, watchlistRepository}){
     return {
 
-        getSearchMovieByTitle:  function(accountId, keywords, callback){
+        getSearchMovieByTitle:  function(keywords, callback){
             const acceptableKeywords = encodeURIComponent(keywords.trim())
             apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, result){
                 if(error.length > 0){
