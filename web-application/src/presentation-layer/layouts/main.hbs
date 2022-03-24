@@ -47,7 +47,8 @@
 
 						<div class="navbar-dropdown">
 							<a class="navbar-item" href="/accounts">Accounts</a>
-							<a class="navbar-item" href="/spa/dramady.html">SPA</a>
+<!--							<a class="navbar-item" href="/spa/dramady.html">SPA</a>-->
+							<a class="navbar-item" href="http://localhost:8080">SPA</a>
 						</div>
                 	</div>
 					<div class="navbar-item">
@@ -55,6 +56,7 @@
 							{{#if session.accountId}}
 							<form method="POST" action="/accounts/sign-out" style="display:inline-block;">
 								<input type="hidden" name="refUrl" value="{{ref}}">
+
 								<button type="submit" class="button is-primary">Sign out</button>
 							</form>
 							{{else}}

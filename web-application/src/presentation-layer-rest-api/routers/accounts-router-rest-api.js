@@ -4,26 +4,10 @@ const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const secret = "uasnbdiunasiuduianisudnianiusdnpwioperjwer"
 
-// const cors = require('cors');
 
 module.exports = function({accountManager}) {
     const router = express.Router()
 
-    // router.use(function(request, response, next){
-    //     // response.setHeader("Access-Control-Allow-Origin", "http://localhost:8080")
-    //     response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    //
-    //     // Request methods you wish to allow
-    //     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    //
-    //     // Request headers you wish to allow
-    //     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    //
-    //     // Set to true if you need the website to include cookies in the requests sent
-    //     // to the API (e.g. in case you use sessions)
-    //     response.setHeader('Access-Control-Allow-Credentials', true);
-    //     next()
-    // })
 
     router.get('/', function(request, response){
         console.log("test")
@@ -34,8 +18,6 @@ module.exports = function({accountManager}) {
         extended: false,
     }))
     router.use(cookieParser())
-
-    // router.use(cors())
 
 
     router.post('/sign-up', function(request, response) {
@@ -86,29 +68,17 @@ module.exports = function({accountManager}) {
                         if(error){
                             //ERROR
                         } else {
-                            // // Website you wish to allow to connect
-                            // response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-                            //
-                            // // Request methods you wish to allow
-                            // response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-                            //
-                            // // Request headers you wish to allow
-                            // response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-                            //
-                            // // Set to true if you need the website to include cookies in the requests sent
-                            // // to the API (e.g. in case you use sessions)
-                            // response.setHeader('Access-Control-Allow-Credentials', true);
                             response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true, accountId: accountId})
                         }
                     })
                 } else {
-                    // SEND CORRECT RESPONE ACCORDING TO AUTH2.0
+                    // SEND CORRECT RESPONSE ACCORDING TO AUTH2.0
                     response.status(400).end()
                 }
             })
         } else {
             //grant type wrong
-            // SEND CORRECT RESPONE ACCORDING TO AUTH2.0
+            // SEND CORRECT RESPONSE ACCORDING TO AUTH2.0
             console.log("grant")
             response.status(400).json({
                 error: "invalid_grant"

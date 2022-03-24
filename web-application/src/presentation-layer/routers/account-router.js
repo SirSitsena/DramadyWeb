@@ -1,5 +1,10 @@
-const express = require('express')
-const bcrypt = require('bcrypt')
+const express = require('express');
+
+var csrf = require('csurf');
+
+var csrfProtection = csrf();
+
+
 
 module.exports = function({accountManager}){
 	const router = express.Router()
@@ -8,7 +13,7 @@ module.exports = function({accountManager}){
 		extended: false
 	}))
 
-
+	router.use(csrfProtection);
 	/*
 
 	Every user is identified by a user id. (userId)
@@ -17,7 +22,7 @@ module.exports = function({accountManager}){
 
 	// Show form when signing up
 	router.get("/sign-up", function(request, response){
-		response.render("accounts-sign-up.hbs")
+		response.render("accounts-sign-up.hbs", {csrfToken:request.csrfToken})
 	})
 	//What to do when form is POSTED
 	router.post('/sign-up', function(request, response){
@@ -31,14 +36,14 @@ module.exports = function({accountManager}){
 				errors: errors,
 				accountId: accountId
 			}
-			response.render('accounts-sign-up.hbs', model) 
+			response.render('accounts-sign-up.hbs', model)
 		})
 	})
 
 
 	// Show the form of signing in:
 	router.get("/sign-in", function(request, response){
-		response.render("accounts-sign-in.hbs")
+		response.render("accounts-sign-in.hbs", {csrfToken:request.csrfToken} )
 	})
 	// Post the form.
 	router.post("/sign-in", function(request, response) {
@@ -57,9 +62,7 @@ module.exports = function({accountManager}){
 				message: message
 			}
 			response.render("accounts-sign-in.hbs", model)
-			// response.setHeader("Access-Control-Allow-Origin", "*")
 		})
-		// response.setHeader("Access-Control-Allow-Origin", "*")
 	})
 
 	//Signing out of an account
@@ -72,6 +75,8 @@ module.exports = function({accountManager}){
 			response.render('accounts-sign-out.hbs', model)
 		})
 	})
+
+
 
 	router.get("/", function(request, response){
 		accountManager.getAllAccounts(function(errors, accounts){
@@ -96,16 +101,6 @@ module.exports = function({accountManager}){
 		})
 		
 	})
-
-
-	// router.use(function(request, response, next){
-	// 	response.setHeader("Access-Control-Allow-Origin", "*")
-	// 	response.setHeader("Access-Control-Allow-Methods", "*")
-	// 	response.setHeader("Access-Control-Allow-Headers", "*")
-	// 	response.setHeader("Access-Control-Expose-Headers", "*")
-	// 	response.setHeader('Access-Control-Allow-Credentials', true);
-	// 	next()
-	// })
 
 	return router
 }
