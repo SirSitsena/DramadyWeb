@@ -46,14 +46,14 @@
 						</a>
 
 						<div class="navbar-dropdown">
-							<a class="navbar-item" href="/accounts">Accounts</a>
 							<a class="navbar-item" href="http://localhost:8080">SPA</a>
 						</div>
                 	</div>
 					<div class="navbar-item">
 						<div class="buttons">
 							{{#if session.accountId}}
-                                <a class="button is-primary" href="/accounts/sign-out">Sign out</a>
+								<a class="button is-primary" href="/accounts/{{session.username}}">My account</a>
+                                <a class="button is-dark" href="/accounts/sign-out">Sign out</a>
 							{{else}}
 								<a class="button is-primary" href="/accounts/sign-up">Sign up</a>
 								<a class="button is-dark" href="/accounts/sign-in">Sign in</a>
