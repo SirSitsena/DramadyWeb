@@ -54,3 +54,35 @@ main{
 	padding: 1rem 1.5rem;
 }
 
+.sign-up {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 50%;
+}
+
+.sign-up-button {
+	position: relative;
+	left: 50%;
+	transform:translateX(-50%);
+	margin-bottom: 5%;
+	margin-top: 5%;
+}
+
+.search-container {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.search-input {
+	width: 50%;
+}
+
+.mr-bottom {
+	margin-bottom: 15px;
+}
+
+.content ul {
+	margin-right: 2em;
+}

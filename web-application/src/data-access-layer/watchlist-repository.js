@@ -4,12 +4,12 @@ module.exports = function({db, models}) {
     return {
         /* ************************* WATCHLIST ************************** */
 
-        getUsersWatchlist: function(userId, callback){
+        getUsersWatchlist: function(accountId, callback){
 
             models.UserWatchlist.findAll({
                 where: {
                     userId: {
-                        [Op.eq]: userId
+                        [Op.eq]: accountId
                     }
                 }
             }).then(function(watchlist){

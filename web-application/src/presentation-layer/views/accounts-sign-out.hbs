@@ -1,13 +1,17 @@
 {{#if errors.length}}
-    <p>An issue appeared: </p>
-    <ul>
-        {{#each errors}}
-            <li>{{this}}</li> 
-        {{/each}}
-    </ul>
+    <div class="notification is-danger">
+        <p><strong>An issue appeared: </strong></p>
+        <ul>
+            {{#each errors}}
+                <li>{{this}}</li> 
+            {{/each}}
+        </ul>
+    </div>
 {{else}}
     {{#if message}}
-        <h2>{{message}}</h2>
+        <div class="notification is-dark mr-bottom">
+            <h2>{{message}}</h2>
+        </div>
         <script>
             setTimeout(function(){
                 window.location = '/'

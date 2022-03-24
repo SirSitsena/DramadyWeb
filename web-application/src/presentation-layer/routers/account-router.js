@@ -50,7 +50,6 @@ module.exports = function({accountManager}){
 		let account = {}
 		account.username = request.body.username
 		account.password = request.body.password
-		console.log("received request")
 		accountManager.signIn(account, function(errors, accountId) {
 			var message
 			if(accountId != null){
@@ -93,14 +92,35 @@ module.exports = function({accountManager}){
 		const username = request.params.username
 		
 		accountManager.getAccountByUsername(username, function(errors, account){
+			if(account.dataValues.id == request.session.accountId){
+				account.isOwner = true
+			}
 			const model = {
 				errors: errors,
 				account: account
 			}
+			//console.log("isPublic: ", account)
 			response.render("accounts-show-one.hbs", model)
 		})
 		
 	})
+
+	router.post("/privacy", function(request, response){
+		accountManager.switchPrivacy(request.session.accountId, function(errors, result){
+			console.log("test")
+			response.redirect('back')
+		})
+	})
+
+
+	// router.use(function(request, response, next){
+	// 	response.setHeader("Access-Control-Allow-Origin", "*")
+	// 	response.setHeader("Access-Control-Allow-Methods", "*")
+	// 	response.setHeader("Access-Control-Allow-Headers", "*")
+	// 	response.setHeader("Access-Control-Expose-Headers", "*")
+	// 	response.setHeader('Access-Control-Allow-Credentials', true);
+	// 	next()
+	// })
 
 	return router
 }

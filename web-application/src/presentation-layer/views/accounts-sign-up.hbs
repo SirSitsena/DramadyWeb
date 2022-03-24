@@ -1,21 +1,24 @@
 {{#if errors.length}}
-    <p>An issue appeared: </p>
-    <ul>
-        {{#each errors}}
-            <li>{{this}}</li> 
-        {{/each}}
-    </ul>
+    <div class="notification is-danger">
+        <p><strong>An issue appeared: </strong></p>
+        <ul>
+            {{#each errors}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
 {{else}}
-    {{#if accountId.length}}
-        <h2>User registered.</h2>
+    {{#if accountId}}
+        <div class="notification is-dark mr-bottom">
+            <h2>Account registered.</h2>
+        </div>
     {{else}}
         <h2>Sign up here:</h2>
-        <form action="/accounts/sign-up" method="POST">
-            Username: <input type="text" name="username"><br>
-            FullName: <input type="text" name="fullname"><br>
-            Password: <input type="password" name="password"><br>
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            <input type="submit" value="Register!">
+        <form action="/accounts/sign-up" method="POST" class="sign-up">
+            Username: <input type="text" name="username" class="input" style="margin-bottom: 15px;">
+            <br>
+            Password: <input type="password" name="password" class="input"><br>
+            <input type="submit" value="Register!" class="button sign-up-button">
         </form>
     {{/if}}
 {{/if}}

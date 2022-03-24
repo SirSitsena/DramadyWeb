@@ -1,15 +1,53 @@
 
-module.exports = function({apiRepository}){
+module.exports = function({apiRepository, favouritesRepository, watchlistRepository}){
     return {
 
-        getSearchMovieByTitle:  function(keywords, callback){
+        getSearchMovieByTitle:  function(accountId, keywords, callback){
             const acceptableKeywords = encodeURIComponent(keywords.trim())
-            apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, results){
+            apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, result){
                 if(error.length > 0){
                     console.log(error)
                     callback(['There is a problem with the API we are using'], null)
                 } else {
-                    callback([], results)
+                    const movies = result.results
+                    if(accountId != null){
+						const promises = []
+						const movs = []
+                        console.log(movies)
+						for(let mov of movies){
+							promises.push( new Promise(function(resolve, reject ) {
+								favouritesRepository.checkIfFavourited(accountId, mov.id, function(error, result) {
+									if(error.length > 0){
+										reject(error)
+									} else {
+										if(result.length > 0){
+											mov.isFavourited = true
+										}
+										resolve()
+									}
+								})
+							}))
+							promises.push( new Promise(function(resolve, reject ) {
+								watchlistRepository.checkIfWatchlisted(accountId, mov.id, function(error, result) {
+									if(error.length > 0){
+										reject(error)
+									} else {
+										if(result.length > 0){
+											mov.isWatchlisted = true
+										}
+										resolve()
+									}
+								})
+							}))
+						}
+						Promise.all(promises).then((result) => {
+							callback([], movies)
+						})
+					} else {
+						callback([], movies)
+					}
+
+                    //callback([], results)
                     //console.log(results)
                 }
             })
