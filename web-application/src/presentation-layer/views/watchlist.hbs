@@ -1,5 +1,5 @@
 <div class="content" style="color:white;">
-<h1 style="color:white;">Watchlist</h1>
+<h1 style="color:white;">Watchlist <i class="fa fa-eye" aria-hidden="true"></i></h1>
 {{#if errors.length}}
 	<div class="notification is-danger">
         <p><strong>An issue appeared: </strong></p>
@@ -21,8 +21,8 @@
 			{{/each}}
 		</ul>
 	{{else}}
-		<div class="notification is-dark mr-bottom">
-			<p>No movies on watchlist yet.</p>
+        <div class="box">
+            <p>Your watchlist seems to be empty...</p>
         </div>
 	{{/if}}
 {{/if}}

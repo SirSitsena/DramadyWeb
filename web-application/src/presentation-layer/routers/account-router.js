@@ -56,6 +56,7 @@ module.exports = function({accountManager}){
 			if(accountId != null){
 				message = "Logged in"
 				request.session.accountId = accountId
+				request.session.username = account.username
 			}
 			const model = {
 				errors: errors,
@@ -125,10 +126,6 @@ module.exports = function({accountManager}){
 			response.redirect("back")
 		})
 	})
-
-
-
-
 
 	return router
 }
