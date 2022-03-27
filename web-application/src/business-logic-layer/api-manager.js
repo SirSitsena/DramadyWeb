@@ -6,14 +6,12 @@ module.exports = function({apiRepository, favouritesRepository, watchlistReposit
             const acceptableKeywords = encodeURIComponent(keywords.trim())
             apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, result){
                 if(error.length > 0){
-                    console.log(error)
                     callback(['There is a problem with the API we are using'], null)
                 } else {
                     const movies = result.results
                     if(accountId != null){
 						const promises = []
 						const movs = []
-                        console.log(movies)
 						for(let mov of result.results){
 							promises.push( new Promise(function(resolve, reject ) {
 								favouritesRepository.checkIfFavourited(accountId, mov.id, function(error, result) {
@@ -46,31 +44,17 @@ module.exports = function({apiRepository, favouritesRepository, watchlistReposit
 					} else {
 						callback([], result)
 					}
-
-                    //callback([], results)
-                    //console.log(results)
                 }
             })
         },
 
         // Get movie by its imdb id:
         getMovieByTitleId: function(titleId, callback){
-            //Add error handling for titleId null
-        	apiRepository.getMovieByTitleId(titleId, callback)
+			if(titleId != null){
+				apiRepository.getMovieByTitleId(titleId, callback)
+			} else {
+				callback(["Invalid titleId"], null)
+			}
         }
     }
 }
-
-/*
-exports.getMostPopularMovies = function(callback) {
-    request('https://imdb-api.com/en/API/MostPopularMovies/'+API_KEY_1, { json: true }, (err, res, body) => {
-        if (err || body.errorMessage != "") {
-            callback(err, null)
-        } else {
-            //console.log(body.items)
-            callback(null, body.items)
-        }
-        // console.log(body.url);
-        // console.log(body.explanation);
-    });
-}*/

@@ -3,7 +3,7 @@ module.exports = function({db, models}){
         getUsersFavourites: function(accountId, callback){
             models.UserFavourites.findAll({
                 where: {
-                    userId: accountId
+                    accountId: accountId
                 }
             }).then(function(favourites){
                 callback([], favourites)
@@ -17,10 +17,10 @@ module.exports = function({db, models}){
 
             SUCCESS: RETURNS ID OF FAVOURITE.
         */
-        createUserFavourites: function(userId, movieId, movieTitle, callback) {
+        createUserFavourites: function(accountId, titleId, movieTitle, callback) {
             models.UserFavourites.create({
-                userId: userId,
-                movieId: movieId,
+                accountId: accountId,
+                titleId: titleId,
                 movieTitle: movieTitle
             }).then(function(result){
                 callback([], result.id)
@@ -34,11 +34,11 @@ module.exports = function({db, models}){
 
             SUCCESS: RETURNS (1) DELETED ROW
         */
-        deleteUserFavourite: function(userId, movieId, callback) {
+        deleteUserFavourite: function(accountId, titleId, callback) {
             models.UserFavourites.destroy({
                 where: {
-                    userId: userId,
-                    movieId: movieId
+                    accountId: accountId,
+                    titleId: titleId
                 }
             }).then(function(result) {
                 callback([], result)
@@ -53,11 +53,11 @@ module.exports = function({db, models}){
             SUCCESS: Returns rows, if length 0 no favourites, if length > 0 it is favourited.
         */
 
-        checkIfFavourited: function(userId, titleId, callback){
+        checkIfFavourited: function(accountId, titleId, callback){
             models.UserFavourites.findAll({
                 where: {
-                    userId: userId,
-                    movieId: titleId
+                    accountId: accountId,
+                    titleId: titleId
                 }
             }).then(function(favourites){
                 callback([], favourites)

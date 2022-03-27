@@ -21,25 +21,6 @@ module.exports = function({}){
         isPublic: Sequelize.BOOLEAN
     })
 
-    models.Movies = sequelize.define('movies', {
-        titleId: Sequelize.TEXT,
-        title: Sequelize.TEXT,
-        fullTitle: Sequelize.TEXT,
-        year: Sequelize.TEXT,
-        image: Sequelize.TEXT,
-        releaseDate: Sequelize.TEXT,
-        runtimeStr: Sequelize.TEXT,
-        plot: Sequelize.TEXT,
-    })
-
-    models.Comments = sequelize.define('comments', {
-        content: Sequelize.TEXT,
-        isPublic: Sequelize.BOOLEAN,
-    }, {
-        freezeTableName: true
-    })
-    models.Comments.belongsTo(models.Accounts, { foreignKey: "userId"})
-    models.Comments.belongsTo(models.Movies, { foreignKe: "userId"})
 
     models.PublicReviews = sequelize.define('publicReviews', {
         content: Sequelize.TEXT,
@@ -47,23 +28,23 @@ module.exports = function({}){
     }, {
         freezeTableName: true
     })
-    models.PublicReviews.belongsTo(models.Accounts, { foreignKey: "userId"})
+    models.PublicReviews.belongsTo(models.Accounts, { foreignKey: "accountId"})
 
     models.UserFavourites = sequelize.define('UserFavourites', {
-        movieId: Sequelize.TEXT,
+        titleId: Sequelize.TEXT,
         movieTitle: Sequelize.TEXT
     }, {
         freezeTableName: true
     })
-    models.UserFavourites.belongsTo(models.Accounts, { foreignKey: "userId"})
+    models.UserFavourites.belongsTo(models.Accounts, { foreignKey: "accountId"})
 
     models.UserWatchlist = sequelize.define('UserWatchlist', {
-        movieId: Sequelize.TEXT,
+        titleId: Sequelize.TEXT,
         movieTitle: Sequelize.TEXT
     }, {
         freezeTableName: true
     })
-    models.UserWatchlist.belongsTo(models.Accounts, { foreignKey: "userId"})
+    models.UserWatchlist.belongsTo(models.Accounts, { foreignKey: "accountId"})
     
     models.Top250Movies = sequelize.define('top250Movies', {
         rank: Sequelize.INTEGER,

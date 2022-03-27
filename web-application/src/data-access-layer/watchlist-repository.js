@@ -8,13 +8,15 @@ module.exports = function({db, models}) {
 
             models.UserWatchlist.findAll({
                 where: {
-                    userId: {
+                    accountId: {
                         [Op.eq]: accountId
                     }
                 }
             }).then(function(watchlist){
+                console.log(watchlist)
                 callback([], watchlist)
             }).catch(function(error){
+                console.log(error)
                 callback(['databaseError'], null)
             })
         },
@@ -24,10 +26,10 @@ module.exports = function({db, models}) {
 
             SUCCESS: RETURNS ID OF watchlist item.
         */
-        createUserWatchlist: function(userId, movieId, movieTitle, callback) {
+        createUserWatchlist: function(accountId, titleId, movieTitle, callback) {
             models.UserWatchlist.create({
-                userId: userId,
-                movieId: movieId,
+                accountId: accountId,
+                titleId: titleId,
                 movieTitle: movieTitle
             })
             .then(function(watchlistItem){
@@ -43,11 +45,11 @@ module.exports = function({db, models}) {
 
             SUCCESS: RETURNS (1) DELETED ROW
         */
-        deleteUserWatchlist: function(userId, movieId, callback) {
+        deleteUserWatchlist: function(accountId, titleId, callback) {
             models.UserWatchlist.destroy({
                 where: {
-                    userId: userId,
-                    movieId: movieId
+                    accountId: accountId,
+                    titleId: titleId
                 }
             }).then(function(){
                 callback([], null)
@@ -56,11 +58,11 @@ module.exports = function({db, models}) {
             })
         },
 
-        checkIfWatchlisted: function(userId, titleId, callback){
+        checkIfWatchlisted: function(accountId, titleId, callback){
             models.UserWatchlist.findAll({
                 where: {
-                    userId: userId,
-                    movieId: titleId
+                    accountId: accountId,
+                    titleId: titleId
                 }
             }).then(function(results){
                 callback([], results)

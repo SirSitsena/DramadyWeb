@@ -9,10 +9,6 @@ module.exports = function({movieManager}){
     router.use(express.json())
     router.use(cookieParser())
 
-    router.get('/', function(request, response){
-        console.log("test")
-    })
-
     router.get('/all', function(request, response){
         movieManager.getAllPublicReviews(function(errors, results){
             if(errors.length > 0){
@@ -26,24 +22,16 @@ module.exports = function({movieManager}){
 
     router.post('/create', function(request, response){
         const token = request.cookies.token
-        console.log(token)
-        console.log('++++++')
-        console.log(request.cookies)
-        console.log('++++++')
         if(token != null) {
             jwt.verify(token, secret, function(error, payload){
                 if(error){
-                    console.log(error.name)
                     response.status(401).end()
                 } else {
-                    //console.log(payload)
                     if(request.body.review != null && request.body.review.length > 0 && request.body.titleId.length > 0 && request.body.titleId != null){
                         const review = request.body.review
                         const titleId = request.body.titleId
-                        //console.log("payload account id:" +payload.accountId)
                         movieManager.createPublicReview(payload.accountId, review, titleId, function(error, results){
                             if(error.length > 0){
-                                console.log(error)
                                 response.status(404).end()
                             } else {
                                 response.setHeader("Location", "/api/reviews/"+results)
@@ -67,19 +55,16 @@ module.exports = function({movieManager}){
         if(token != null){
             jwt.verify(token, secret, function(error, payload){
                 if(error){
-                    console.log(error.name)
                     response.status(401).end()
                 } else {
-                    // if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){ //&& request.body.accountId){
                     if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null && request.body.accountId){
                         const reviewId = request.body.reviewId
                         const review = request.body.review
                         const titleId = request.body.titleId
                         movieManager.updatePublicReview(reviewId, payload.accountId, review, titleId, function(error, result) {
                             if(error.length > 0){
-                                console.log(error)
+                                response.status(500).end()
                             } else {
-                                //Another code?
                                 response.status(200).end()
                             }
                         })
@@ -92,26 +77,22 @@ module.exports = function({movieManager}){
             })
         } else {
             response.status(401).end()
-        }
-        
+        }  
     })
-    //-----------------------------------DELETE ALPHA
 
     router.post('/delete/:reviewId', function(request, response){
         const token = request.cookies.token
         if(token != null){
             jwt.verify(token, secret, function(error, payload){
                 if(error){
-                    console.log(error.name)
                     response.status(401).end()
                 } else {
                     if(request.body.reviewId != null && request.body.accountId){
                         const reviewId = request.body.reviewId
                         movieManager.deletePublicReview(reviewId, payload.accountId, function(error, result) {
                             if(error.length > 0){
-                                console.log(error)
+                                response.status(500).end()
                             } else {
-                                //Another code?
                                 response.status(200).end()
                             }
                         })
@@ -127,9 +108,6 @@ module.exports = function({movieManager}){
         }
 
     })
-
-
-    //-------------------------------------DELETE FUNC
 
     router.get('/:id', function(request, response){
         const reviewId = request.params.id
@@ -156,8 +134,6 @@ module.exports = function({movieManager}){
             }
         })
     })
-
-    //Create delete route
     
     return router
 }

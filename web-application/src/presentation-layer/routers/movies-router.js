@@ -16,6 +16,7 @@ module.exports = function({movieManager, apiManager}){
 			}
 		response.render("top250.hbs", model)
 		})
+		
 	})
 	
 	router.get("/trendingMovies", function(request, response){
@@ -32,7 +33,6 @@ module.exports = function({movieManager, apiManager}){
 
 
 	router.get('/favourites', function(request, response){
-		//Check if logged in
 		const accountId = request.session.accountId
 		movieManager.viewFavourites(accountId, function(errors, movies){
 			const model = {
@@ -46,17 +46,23 @@ module.exports = function({movieManager, apiManager}){
 	router.get('/favourite/:titleId/:movieTitle', function(request, response){
 		const titleId = request.params.titleId
 		const movieTitle = request.params.movieTitle
-		movieManager.favourite(request, titleId, movieTitle, function(errors, results){
-			if(errors.length == 0){
-				response.redirect('back')
-			} else {
-				//ERROR
-			}
-		})
+		const accountId = request.session.accountId
+		if(accountId != null){
+			movieManager.favourite(accountId, titleId, movieTitle, function(errors, results){
+				if(errors.length == 0){
+					response.redirect('back')
+				} else {
+					response.status(500).json({
+						error: "couldn't add to favourites"
+					})
+				}
+			})
+		} else {
+			response.status(401).end()
+		}
 	})
 
 	router.get('/watchlist', function(request, response){
-		//Check if logged in
 		const accountId = request.session.accountId
 		movieManager.viewWatchlist(accountId, function(errors, movies){
 			const model = {
@@ -70,17 +76,20 @@ module.exports = function({movieManager, apiManager}){
 	router.get('/watchlist/:titleId/:movieTitle', function(request, response){
 		const titleId = request.params.titleId
 		const movieTitle = request.params.movieTitle
-		console.log("test")
-		movieManager.watchlist(request, titleId, movieTitle, function(errors, results){
-			if(errors.length == 0 || errors == null){
-				console.log("test")
-				response.redirect('back')
-			} else {
-				console.log("error: ", errors)
-				//ERROR
-				//console.log(errors)
-			}
-		})
+		const accountId = request.session.accountId
+		if(accountId != null){
+			movieManager.watchlist(accountId, titleId, movieTitle, function(errors, results){
+				if(errors.length == 0 || errors == null){
+					response.redirect('back')
+				} else {
+					response.status(500).json({
+						error: "couldn't add to watchlist"
+					})
+				}
+			})
+		} else {
+			response.status(401).end()
+		}
 	})
 	
 	router.get('/search', function(request, response){
@@ -93,18 +102,58 @@ module.exports = function({movieManager, apiManager}){
 		const accountId = request.session.accountId
 
 		apiManager.getSearchMovieByTitle(accountId, keywords, function(error, result) {
-			//IMPROVE ERROR HANDLING
-
 			if(error.length > 0){
 				console.log(error)
 			} else {
-				//console.log(results)
 				const model = {
 					movies: result.results
 				}
 				response.render('home.hbs', model)
 			}
 		})
+	})
+
+	router.get('/review/create/:titleId', function(request, response){
+		if(request.session.accountId){
+			const model = {
+				titleId: titleId,
+				csrfToken: request.csrfToken
+			}
+		} else {
+			const model = {
+				errors: ["Must be logged in to view this page"]
+			}
+			response.render('review-create.hbs', model)
+		}
+	})
+
+	router.post('/review/create', function(request, response){
+		if(request.session.accountId){
+			const accountId = request.session.accountId
+			const review = request.body.review
+			const titleId = request.body.titleId
+			movieManager.createPublicReview(accountId, review, titleId, function(errors, reviewId){
+				if(errors.length > 0){
+					const model = {
+						errors: errors
+					}
+					response.render('review-create.hbs', model)
+				} else {
+					response.redirect('/')
+				}
+			})
+		} else {
+			const model = {
+				errors: ["Must be logged in to view this page"]
+			}
+			response.render('review-create.hbs', model)
+		}
+	})
+
+	router.get('/review/update/:titleId', function(request, response){
+		if(request.session.accountId){
+			
+		}
 	})
 
 	return router

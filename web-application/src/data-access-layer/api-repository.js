@@ -50,16 +50,6 @@ module.exports = function({}){
                     //console.log(body.title)
                     callback([], body)
                 }
-                /*if(err || body.errorMessage != ""){
-                    console.log(body.errorMessage, "test2")
-                    console.log("error: " +err)
-                    //console.log(body.errorMessage)
-                    callback(err, null)
-                } else {
-                    //console.log("test3")
-                    console.log("TEST: " +body.items)
-                    callback(null, body.items)
-                }  */
             })
         },
 

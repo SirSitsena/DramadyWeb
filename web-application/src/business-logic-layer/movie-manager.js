@@ -1,7 +1,3 @@
-//const movieRepository = require('../data-access-layer/movie-repository')
-// const movieValidator = require('./movie-validator')
-
-const { fips } = require("crypto")
 
 module.exports = function({movieTop250Repository, movieTrendingRepository, favouritesRepository, watchlistRepository, reviewsRepository, apiRepository}){
 	return {
@@ -14,6 +10,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 						const promises = []
 						const movs = []
 						for(let mov of movies ){
+
 							promises.push( new Promise(function(resolve, reject ) {
 								favouritesRepository.checkIfFavourited(accountId, mov.id, function(error, result) {
 									if(error.length > 0){
@@ -41,6 +38,8 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 						}
 						Promise.all(promises).then((result) => {
 							callback([], movies)
+						}).catch(function(errors){
+							callback(errors, null)
 						})
 					} else {
 						callback([], movies)
@@ -84,8 +83,10 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 						}
 						Promise.all(promises).then((result) => {
 							callback([], movies)
-						})
-					} else {
+						}).catch(function(errors){
+							console.log(errors)
+						}) 
+				} else {
 						callback([], movies)
 					}
 				}
@@ -104,25 +105,18 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 
 		},
 		
-		favourite: function(request, titleId, movieTitle, callback){
-			// TODO: Check if user logged in
-			// TODO ERROR HANDLING
-			if(request.session.accountId){
-				const accountId = request.session.accountId
+		favourite: function(accountId, titleId, movieTitle, callback){
+			if(accountId != null){
 				//Check if already favourited
 				favouritesRepository.checkIfFavourited(accountId, titleId, function(errors, results){
-					//console.log(results)
 					if(errors.length > 0){
-						//error
-						console.log(errors)
+						callback(errors, null)
 					} else {
 						if(results.length > 0){
 							// Remove from favourites
-							//console.log("already on favourites")
 							favouritesRepository.deleteUserFavourite(accountId, titleId, callback)
 						} else {
 							// Add to favourites
-							//console.log("added to favourites")
 							favouritesRepository.createUserFavourites(accountId, titleId, movieTitle, callback)
 						}
 					}
@@ -161,25 +155,17 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 				})
 
 		},
-		watchlist: function(request, titleId, movieTitle, callback){
-			// TODO: Check if user logged in
-			// TODO ERROR HANDLING	
-			if(request.session.accountId){
-				const accountId = request.session.accountId
+		watchlist: function(accountId, titleId, movieTitle, callback){
+			if(accountId != null){
 				//Check if already favourited
 				watchlistRepository.checkIfWatchlisted(accountId, titleId, function(errors, results){
-					//console.log(results)
 					if(errors.length > 0){
-						//error
-						console.log("ERROR: ", errors)
+						callback(errors, null)
 					} else {
 						if(results.length > 0){
-							// Remove from favourites
-							//console.log("already on favourites")
 							watchlistRepository.deleteUserWatchlist(accountId, titleId, callback)
 						} else {
 							// Add to favourites
-							//console.log("added to favourites")
 							watchlistRepository.createUserWatchlist(accountId, titleId, movieTitle, callback)
 						}
 					}

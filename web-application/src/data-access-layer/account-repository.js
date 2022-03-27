@@ -28,8 +28,6 @@ module.exports = function({models}){
 			}).then(function(account){
 				callback([], account)
 			}).catch(function(error){
-				
-				console.log("errors: ", error)
 				callback(['databaseError'], null)
 			})
 		},

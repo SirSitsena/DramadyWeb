@@ -15,11 +15,6 @@ module.exports = function({accountManager}){
 	}))
 
 	router.use(csrfProtection);
-	/*
-
-	Every user is identified by a user id. (userId)
-
-	*/
 
 	// Show form when signing up
 	router.get("/sign-up", function(request, response){
@@ -41,7 +36,6 @@ module.exports = function({accountManager}){
 		})
 	})
 
-
 	// Show the form of signing in:
 	router.get("/sign-in", function(request, response){
 		response.render("accounts-sign-in.hbs", {csrfToken:request.csrfToken} )
@@ -55,7 +49,10 @@ module.exports = function({accountManager}){
 			var message
 			if(accountId != null){
 				message = "Logged in"
+				
 				request.session.accountId = accountId
+				request.session.username = account.username
+				console.log(request.session.accountId, request.session.username)
 			}
 			const model = {
 				errors: errors,
@@ -85,20 +82,6 @@ module.exports = function({accountManager}){
 		response.render("accounts-sign-out.hbs", model)
 	})
 
-
-	router.get("/", function(request, response){
-		accountManager.getAllAccounts(function(errors, accounts){
-			const model = {
-				errors: errors,
-				accounts: accounts
-			}
-			console.log(model)
-			console.log("model")
-
-			response.render("accounts-list-all.hbs", model)
-		})
-	})
-
 	router.get('/:username', function(request, response){
 
 		const username = request.params.username
@@ -114,7 +97,6 @@ module.exports = function({accountManager}){
 				account: account,
 				csrfToken:request.csrfToken
 			}
-			//console.log("isPublic: ", account)
 			response.render("accounts-show-one.hbs", model)
 		})
 
@@ -126,15 +108,5 @@ module.exports = function({accountManager}){
 		})
 	})
 
-
-
-
-
 	return router
 }
-
-
-
-
-
-//module.exports = router

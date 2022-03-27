@@ -1,5 +1,3 @@
-//const accountRepository = require('../data-access-layer/account-repository')
-//const accountValidator = require('./account-validator')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
@@ -29,6 +27,7 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 				}
 			})
 		},
+	/* 				SWITCHING THE PRIVACY SETTING ON A USERS FAVOURITES AND WATCHLIST				 */
 		switchPrivacy: function(accountId, callback){
 			accountRepository.getPrivacy(accountId, function(errors, result){
 				if(errors.length > 0){
@@ -92,10 +91,10 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 				if(errors.length > 0){
 					callback(errors, null)
 				} else {
-					console.log(account)
 					if (account != null){
 						let accountId = account.dataValues.id
 						if(account.dataValues.isPublic == true){
+							// Fetch the user's favourites and watchlist.
 							favouritesRepository.getUsersFavourites(accountId, function(errors, favourites){
 								if(errors.length > 0){
 									callback(errors, account)
@@ -118,8 +117,6 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 					} else {
 						callback(["databaseError"], null)
 					}
-
-
 				}
 			})
 		}

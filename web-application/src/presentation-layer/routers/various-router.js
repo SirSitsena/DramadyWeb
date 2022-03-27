@@ -1,6 +1,4 @@
 const express = require('express')
-//const movieManager = require('../../business-logic-layer/movie-manager')
-//const imdbMovieManager = require('../../business-logic-layer/api-manager')
 
 module.exports = function({movieManager}){
 	const router = express.Router()

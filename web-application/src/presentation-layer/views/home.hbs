@@ -1,63 +1,74 @@
 <h1 class="is-size-1"><em>Welcome!</em></h1>
 <p>Here you will be able to search for movies, browse our lists of Trending and All Time Best Movies and favourite or add them to the watchlist.</p>
 
-<form id="search-page" action="/movies/search" class="search-container">
-    <input type="text" placeholder="Search.." name="keywords" class="input search-input">
-    <button type="submit"><i class="fas fa-search"></i></button>
-</form>
-{{#if movies}}
-    {{#each movies}}
+{{#if errors.length}}
+    <div class="notification is-danger">
+        <p><strong>An issue appeared: </strong></p>
+        <ul>
+            {{#each errors}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+{{else}}
+    <form id="search-page" action="/movies/search" class="search-container">
+        <input type="text" placeholder="Search.." name="keywords" class="input search-input">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+    {{#if movies}}
+        {{#each movies}}
 
-        <div class="box">
+            <div class="box">
 
-            <article class="media">
-                <div class="media-left">
-                    <figure class="image is-64x64">
-                        <img src="{{image}}" alt="movie poster" height="64">
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>{{title}}</strong>
-
-                            {{#if this.isFavourited}}
-                                <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-star"></i>
-                                            </a>
-                                        </span>
-                            {{else}}
-                                <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
-                                                <i class="fas fa-thin fa-star"></i>
-                                            </a>
-                                        </span>
-                            {{/if}}
-
-                            {{#if this.isWatchlisted}}
-                                <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-eye"></i>
-                                            </a>
-                                        </span>
-                            {{else}}
-                                <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-eye"></i>
-                                            </a>
-                                        </span>
-                            {{/if}}
-                            <br>
-
-
-                        </p>
-                        <div class="limit-text js-modal-trigger" data-target="modal-js-{{id}}">{{description}}</div>
-
+                <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-64x64">
+                            <img src="{{image}}" alt="movie poster" height="64">
+                        </figure>
                     </div>
-                </div>
-            </article>
-        </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>{{title}}</strong>
 
-    {{/each}}
+                                {{#if this.isFavourited}}
+                                    <span class="icon" style="float:right; color: #00d1b2;">
+                                                <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-star"></i>
+                                                </a>
+                                            </span>
+                                {{else}}
+                                    <span class="icon" style="float:right;">
+                                                <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
+                                                    <i class="fas fa-thin fa-star"></i>
+                                                </a>
+                                            </span>
+                                {{/if}}
+
+                                {{#if this.isWatchlisted}}
+                                    <span class="icon" style="float:right; color:#00d1b2;">
+                                                <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </span>
+                                {{else}}
+                                    <span class="icon" style="float:right;">
+                                                <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </span>
+                                {{/if}}
+                                <br>
+
+
+                            </p>
+                            <div class="limit-text js-modal-trigger" data-target="modal-js-{{id}}">{{description}}</div>
+
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+        {{/each}}
+    {{/if}}
 {{/if}}

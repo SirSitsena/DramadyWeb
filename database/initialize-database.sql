@@ -10,56 +10,24 @@ CREATE TABLE accounts (
 	CONSTRAINT usernameUnique UNIQUE (username)
 );
 
--- Create Movie table, Example of a titleId search: https://imdb-api.com/en/API/Title/k_9t0l0iej/tt1375666
--- Create Movie table, Example of a titleId search: https://imdb-api.com/en/API/Title/k_9t0l0iej/tt13560574
-
-CREATE TABLE movies (
-	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	titleId VARCHAR(50) NOT NULL,
-	title VARCHAR(255),
-	fullTitle VARCHAR(255),
-	year VARCHAR(6),
-	image VARCHAR(255),
-	releaseDate VARCHAR(30),
-	runtimeStr VARCHAR(30),
-	plot VARCHAR(5000),
-	createdAt DATE,
-	updatedAt DATE
-);
-
--- Create comments table
-CREATE TABLE comments (
-	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	content VARCHAR(500),
-	isPublic BOOLEAN DEFAULT FALSE,
-	createdAt DATE,
-	updatedAt DATE,
-	userId INT UNSIGNED,
-	CONSTRAINT fk_user
-	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId INT UNSIGNED,
-	CONSTRAINT fk_movies
-	FOREIGN KEY (movieId) REFERENCES movies(id)
-);
-
 CREATE TABLE publicReviews (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	content VARCHAR(500) NOT NULL,
 	titleId VARCHAR(50) NOT NULL,
 	createdAt DATE,
 	updatedAt DATE,
-	userId INT UNSIGNED,
+	accountId INT UNSIGNED,
 	CONSTRAINT fk_userReviews
-	FOREIGN KEY (userId) REFERENCES accounts(id)
+	FOREIGN KEY (accountId) REFERENCES accounts(id)
 );
 
 -- CREATE FAVOURITE LIST
 CREATE TABLE UserFavourites (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	userId INT UNSIGNED,
+	accountId INT UNSIGNED,
 	CONSTRAINT fk_userFavourites
-	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId VARCHAR(25),
+	FOREIGN KEY (accountId) REFERENCES accounts(id),
+	titleId VARCHAR(25),
     movieTitle VARCHAR(100),
 	createdAt DATE,
 	updatedAt DATE
@@ -69,10 +37,10 @@ CREATE TABLE UserFavourites (
 -- CREATE WATCHLIST
 CREATE TABLE UserWatchlist (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	userId INT UNSIGNED,
+	accountId INT UNSIGNED,
 	CONSTRAINT fk_userWatchlist
-	FOREIGN KEY (userId) REFERENCES accounts(id),
-	movieId VARCHAR(25),
+	FOREIGN KEY (accountId) REFERENCES accounts(id),
+	titleId VARCHAR(25),
 	movieTitle VARCHAR(100),
 	createdAt DATE,
 	updatedAt DATE
@@ -86,7 +54,7 @@ INSERT INTO accounts (username, hash, isAdministrator, isPublic) VALUES
 ('anestis', '$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE, TRUE);
 
 
-INSERT INTO publicReviews (content, titleId, userId) VALUES
+INSERT INTO publicReviews (content, titleId, accountId) VALUES
 ('TestCommentUser3','tt1877830', 3),
 ('TestCommentUser2','tt1877830', 2),
 ('TestCommentUser1','tt1877830', 1);

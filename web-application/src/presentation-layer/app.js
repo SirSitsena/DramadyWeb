@@ -14,24 +14,8 @@ let redisClient = createClient({
 })
 redisClient.connect().catch(console.error)
 
-
-
-
-//const variousRouter = require('./routers/various-router')
-//const accountRouter = require('./routers/account-router')
-//const moviesRouter = require('./routers/movies-router')
-
 module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI, models}){
 	const app = express()
-
-
-	// app.use(function(request, response, next){
-	// 	response.setHeader("Access-Control-Allow-Origin", "*")
-	// 	response.setHeader("Access-Control-Allow-Methods", "*")
-	// 	response.setHeader("Access-Control-Allow-Headers", "*")
-	// 	response.setHeader("Access-Control-Expose-Headers", "*")
-	// 	next()
-	// })
 
 	// Setup express-handlebars.
 	app.set('views', path.join(__dirname, 'views'))
@@ -62,15 +46,12 @@ module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI
 		next()
 	})
 
-
 	// Attach all routers.
 	app.use('/', variousRouter)
 	app.use('/accounts', accountRouter)
 	app.use('/movies', movieRouter)
 
 	app.use('/api', appRESTAPI)
-
-
 
 	// Start listening for incoming HTTP requests!
 	app.listen(8080, function(){

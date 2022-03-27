@@ -8,11 +8,6 @@ const secret = "uasnbdiunasiuduianisudnianiusdnpwioperjwer"
 module.exports = function({accountManager}) {
     const router = express.Router()
 
-
-    router.get('/', function(request, response){
-        console.log("test")
-    })
-
     router.use(express.json())
     router.use(express.urlencoded({
         extended: false,
@@ -23,7 +18,6 @@ module.exports = function({accountManager}) {
     router.post('/sign-up', function(request, response) {
         const account = {}
         account.username = request.body.username
-        account.fullname = request.body.fullname
         account.password = request.body.password
 
         accountManager.createAccount(account, function(errors, accountId) {
@@ -40,9 +34,9 @@ module.exports = function({accountManager}) {
                         }
                         jwt.sign(payload, secret , {expiresIn: (1000*60*60).toString()+'ms' },function(error, token) {
                             if(error){
-                                //Error
+                                response.status(500).end()
                             } else {
-                                response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true})
+                                response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true, accountId: accountId})
                             }
                         })
                     }
@@ -58,43 +52,43 @@ module.exports = function({accountManager}) {
         account.password = request.body.password
         if(grant_type == "password"){
             accountManager.signIn(account, function(errors, accountId){
-                if(accountId != null){
-                    const payload = {
-                        isLoggedIn: true,
-                        accountId: accountId
-                    }
-
-                    jwt.sign(payload, secret , {expiresIn: (1000*60*60).toString()+'ms' },function(error, token) {
-                        if(error){
-                            //ERROR
-                        } else {
-                            response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true, accountId: accountId})
-                        }
+                if(errors.length > 0){
+                    response.status(400).json({
+                        error: "error logging in"
                     })
                 } else {
-                    // SEND CORRECT RESPONSE ACCORDING TO AUTH2.0
-                    response.status(400).end()
+                    if(accountId != null){
+                        const payload = {
+                            isLoggedIn: true,
+                            accountId: accountId
+                        }
+    
+                        jwt.sign(payload, secret , {expiresIn: (1000*60*60).toString()+'ms' },function(error, token) {
+                            if(error){
+                                response.status(400).json({
+                                    error: "error logging in"
+                                })
+                            } else {
+                                response.cookie('token', token, {maxAge: 1000*60*60}).status(200).json({test:"signed in" , isLoggedIn: true, accountId: accountId})
+                            }
+                        })
+                    } else {
+                        response.status(400).json({
+                            error: "wrong password"
+                        }).end()
+                    }
                 }
             })
         } else {
-            //grant type wrong
-            // SEND CORRECT RESPONSE ACCORDING TO AUTH2.0
-            console.log("grant")
             response.status(400).json({
                 error: "invalid_grant"
             })
         }
-
     })
 
     router.post('/sign-out', function(request, response){
         response.clearCookie('token').status(200).json({message: "Signed out"})
     })
 
-
-
-
-
     return router
-
 }

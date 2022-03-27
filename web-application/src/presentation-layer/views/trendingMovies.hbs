@@ -1,5 +1,4 @@
 {{#if movies.length}}
-    <!--    <ul>-->
     {{#each movies}}
         <div class="box">
 
@@ -13,33 +12,34 @@
                     <div class="content">
                         <p>
                             <strong>{{dataValues.fullTitle}}</strong> <span>IMDB: {{dataValues.imDbRating}}</span>
+                            {{#if session.accountId}}
+                                {{#if this.isFavourited}}
+                                    <span class="icon" style="float:right; color: #00d1b2;">
+                                                <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-star"></i>
+                                                </a>
+                                            </span>
+                                {{else}}
+                                    <span class="icon" style="float:right;">
+                                                <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-thin fa-star"></i>
+                                                </a>
+                                            </span>
+                                {{/if}}
 
-                            {{#if this.isFavourited}}
-                                <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-star"></i>
-                                            </a>
-                                        </span>
-                            {{else}}
-                                <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-thin fa-star"></i>
-                                            </a>
-                                        </span>
-                            {{/if}}
-
-                            {{#if this.isWatchlisted}}
-                                <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-eye"></i>
-                                            </a>
-                                        </span>
-                            {{else}}
-                                <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-eye"></i>
-                                            </a>
-                                        </span>
+                                {{#if this.isWatchlisted}}
+                                    <span class="icon" style="float:right; color:#00d1b2;">
+                                                <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </span>
+                                {{else}}
+                                    <span class="icon" style="float:right;">
+                                                <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </span>
+                                {{/if}}
                             {{/if}}
                             <br>
 
@@ -65,34 +65,33 @@
                             <div class="media-content">
 
                                 <strong>{{dataValues.title}}</strong>
+                                    {{#if this.isFavourited}}
+                                        <span class="icon" style="float:right; color: #00d1b2;">
+                                                <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-star"></i>
+                                                </a>
+                                            </span>
+                                    {{else}}
+                                        <span class="icon" style="float:right;">
+                                                <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-thin fa-star"></i>
+                                                </a>
+                                            </span>
+                                    {{/if}}
 
-                                {{#if this.isFavourited}}
-                                    <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-star"></i>
-                                            </a>
-                                        </span>
-                                {{else}}
-                                    <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-thin fa-star"></i>
-                                            </a>
-                                        </span>
-                                {{/if}}
-
-                                {{#if this.isWatchlisted}}
-                                    <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-eye"></i>
-                                            </a>
-                                        </span>
-                                {{else}}
-                                    <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
-                                                <i class="fas fa-solid fa-eye"></i>
-                                            </a>
-                                        </span>
-                                {{/if}}
+                                    {{#if this.isWatchlisted}}
+                                        <span class="icon" style="float:right; color:#00d1b2;">
+                                                <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </span>
+                                    {{else}}
+                                        <span class="icon" style="float:right;">
+                                                <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </span>
+                                    {{/if}}
                                 <p>year: {{dataValues.year}}</p>
                                 <p>IMDB: {{dataValues.imDbRating}}</p>
                             </div>

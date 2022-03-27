@@ -101,14 +101,14 @@
         listData.forEach(function (movie) {
             var div2 = document.createElement('div');
 
-            div2.textContent = 'Title: ' + movie.movieTitle + ', movieId: ' + movie.movieId + ', userId: ' + movie.userId;
+            div2.textContent = 'Title: ' + movie.movieTitle + ', titleId: ' + movie.titleId + ', accountId: ' + movie.accountId;
             var button = document.createElement('button')
             button.innerText = "Review"
             SELECTED_MOVIE_TITLE = movie.movieTitle
-            button.setAttribute('userId', movie.userId)
-            button.setAttribute('movieId', movie.movieId)
+            button.setAttribute('accountId', movie.accountId)
+            button.setAttribute('titleId', movie.titleId)
             button.setAttribute('movieTitle', movie.movieTitle)
-            button.addEventListener("click", showReviewsByMovieId)
+            button.addEventListener("click", showReviewsBytitleId)
             button.addEventListener("click", showCreateReviewForm)
             div2.appendChild(button)
             div.appendChild(div2);
@@ -118,11 +118,12 @@
 
     }
 
-    function showReviewsByMovieId(){
-        var movieId = this.getAttribute('movieId')
-        var userId = this.getAttribute('userId')
+    function showReviewsBytitleId(){
+        var titleId = this.getAttribute('titleId')
+        var accountId = this.getAttribute('accountId')
+        console.log(accountId)
 
-        var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+movieId;
+        var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+titleId;
 
         getAjax(reviewsPath, function(data){
 
@@ -130,14 +131,14 @@
             console.log('reveiwsListData:::');
             console.log(reviewsListData);
 
-            printReviewsByMovieId(reviewsListData, userId, 'reviewsBlock' )
+            printReviewsByTitleId(reviewsListData, accountId, 'reviewsBlock' )
         });
 
     }
 
-    function refreshReviewsByMovieId(movieId, userId){
+    function refreshReviewsByTitleId(titleId, accountId){
 
-        var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+movieId;
+        var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+titleId;
 
         getAjax(reviewsPath, function(data){
             if(data){
@@ -145,13 +146,13 @@
                 console.log('reveiwsListData:::');
                 console.log(reviewsListData);
                 console.log("got the date from refresh")
-                printReviewsByMovieId(reviewsListData, userId, 'reviewsBlock' )
+                printReviewsByTitleId(reviewsListData, accountId, 'reviewsBlock' )
             }
 
         });
     }
 
-    function printReviewsByMovieId(reviewsListData, loggedUserId, blockId){
+    function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
 
 
         var container = document.getElementById('updateReviewForm');
@@ -164,16 +165,17 @@
 
         reviewsListData.forEach(function (review) {
             var div2 = document.createElement('div');
-
-            div2.textContent = 'ReviewId: ' + review.id + ', ReviewBody: ' + review.content + ', UserId: ' + review.userId;
-
-            if(review.userId == loggedUserId){
+            console.log(review)
+            div2.textContent = 'ReviewId: ' + review.id + ', ReviewBody: ' + review.content + ', accountId: ' + review.accountId;
+            console.log(review.accountId, loggedUserId
+                )
+            if(review.accountId == loggedUserId){
 
                 // Edit Button
                 var editButton = document.createElement('button')
                 editButton.innerText = "Edit"
-                editButton.setAttribute('userId', loggedUserId)
-                editButton.setAttribute('movieId', review.titleId)
+                editButton.setAttribute('accountId', loggedUserId)
+                editButton.setAttribute('titleId', review.titleId)
                 editButton.setAttribute('reviewId', review.id)
                 editButton.setAttribute('content', review.content)
                 editButton.addEventListener("click", showEditReviewForm)
@@ -182,8 +184,8 @@
                 // Delete Button
                 var deleteButton = document.createElement('button')
                 deleteButton.innerText = "Delete"
-                deleteButton.setAttribute('userId', loggedUserId)
-                deleteButton.setAttribute('movieId', review.titleId)
+                deleteButton.setAttribute('accountId', loggedUserId)
+                deleteButton.setAttribute('titleId', review.titleId)
                 deleteButton.setAttribute('reviewId', review.id)
                 deleteButton.addEventListener("click", deleteReview)
                 div2.appendChild(deleteButton)
@@ -198,8 +200,8 @@
 
     function editReview(){
 
-        var movieId = this.getAttribute('movieId')
-        var userId = this.getAttribute('userId')
+        var titleId = this.getAttribute('titleId')
+        var accountId = this.getAttribute('accountId')
         var reviewId = this.getAttribute('reviewId')
         var editReviewText = document.getElementById("editReviewText").value
 
@@ -212,7 +214,7 @@
 
         var editReviewText = document.getElementById("editReviewText").value
 
-        postAjax(editReviewPath,  {reviewId: reviewId, accountId: userId, review: editReviewText, titleId: movieId } , function(data){
+        postAjax(editReviewPath,  {reviewId: reviewId, accountId: accountId, review: editReviewText, titleId: titleId } , function(data){
             if(data){
                 console.log("Review Creation Success")
 
@@ -220,15 +222,15 @@
 
         });
         setTimeout(()=>{
-            refreshReviewsByMovieId(movieId, userId)
+            refreshReviewsByTitleId(titleId, accountId)
         }, 500)
     }
 
 
     function showCreateReviewForm() {
 
-        var movieId = this.getAttribute('movieId')
-        var userId = this.getAttribute('userId')
+        var titleId = this.getAttribute('titleId')
+        var accountId = this.getAttribute('accountId')
         var movieTitle = this.getAttribute('movieTitle')
 
         // Hide Create Review Form if not hidden
@@ -241,15 +243,15 @@
         container.classList.remove('hideMe')
 
         var div = document.createElement('div');
-        div.textContent = 'Now you can create a review for: ' + movieTitle + ', with movieId: ' + movieId;
+        div.textContent = 'Now you can create a review for: ' + movieTitle + ', with titleId: ' + titleId;
 
         var input = document.createElement('textarea')
         input.id = "reviewText"
 
         var createReviewButton = document.createElement('button');
         createReviewButton.innerText = "Create"
-        createReviewButton.setAttribute('movieId', movieId)
-        createReviewButton.setAttribute('userId', userId)
+        createReviewButton.setAttribute('titleId', titleId)
+        createReviewButton.setAttribute('accountId', accountId)
 
         createReviewButton.addEventListener('click',createReview)
 
@@ -262,8 +264,8 @@
 
     function showEditReviewForm() {
 
-        var movieId = this.getAttribute('movieId')
-        var userId = this.getAttribute('userId')
+        var titleId = this.getAttribute('titleId')
+        var accountId = this.getAttribute('accountId')
         var movieTitle = this.getAttribute('movieTitle')
         var reviewId = this.getAttribute('reviewId')
         var content = this.getAttribute('content')
@@ -276,7 +278,7 @@
         createContainer.classList.add('hideMe')
 
         var div = document.createElement('div');
-        div.textContent = 'Edit your review for: ' + SELECTED_MOVIE_TITLE + ', with movieId: ' + movieId;
+        div.textContent = 'Edit your review for: ' + SELECTED_MOVIE_TITLE + ', with titleId: ' + titleId;
 
         var input = document.createElement('textarea')
         input.id = "editReviewText"
@@ -284,8 +286,8 @@
 
         var editReviewButton = document.createElement('button');
         editReviewButton.innerText = "Update"
-        editReviewButton.setAttribute('movieId', movieId)
-        editReviewButton.setAttribute('userId', userId)
+        editReviewButton.setAttribute('titleId', titleId)
+        editReviewButton.setAttribute('accountId', accountId)
         editReviewButton.setAttribute('reviewId', reviewId)
 
 
@@ -302,12 +304,12 @@
 
         var createReviewPath = ACTION_PATH+CREATE_REVIEW_PATH;
 
-        var movieId = this.getAttribute('movieId')
-        var userId = this.getAttribute('userId')
+        var titleId = this.getAttribute('titleId')
+        var accountId = this.getAttribute('accountId')
         var reviewText = document.getElementById("reviewText").value
 
 
-        postAjax(createReviewPath,  { accountId: userId, review: reviewText, titleId: movieId } , function(data){
+        postAjax(createReviewPath,  { accountId: accountId, review: reviewText, titleId: titleId } , function(data){
             if(data){
                 console.log("Review Creation Success")
                 // Clear input field for create
@@ -318,28 +320,28 @@
         document.getElementById("reviewText").value = ""
 
         setTimeout(()=>{
-            refreshReviewsByMovieId(movieId, userId)
+            refreshReviewsByTitleId(titleId, accountId)
         }, 500)
 
     }
 
     function deleteReview(){
 
-        var movieId = this.getAttribute('movieId')
-        var userId = this.getAttribute('userId')
+        var titleId = this.getAttribute('titleId')
+        var accountId = this.getAttribute('accountId')
         var reviewId = this.getAttribute('reviewId')
 
         var deleteReviewPath = ACTION_PATH+DELETE_REVIEW_PATH+reviewId;
 
-        postAjax(deleteReviewPath,  { reviewId: reviewId, accountId: userId } , function(data){
+        postAjax(deleteReviewPath,  { reviewId: reviewId, accountId: accountId } , function(data){
             if(data){
                 console.log("Review Deletion Success")
-                // refreshReviewsByMovieId(movieId, userId)
+                // refreshReviewsBytitleId(titleId, userId)
             }
 
         });
         setTimeout(()=>{
-            refreshReviewsByMovieId(movieId, userId)
+            refreshReviewsByTitleId(titleId, accountId)
         }, 500)
 
     }
