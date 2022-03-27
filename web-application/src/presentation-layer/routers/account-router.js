@@ -52,7 +52,6 @@ module.exports = function({accountManager}){
 				
 				request.session.accountId = accountId
 				request.session.username = account.username
-				console.log(request.session.accountId, request.session.username)
 			}
 			const model = {
 				errors: errors,

@@ -1,5 +1,5 @@
 <div class="content" style="color:white;">
-<h1 style="color:white;">Favourites</h1>
+<h1 style="color:white;">Favourites <i class="fa fa-thumbs-o-up" aria-hidden="true"></i></h1>
 {{#if errors.length}}
 	<div class="notification is-danger">
         <p><strong>An issue appeared: </strong></p>
@@ -19,8 +19,8 @@
 			{{/each}}
 		</ul>
 	{{else}}
-		<div class="notification is-dark mr-bottom">
-            <p>No favourites exist yet.</p>
+		<div class="box">
+            <p>Your list of favorite movies seems to be empty...</p>
         </div>
 	{{/if}}
 {{/if}}
