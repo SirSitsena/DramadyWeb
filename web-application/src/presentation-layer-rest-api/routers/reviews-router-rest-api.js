@@ -12,7 +12,6 @@ module.exports = function({movieManager}){
     router.get('/all', function(request, response){
         movieManager.getAllPublicReviews(function(errors, results){
             if(errors.length > 0){
-                console.log(errors)
                 response.status(500).end()
             } else {
                 response.status(200).json(results)

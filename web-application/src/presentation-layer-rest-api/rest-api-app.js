@@ -7,12 +7,6 @@ const cookieParser = require('cookie-parser')
 module.exports = function({moviesRouterRESTAPI, reviewsRouterRESTAPI, accountsRouterRESTAPI}){
 	const api = express()
 
-	/*
-	api.use('/', function(request, response){
-		console.log('received request')
-		response.status(200).end()
-	})*/
-
 	api.use(function(request, response, next){
 		// response.setHeader("Access-Control-Allow-Origin", "http://localhost:8080")
 		response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');

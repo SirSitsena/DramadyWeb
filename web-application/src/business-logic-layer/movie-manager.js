@@ -84,7 +84,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 						Promise.all(promises).then((result) => {
 							callback([], movies)
 						}).catch(function(errors){
-							console.log(errors)
+							callback(["Internal error please try again."], null)
 						}) 
 				} else {
 						callback([], movies)
@@ -129,18 +129,6 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 		
 		/*						 WATCHLIST FUNCTIONALITY						*/
 
-		promiseWatchlistMovie: function(id){
-			return new Promise(function(resolve, reject) {
-				apiRepository.getMovieByTitleId(id, function(error, movie){
-					if(error){
-						reject(error)
-					} else {
-						console.log(movie)
-						resolve(movie)
-					}
-				})
-			})
-		},
 
 		viewWatchlist: function(accountId, callback){
 			/*

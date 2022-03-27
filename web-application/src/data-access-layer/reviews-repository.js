@@ -12,7 +12,6 @@ module.exports = function({db, models}){
             }).then(function(PublicReview){
                 callback([], PublicReview.id)
             }).catch(function(error){
-                console.log(error)
                 callback(['databaseError'], null)
             })
         },

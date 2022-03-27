@@ -13,10 +13,8 @@ module.exports = function({db, models}) {
                     }
                 }
             }).then(function(watchlist){
-                console.log(watchlist)
                 callback([], watchlist)
             }).catch(function(error){
-                console.log(error)
                 callback(['databaseError'], null)
             })
         },
