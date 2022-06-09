@@ -15,18 +15,18 @@ document.addEventListener("DOMContentLoaded", function(){
         var loginPath = ACTION_PATH+'api/accounts/tokens';
 
         postAjax(loginPath,  { username: login, password: password, grant_type:'password' } , function(data){
-            console.log("This is data")
-            console.log(data);
+            // console.log("This is data")
+            // console.log(data);
             if( JSON.parse(data).isLoggedIn == true ){
                 // should be in callback function after ajax success or in it
-                console.log(JSON.parse(data).accountId)
+                // console.log(JSON.parse(data).accountId)
                 successFullAjax(data);
             }
         });
 
-        console.log('login');
-        console.log('login is'+login);
-        console.log('password is'+password);
+        // console.log('login');
+        // console.log('login is'+login);
+        // console.log('password is'+password);
 
         // checkCookie();
 
@@ -34,19 +34,21 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function logout(){
 
+        document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        clearOnDelete();
 
-        logoutPath = ACTION_PATH+'api/accounts/sign-out';
-
-        postAjax(logoutPath,  false , function(data){
-
-            if(JSON.parse(data).message == "Signed out"){
-
-                // alert("Signed out");
-                document.location.href="/";
-            }
-
-
-        });
+        // logoutPath = ACTION_PATH+'api/accounts/sign-out';
+        //
+        // postAjax(logoutPath,  false , function(data){
+        //
+        //     if(JSON.parse(data).message == "Signed out"){
+        //
+        //         // alert("Signed out");
+        //         document.location.href="/";
+        //     }
+        //
+        //
+        // });
 
         signUpForm.classList.remove('hideMe');
         signInForm.classList.remove('hideMe');
@@ -57,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function(){
     function userRegister(){
 
 
-        registerPath = ACTION_PATH+'api/accounts/sign-up';
+        registerPath = ACTION_PATH+'api/accounts';
 
 
         var loginNew = document.getElementById("user-sign-up-username").value;
@@ -66,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         postAjax(registerPath,  { username: loginNew, fullname: fullname, password: passwordNew } , function(data){
 
-            console.log(data);
+            // console.log(data);
             if( JSON.parse(data).isLoggedIn == true ){
 
                 successFullAjax(data);
@@ -88,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function afterLogin(){
 
-        console.log('afterLogin');
+        // console.log('afterLogin');
         hideSignUp();
 
     };
@@ -110,6 +112,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
     signOutButton.classList.add('hideMe');
 
-    console.log('AUTH FILE')
+    // console.log('AUTH FILE')
 
 })
