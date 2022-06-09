@@ -11,9 +11,9 @@
 {{else}}
 	
 	{{#if account}}
-	<h1 style="color: white;">Account: {{account.dataValues.username}}</h1>
+	<h1 style="color: white;">Account: {{account.username}}</h1>
 		{{#if account.isOwner}}
-			{{#if account.dataValues.isPublic}}
+			{{#if account.isPublic}}
 
                 <h3 style="color: white">Change privacy of Watchlist and Favourites:</h3>
                 <form method="POST" action="/accounts/privacy" style="display:inline-block;">
@@ -38,7 +38,7 @@
 						<ul>
 							{{#each account.favourites}}
 								<div class="box">
-									{{dataValues.movieTitle}}
+									{{movieTitle}}
 								</div>
 							{{/each}}
 						</ul>
@@ -48,7 +48,7 @@
 						<ul>
 							{{#each account.watchlist}}
 								<div class="box">
-									{{dataValues.movieTitle}}
+									{{movieTitle}}
 								</div>
 							{{/each}}
 						</ul>

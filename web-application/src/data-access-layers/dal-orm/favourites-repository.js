@@ -1,10 +1,11 @@
-module.exports = function({db, models}){
+module.exports = function({models}){
     return{
         getUsersFavourites: function(accountId, callback){
             models.UserFavourites.findAll({
                 where: {
                     accountId: accountId
-                }
+                },
+				raw: true
             }).then(function(favourites){
                 callback([], favourites)
             }).catch(function(error){
@@ -23,7 +24,7 @@ module.exports = function({db, models}){
                 titleId: titleId,
                 movieTitle: movieTitle
             }).then(function(result){
-                callback([], result.id)
+                callback([], result.dataValues.id)
             }).catch(function(error) {
                 callback(['databaseError'], null)
             })
@@ -58,7 +59,8 @@ module.exports = function({db, models}){
                 where: {
                     accountId: accountId,
                     titleId: titleId
-                }
+                },
+				raw: true
             }).then(function(favourites){
                 callback([], favourites)
             }).catch(function(error) {

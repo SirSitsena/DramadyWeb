@@ -14,14 +14,12 @@ let redisClient = createClient({
 })
 redisClient.connect().catch(console.error)
 
-module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI, models}){
+module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI}){
 	const app = express()
 
 	// Setup express-handlebars.
 	app.set('views', path.join(__dirname, 'views'))
 
-	// Note: This code is for an old version of express-handlebars.
-	// One should use newest version of packages.
 	app.engine('hbs', expressHandlebars({
 		extname: 'hbs',
 		defaultLayout: 'main',

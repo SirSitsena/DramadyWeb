@@ -5,22 +5,22 @@
             <article class="media">
                 <div class="media-left">
                     <figure class="image is-64x64">
-                        <img src="{{dataValues.image}}" alt="movie poster" height="64">
+                        <img src="{{image}}" alt="movie poster" height="64">
                     </figure>
                 </div>
                 <div class="media-content">
                     <div class="content">
                         <p>
-                            <strong>{{dataValues.fullTitle}}</strong> <span>IMDB: {{dataValues.imDbRating}}</span>
+                            <strong>{{fullTitle}}</strong> <span>IMDB: {{imDbRating}}</span>
                                 {{#if this.isFavourited}}
                                     <span class="icon" style="float:right; color: #00d1b2;">
-                                        <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                        <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
                                             <i class="fa fa-thumbs-up"></i>
                                         </a>
                                     </span>
                                 {{else}}
                                     <span class="icon" style="float:right;">
-                                        <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                        <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
                                             <i class="fa fa-thumbs-o-up"></i>
                                         </a>
                                     </span>
@@ -28,13 +28,13 @@
 
                                 {{#if this.isWatchlisted}}
                                     <span class="icon" style="float:right; color:#00d1b2;">
-                                        <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                        <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
                                             <i class="fa fa-eye-slash"></i>
                                         </a>
                                     </span>
                                 {{else}}
                                     <span class="icon" style="float:right;">
-                                        <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                        <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                     </span>
@@ -43,13 +43,13 @@
 
 
                         </p>
-                        <div class="limit-text js-modal-trigger" data-target="modal-js-{{dataValues.id}}">{{dataValues.plot}}</div>
+                        <div class="limit-text js-modal-trigger" data-target="modal-js-{{id}}">{{plot}}</div>
 
                     </div>
                 </div>
             </article>
         </div>
-        <div class="modal" id="modal-js-{{dataValues.id}}">
+        <div class="modal" id="modal-js-{{id}}">
             <div class="modal-background"></div>
             <div class="modal-content">
                 <div class="card">
@@ -57,22 +57,22 @@
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img src="{{dataValues.image}}">
+                                    <img src="{{image}}">
                                 </figure>
                             </div>
                             <div class="media-content">
 
-                            <strong>{{dataValues.title}}</strong>
+                            <strong>{{title}}</strong>
 
                                 {{#if this.isFavourited}}
                                     <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                            <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
                                                 <i class="fa fa-thumbs-up"></i>
                                             </a>
                                         </span>
                                 {{else}}
                                     <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                            <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
                                                 <i class="fa fa-thumbs-o-up"></i>
                                             </a>
                                         </span>
@@ -80,29 +80,29 @@
 
                                 {{#if this.isWatchlisted}}
                                     <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                            <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
                                                 <i class="fa fa-eye-slash"></i>
                                             </a>
                                         </span>
                                 {{else}}
                                     <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{dataValues.id}}/{{dataValues.fullTitle}}" style="color: inherit;">
+                                            <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </span>
                                 {{/if}}
-                                <p>year: {{dataValues.year}}</p>
-                                <p>IMDB: {{dataValues.imDbRating}}</p>
+                                <p>year: {{year}}</p>
+                                <p>IMDB: {{imDbRating}}</p>
                             </div>
                         </div>
                         <div class="content">
 
                             <ul>
-                                <li>directed by: {{dataValues.directors}}</li>
-                                <li>actors: {{dataValues.stars}}</li>
-                                <li>genres: {{dataValues.genres}}</li>
+                                <li>directed by: {{directors}}</li>
+                                <li>actors: {{stars}}</li>
+                                <li>genres: {{genres}}</li>
                             </ul>
-                            <i>{{dataValues.plot}}</i>
+                            <i>{{plot}}</i>
                         </div>
                     </div>
                 </div>

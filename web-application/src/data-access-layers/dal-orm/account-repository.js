@@ -7,7 +7,8 @@ module.exports = function({models}){
 		*/
 		getAllAccounts: function(callback){
 			models.Accounts.findAll({
-				order: ["username"]
+				order: ["username"],
+				raw: true
 			}).then(function(accounts){
 				callback([], accounts)
 			}).catch(function(error){
@@ -24,7 +25,8 @@ module.exports = function({models}){
 			models.Accounts.findOne({
 				where: {
 					username: username
-				}
+				},
+				raw: true
 			}).then(function(account){
 				callback([], account)
 			}).catch(function(error){
@@ -42,7 +44,8 @@ module.exports = function({models}){
 			models.Accounts.findAll({
 				where: {
 					username: account.username
-				}
+				},
+				raw: true
 			}).then(function(accs){
 				if(accs.length > 0){
 					callback(["User with that username already exists. Please try another username"], null)
@@ -67,7 +70,8 @@ module.exports = function({models}){
 				attributes: ['isPublic'],
 				where: {
 					id: accountId
-				}
+				},
+				raw: true
 			}).then(function(account){
 				callback([], account)
 			}).catch(function(errors){
@@ -108,7 +112,8 @@ module.exports = function({models}){
 			models.Accounts.findOne({
 				where: {
 					username: account.username
-				}
+				},
+				raw: true
 			}).then(function(account){
 				callback([], account)
 			}).catch(function(error){

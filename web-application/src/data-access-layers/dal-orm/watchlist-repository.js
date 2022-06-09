@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
 
-module.exports = function({db, models}) {
+module.exports = function({models}) {
     return {
         /* ************************* WATCHLIST ************************** */
 
@@ -11,7 +11,8 @@ module.exports = function({db, models}) {
                     accountId: {
                         [Op.eq]: accountId
                     }
-                }
+                },
+				raw: true
             }).then(function(watchlist){
                 callback([], watchlist)
             }).catch(function(error){
@@ -31,7 +32,7 @@ module.exports = function({db, models}) {
                 movieTitle: movieTitle
             })
             .then(function(watchlistItem){
-                callback([], watchlistItem.id)
+                callback([], watchlistItem.dataValues.id)
             })
             .catch(function(errors){
                 callback(['databaseError'], null)
@@ -61,7 +62,8 @@ module.exports = function({db, models}) {
                 where: {
                     accountId: accountId,
                     titleId: titleId
-                }
+                },
+				raw: true
             }).then(function(results){
                 callback([], results)
             }).catch(function(error){

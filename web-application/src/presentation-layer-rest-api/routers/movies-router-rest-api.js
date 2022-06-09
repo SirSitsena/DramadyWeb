@@ -3,15 +3,20 @@ const express = require('express')
 module.exports = function({movieManager, apiManager}){
     const router = express.Router()
     
-    router.get('/search/:keywords', function(request, response){
+    router.get('/:keywords', function(request, response){
         const keywords = request.params.keywords
-        apiManager.getSearchMovieByTitle(null, keywords, function(error, results){
-            if(error.length > 0){
-                response.status(500).end()
-            } else {
-                response.status(200).json(results)
-            }
-        })
+        if(request.params.keywords.length > 0){
+            apiManager.getSearchMovieByTitle(null, keywords, function(error, results){
+                if(error.length > 0){
+                    response.status(500).end()
+                } else {
+                    response.status(200).json(results)
+                }
+            })
+        } else {
+            resåpmse.status(400).end()
+        }
+        
     })
 
     router.get('/top250', function(request, response){
@@ -45,8 +50,8 @@ module.exports = function({movieManager, apiManager}){
         })
     })
 
-    router.get('/favourites/:accountId', function(request, response){
-        const accountId = request.params.accountId
+    router.get('/favourites', function(request, response){
+        const accountId = request.query.accountId
         movieManager.viewFavourites(accountId, function(errors, results){
             if(errors.length > 0){
                 response.status(500).end()
@@ -56,8 +61,8 @@ module.exports = function({movieManager, apiManager}){
         })
     })
 
-    router.get('/watchlisted/:accountId', function(request, response){
-        const accountId = request.params.accountId
+    router.get('/watchlisted', function(request, response){
+        const accountId = request.query.accountId
         movieManager.viewWatchlist(accountId, function(errors, results){
             if(errors.length > 0){
                 response.status(500).end()

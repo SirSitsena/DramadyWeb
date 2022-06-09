@@ -1,4 +1,4 @@
-module.exports = function({db, models}){
+module.exports = function({models}){
     return {
         /*
             Retrieves the movie with the given id.
@@ -9,7 +9,8 @@ module.exports = function({db, models}){
             models.Top250Movies.findOne({
                 where: {
                     id: id
-                }
+                },
+				raw: true
             }).then(function(movie) {
                 callback([], movie)
             }).catch(function(error) {
@@ -25,7 +26,8 @@ module.exports = function({db, models}){
         */
         getAllMovies: function(callback){
             models.Top250Movies.findAll({
-                order: ['rank']
+                order: ['rank'],
+                raw: true
             }).then(function(movies) {
                 callback([], movies)
             }).catch(function(error) {
@@ -42,7 +44,8 @@ module.exports = function({db, models}){
             models.Top250Movies.findOne({
                 where: {
                     rank: rank
-                }
+                },
+				raw: true
             }).then(function(movie) {
                 callback([], movie)
             }).catch(function(error){
@@ -60,7 +63,8 @@ module.exports = function({db, models}){
             models.Top250Movies.findAll({
                 where: {
                     year: year
-                }
+                },
+				raw: true
             }).then(function(movies) {
                 callback([], movies)
             }).catch(function(error) {

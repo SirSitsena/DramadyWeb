@@ -1,8 +1,6 @@
 const express = require('express');
 
 var csrf = require('csurf');
-const {NULL} = require("mysql/lib/protocol/constants/types");
-
 var csrfProtection = csrf();
 
 
@@ -49,7 +47,6 @@ module.exports = function({accountManager}){
 			var message
 			if(accountId != null){
 				message = "Logged in"
-				
 				request.session.accountId = accountId
 				request.session.username = account.username
 			}
@@ -63,13 +60,28 @@ module.exports = function({accountManager}){
 
 	//Signing out of an account
 	router.post('/sign-out', function(request, response) {
-		accountManager.signOut(request, function(errors, message) {
+		if(request.session.accountId != null){
+			delete request.session.accountId
+			delete request.session.username
+			request.session.destroy(function(error){
+				if(error) {
+					const model = {
+						errors: ["Error logging out."]
+					}
+					response.render('accounts-sign-out.hbs', model)
+				} else {
+					const model = {
+						message: ["Logged out of the account."]
+					}
+					response.render('accounts-sign-out.hbs', model)
+				}
+			})
+		} else {
 			const model = {
-				errors: errors,
-				message: message
+				errors: ["Not logged in to any account."]
 			}
 			response.render('accounts-sign-out.hbs', model)
-		})
+		}
 	})
 
 	router.get('/sign-out', function(request, response ){
@@ -87,7 +99,7 @@ module.exports = function({accountManager}){
 
 		accountManager.getAccountByUsername(username, function(errors, account){
 			if(errors.length == 0 && account != null){
-				if(account.dataValues.id == request.session.accountId){
+				if(account.id == request.session.accountId){
 					account.isOwner = true
 				}
 			}

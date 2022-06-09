@@ -1,6 +1,6 @@
 const { rejects } = require("assert")
 
-module.exports = function({db, models}){
+module.exports = function({models}){
     return{
         /*************************************** PUBLIC REVIEWS**************************************** */
         createPublicReview: function(accountId, review, titleId, callback){
@@ -10,7 +10,7 @@ module.exports = function({db, models}){
                 content: review,
                 titleId: titleId
             }).then(function(PublicReview){
-                callback([], PublicReview.id)
+                callback([], PublicReview.dataValues.id)
             }).catch(function(error){
                 callback(['databaseError'], null)
             })
@@ -26,8 +26,9 @@ module.exports = function({db, models}){
                     accountId: accountId
                 }
             }).then(function(result){
-                callback([], result)
+                callback([], result.dataValues)
             }).catch(function(error){
+                console.log(error)
                 callback(['databaseError'], null)
             })
         },
@@ -48,7 +49,8 @@ module.exports = function({db, models}){
             models.PublicReviews.findOne({
                 where: {
                     id: reviewId
-                }
+                },
+				raw: true
             }).then(function(review){
                 callback([], review)
             }).catch(function(error){
@@ -59,7 +61,8 @@ module.exports = function({db, models}){
             models.PublicReviews.findAll({
                 where: {
                     titleId: titleId
-                }
+                },
+				raw: true
             }).then(function(reviews) {
                 callback([], reviews)
             }).catch(function(error) {
@@ -67,7 +70,9 @@ module.exports = function({db, models}){
             })
         },
         getAllPublicReviews: function(callback){
-            models.PublicReviews.findAll().then(function(reviews){
+            models.PublicReviews.findAll({
+				raw: true
+            }).then(function(reviews){
                 callback([], reviews)
             }).catch(function(errors) {
                 callback(['databaseError'], null)

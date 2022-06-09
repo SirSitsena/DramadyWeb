@@ -29,11 +29,11 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 		},
 	/* 				SWITCHING THE PRIVACY SETTING ON A USERS FAVOURITES AND WATCHLIST				 */
 		switchPrivacy: function(accountId, callback){
-			accountRepository.getPrivacy(accountId, function(errors, result){
+			accountRepository.getPrivacy(accountId, function(errors, account){
 				if(errors.length > 0){
 					callback(errors, null)
 				} else {
-					let isPublic = result.dataValues.isPublic
+					let isPublic = account.isPublic
 					if(isPublic == true){
 						accountRepository.makePrivate(accountId, callback)
 					} else if (isPublic == false) {
@@ -48,7 +48,7 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 		signIn: function(account, callback){
 			accountRepository.signIn(account, function(errors, result){
 				if(result != null) {
-					let acc = result.dataValues
+					let acc = result
 					bcrypt.compare(account.password, acc.hash, function(error, result) {
 						if(error){
 							callback(["Internal unexplained server error."], null)
@@ -70,21 +70,6 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 				}
 			})
 		},
-	/*									SIGNING OUT OF AN ACCOUNT									*/
-		signOut: function(request, callback) {
-			if(request.session.accountId != null){
-				delete request.session.accountId
-				request.session.destroy(function(error) {
-					if(error){
-						callback(error)
-					} else {
-						callback([], ["Logged out of the account."])
-					}
-				})
-			} else {
-				callback(['Not logged in to any account.'], [])
-			}
-		},
 
 		getAccountByUsername: function(username, callback){
 			accountRepository.getAccountByUsername(username, function(errors, account){
@@ -92,8 +77,9 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 					callback(errors, null)
 				} else {
 					if (account != null){
-						let accountId = account.dataValues.id
-						if(account.dataValues.isPublic == true){
+						console.log(account)
+						let accountId = account.id
+						if(account.isPublic == true){
 							// Fetch the user's favourites and watchlist.
 							favouritesRepository.getUsersFavourites(accountId, function(errors, favourites){
 								if(errors.length > 0){
