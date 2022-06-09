@@ -1,6 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
+const { response } = require('express')
 const secret = "uasnbdiunasiuduianisudnianiusdnpwioperjwer"
 
 module.exports = function({movieManager}){
@@ -19,8 +20,8 @@ module.exports = function({movieManager}){
         })
     })
 
-    router.post('/create', function(request, response){
-        const token = request.cookies.token
+    router.post('/', function(request, response){
+        var token = request.cookies.token
         if(token != null) {
             jwt.verify(token, secret, function(error, payload){
                 if(error){
@@ -31,7 +32,7 @@ module.exports = function({movieManager}){
                         const titleId = request.body.titleId
                         movieManager.createPublicReview(payload.accountId, review, titleId, function(error, results){
                             if(error.length > 0){
-                                response.status(404).end()
+                                response.status(500).end()
                             } else {
                                 response.setHeader("Location", "/api/reviews/"+results)
                                 response.status(201).end()
@@ -45,18 +46,46 @@ module.exports = function({movieManager}){
                 }
             })
         } else {
-            response.status(401).end()
+            token = request.body.token
+            if(token != null) {
+                jwt.verify(token, secret, function(error, payload){
+                    if(error){
+                        response.status(401).end()
+                    } else {
+                        if(request.body.review != null && request.body.review.length > 0 && request.body.titleId.length > 0 && request.body.titleId != null){
+                            const review = request.body.review
+                            const titleId = request.body.titleId
+                            movieManager.createPublicReview(payload.accountId, review, titleId, function(error, results){
+                                if(error.length > 0){
+                                    response.status(500).end()
+                                } else {
+                                    response.setHeader("Location", "/api/reviews/"+results)
+                                    response.status(201).end()
+                                }
+                            })
+                        } else {
+                            response.status(400).json({
+                                error: "Review or Title input incomplete."
+                            })
+                        }
+                    }
+                })
+            } else {
+                response.status(400).json({
+                    error: "Form input incomplete"
+                })
+            }
         }
     })
 
-    router.post('/update/:reviewId', function(request, response){
-        const token = request.cookies.token
+    router.put('/', function(request, response) {
+        var token = request.cookies.token
         if(token != null){
             jwt.verify(token, secret, function(error, payload){
                 if(error){
                     response.status(401).end()
                 } else {
-                    if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null && request.body.accountId){
+                    if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){
                         const reviewId = request.body.reviewId
                         const review = request.body.review
                         const titleId = request.body.titleId
@@ -64,7 +93,9 @@ module.exports = function({movieManager}){
                             if(error.length > 0){
                                 response.status(500).end()
                             } else {
-                                response.status(200).end()
+                                response.status(200).json({
+                                    message: "Updated review."
+                                })
                             }
                         })
                     } else {
@@ -75,18 +106,48 @@ module.exports = function({movieManager}){
                 }
             })
         } else {
-            response.status(401).end()
-        }  
+            token = request.body.token
+            if(token != null){
+                jwt.verify(token, secret, function(error, payload){
+                    if(error){
+                        response.status(401).end()
+                    } else {
+                        if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){
+                            const reviewId = request.body.reviewId
+                            const review = request.body.review
+                            const titleId = request.body.titleId
+                            movieManager.updatePublicReview(reviewId, payload.accountId, review, titleId, function(error, result) {
+                                if(error.length > 0){
+                                    response.status(500).end()
+                                } else {
+                                    response.status(200).json({
+                                        message: "Updated review."
+                                    })
+                                }
+                            })
+                        } else {
+                            response.status(400).json({
+                                error: "Form input incomplete"
+                            })
+                        }
+                    }
+                })
+            } else {
+                response.status(400).json({
+                    error: "Form input incomplete"
+                })
+            }
+        }
     })
 
-    router.post('/delete/:reviewId', function(request, response){
-        const token = request.cookies.token
+    router.delete('/', function(request, response){
+        var token = request.cookies.token
         if(token != null){
             jwt.verify(token, secret, function(error, payload){
                 if(error){
                     response.status(401).end()
                 } else {
-                    if(request.body.reviewId != null && request.body.accountId){
+                    if(request.body.reviewId != null){
                         const reviewId = request.body.reviewId
                         movieManager.deletePublicReview(reviewId, payload.accountId, function(error, result) {
                             if(error.length > 0){
@@ -103,7 +164,33 @@ module.exports = function({movieManager}){
                 }
             })
         } else {
-            response.status(401).end()
+            token = request.body.token
+            if(token != null){
+                jwt.verify(token, secret, function(error, payload){
+                    if(error){
+                        response.status(401).end()
+                    } else {
+                        if(request.body.reviewId != null){
+                            const reviewId = request.body.reviewId
+                            movieManager.deletePublicReview(reviewId, payload.accountId, function(error, result) {
+                                if(error.length > 0){
+                                    response.status(500).end()
+                                } else {
+                                    response.status(200).end()
+                                }
+                            })
+                        } else {
+                            response.status(400).json({
+                                error: "Form input incomplete"
+                            })
+                        }
+                    }
+                })
+            } else {
+                response.status(400).json({
+                    error: "Form input incomplete"
+                })
+            }
         }
 
     })
