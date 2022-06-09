@@ -17,7 +17,10 @@ redisClient.connect().catch(console.error)
 module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI}){
 	const app = express()
 
+	app.use('/api', appRESTAPI)
+
 	// Setup express-handlebars.
+
 	app.set('views', path.join(__dirname, 'views'))
 
 	app.engine('hbs', expressHandlebars({
@@ -25,10 +28,9 @@ module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI
 		defaultLayout: 'main',
 		layoutsDir: path.join(__dirname, 'layouts')
 	}))
-
 	// Handle static files in the public folder.
-	app.use(express.static(path.join(__dirname, 'public')))
 
+	app.use(express.static(path.join(__dirname, 'public')))
 	// Use redis store for sessions
 	app.use(
 		session({
@@ -42,14 +44,12 @@ module.exports = function({accountRouter, movieRouter, variousRouter, appRESTAPI
 	app.use(function(request, response, next) {
 		response.locals.session = request.session
 		next()
-	})
 
+	})
 	// Attach all routers.
-	app.use('/', variousRouter)
 	app.use('/accounts', accountRouter)
 	app.use('/movies', movieRouter)
-
-	app.use('/api', appRESTAPI)
+	app.use('/', variousRouter)
 
 	// Start listening for incoming HTTP requests!
 	app.listen(8080, function(){

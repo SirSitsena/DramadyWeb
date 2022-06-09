@@ -195,6 +195,17 @@ module.exports = function({movieManager}){
 
     })
 
+    router.get('/byTitleId/:titleId', function(request, response){
+        const titleId = request.params.titleId
+        movieManager.getReviewsByTitleId(titleId, function(errors, results){
+            if(errors.length > 0){
+                response.status(500).end()
+            } else {
+                response.status(200).json(results)
+            }
+        })
+    })
+
     router.get('/:id', function(request, response){
         const reviewId = request.params.id
         movieManager.getPublicReviewById(reviewId, function(errors, results){
@@ -210,16 +221,5 @@ module.exports = function({movieManager}){
         })
     })
 
-    router.get('/byTitleId/:titleId', function(request, response){
-        const titleId = request.params.titleId
-        movieManager.getReviewsByTitleId(titleId, function(errors, results){
-            if(errors.length > 0){
-                response.status(500).end()
-            } else {
-                response.status(200).json(results)
-            }
-        })
-    })
-    
     return router
 }
