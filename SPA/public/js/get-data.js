@@ -4,9 +4,7 @@ var FAV_LIST_PATH = "api/movies/favourites?accountId=";
 var WATCH_LIST_PATH = "api/movies/watchlisted?accountId=";
 //Review paths
 var GET_REVIEWS_BY_MOVIE_ID_PATH = "api/reviews/byTitleId/";
-var CREATE_REVIEW_PATH = 'api/reviews/';
-var EDIT_REVIEW_PATH = 'api/reviews/';
-var DELETE_REVIEW_PATH = 'api/reviews/';
+var REVIEW_PATH = 'api/reviews/';
 //Data blocks
 var FAV_LIST_BLOCK_ID = "favListBlock";
 var WATCH_LIST_BLOCK_ID = "watchListBlock";
@@ -169,33 +167,6 @@ function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
     // alert('Print Review')
 }
 
-function editReview(){
-
-    var titleId = this.getAttribute('titleId')
-    var accountId = this.getAttribute('accountId')
-    var reviewId = this.getAttribute('reviewId')
-    var editReviewText = document.getElementById("editReviewText").value
-
-    var editReviewPath = ACTION_PATH+EDIT_REVIEW_PATH+reviewId;
-    // Show Create Review Form after editing an existing one
-
-    var createReviewForm = document.getElementById(CREATE_REVIEW_FORM_ID)
-    createReviewForm.classList.remove("hideMe")
-
-
-    var editReviewText = document.getElementById("editReviewText").value
-
-    putAjax(editReviewPath,  {reviewId: reviewId, accountId: accountId, review: editReviewText, titleId: titleId } , function(data){
-        if(data){
-            console.log("Review Creation Success")
-        }
-    });
-    setTimeout(()=>{
-        refreshReviewsByTitleId(titleId, accountId)
-    }, 500)
-}
-
-
 function showCreateReviewForm() {
 
     var titleId = this.getAttribute('titleId')
@@ -229,6 +200,7 @@ function showCreateReviewForm() {
 
     container.classList.remove('hideMe');
 }
+
 
 function showEditReviewForm() {
 
@@ -269,14 +241,15 @@ function showEditReviewForm() {
 
 function createReview(){
 
-    var createReviewPath = ACTION_PATH+CREATE_REVIEW_PATH;
+    var createReviewPath = ACTION_PATH+REVIEW_PATH;
 
     var titleId = this.getAttribute('titleId')
     var accountId = this.getAttribute('accountId')
     var reviewText = document.getElementById("reviewText").value
 
 
-    postAjax(createReviewPath,  { accountId: accountId, review: reviewText, titleId: titleId } , function(data){
+    // postAjax(createReviewPath,  { accountId: accountId, review: reviewText, titleId: titleId } , function(data){
+    postAjax(createReviewPath,  { review: reviewText, titleId: titleId } , function(data){
         if(data){
             console.log("Review Creation Success")
             // Clear input field for create
@@ -292,20 +265,44 @@ function createReview(){
 
 }
 
+function editReview(){
+
+    var titleId = this.getAttribute('titleId')
+    var accountId = this.getAttribute('accountId')
+    var reviewId = this.getAttribute('reviewId')
+    var editReviewText = document.getElementById("editReviewText").value
+
+    var editReviewPath = ACTION_PATH+REVIEW_PATH;
+    // Show Create Review Form after editing an existing one
+
+    var createReviewForm = document.getElementById(CREATE_REVIEW_FORM_ID)
+    createReviewForm.classList.remove("hideMe")
+
+    // putAjax(editReviewPath,  {reviewId: reviewId, accountId: accountId, review: editReviewText, titleId: titleId } , function(data){
+    putAjax(editReviewPath,  {reviewId: reviewId, review: editReviewText, titleId: titleId } , function(data){
+        if(data){
+            console.log("Review Creation Success")
+        }
+    });
+    setTimeout(()=>{
+        refreshReviewsByTitleId(titleId, accountId)
+    }, 500)
+}
+
 function deleteReview(){
 
     var titleId = this.getAttribute('titleId')
     var accountId = this.getAttribute('accountId')
     var reviewId = this.getAttribute('reviewId')
 
-    var deleteReviewPath = ACTION_PATH+DELETE_REVIEW_PATH+reviewId;
+    var deleteReviewPath = ACTION_PATH+REVIEW_PATH;
 
     deleteAjax(deleteReviewPath,  { reviewId: reviewId, accountId: accountId } , function(data){
+    // deleteAjax(deleteReviewPath,  { reviewId: reviewId } , function(data){
         if(data){
             console.log("Review Deletion Success")
             // refreshReviewsBytitleId(titleId, userId)
         }
-
     });
     setTimeout(()=>{
         refreshReviewsByTitleId(titleId, accountId)

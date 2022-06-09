@@ -20,6 +20,17 @@ module.exports = function({movieManager}){
         })
     })
 
+    router.get('/byTitleId/:titleId', function(request, response){
+        const titleId = request.params.titleId
+        movieManager.getReviewsByTitleId(titleId, function(errors, results){
+            if(errors.length > 0){
+                response.status(500).end()
+            } else {
+                response.status(200).json(results)
+            }
+        })
+    })
+
     router.post('/', function(request, response){
         var token = request.cookies.token
         if(token != null) {
@@ -193,17 +204,6 @@ module.exports = function({movieManager}){
             }
         }
 
-    })
-
-    router.get('/byTitleId/:titleId', function(request, response){
-        const titleId = request.params.titleId
-        movieManager.getReviewsByTitleId(titleId, function(errors, results){
-            if(errors.length > 0){
-                response.status(500).end()
-            } else {
-                response.status(200).json(results)
-            }
-        })
     })
 
     router.get('/:id', function(request, response){
