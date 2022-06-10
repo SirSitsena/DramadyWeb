@@ -4,7 +4,7 @@ function getAjax(url, success) {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     xhr.open('GET', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
+        if (xhr.readyState>3) success(xhr.responseText, xhr.status);
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.send();
@@ -20,11 +20,13 @@ function postAjax(url, data, success) {
     xhr.withCredentials = true;
     xhr.open('POST', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
+        if (xhr.readyState>3) { success(xhr.responseText, xhr.status); }
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
     xhr.send(params);
+
     return xhr;
 }
 
@@ -37,7 +39,7 @@ function putAjax(url, data, success) {
     xhr.withCredentials = true;
     xhr.open('PUT', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
+        if (xhr.readyState>3) { success(xhr.responseText, xhr.status); }
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -54,7 +56,7 @@ function deleteAjax(url, data, success) {
     xhr.withCredentials = true;
     xhr.open('DELETE', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
+        if (xhr.readyState>3) { success(xhr.responseText, xhr.status); }
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

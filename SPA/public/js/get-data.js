@@ -11,57 +11,64 @@ var WATCH_LIST_BLOCK_ID = "watchListBlock";
 var REVIEW_LIST_BLOCK_ID = "reviewsBlock";
 var CREATE_REVIEW_FORM_ID = "createReviewForm";
 var UPDATE_REVIEW_FORM_ID = "updateReviewForm";
+var NOTIFICATION_BLOCK_ID = "notificationBlock";
 
 // For easy access of the currently chosen movie's title
 var SELECTED_MOVIE_TITLE = ""
 
-function getLists(data){
-
-    // console.log('getlists');
-
+function refreshLists(data){
+    clearBlocks();
     getWatchList(data);
     getFavList(data);
-
 };
+
+var notifyID;
+function notify(message){
+    clearTimeout(notifyID);
+    document.getElementById(NOTIFICATION_BLOCK_ID).innerText = message;
+    notifyID = setTimeout(()=>{
+        document.getElementById(NOTIFICATION_BLOCK_ID).innerText = "";
+    }, 1500)
+}
 
 function getFavList(data){
 
     var favListPath = ACTION_PATH+FAV_LIST_PATH+JSON.parse(data).accountId;
 
-    getAjax(favListPath, function(data){
-
-        var favListData = JSON.parse(data)
-        // console.log('getFavList:::');
-        // console.log(favListData);
-
-        printFavWatchLists(favListData, FAV_LIST_BLOCK_ID )
+    getAjax(favListPath, function(data, statusCode){
+        if(statusCode === 200){
+            var favListData = JSON.parse(data)
+            printFavWatchLists(favListData, FAV_LIST_BLOCK_ID )
+        } else {
+            notify("Error getting favlist")
+        }
     });
-
 }
 
 function getWatchList(data){
 
-    // console.log(JSON.parse(data).accountId);
-
     var watchListPath = ACTION_PATH+WATCH_LIST_PATH+JSON.parse(data).accountId;
 
-    getAjax(watchListPath, function(data){
-
-        var watchListData = JSON.parse(data)
-        // console.log('getWatchList:::');
-        // console.log(watchListData);
-
-        printFavWatchLists(watchListData, WATCH_LIST_BLOCK_ID )
+    getAjax(watchListPath, function(data, statusCode){
+        if(statusCode === 200){
+            var watchListData = JSON.parse(data)
+            printFavWatchLists(watchListData, WATCH_LIST_BLOCK_ID )
+        }else {
+            notify("Error getting watchlist")
+        }
     });
-
 }
 
-function clearOnDelete(){
-    document.getElementById(FAV_LIST_BLOCK_ID).innerHTML = "";
-    document.getElementById(WATCH_LIST_BLOCK_ID).innerHTML = "";
+function clearAllBlocks(){
+    clearBlocks();
     document.getElementById(REVIEW_LIST_BLOCK_ID).innerHTML = "";
     document.getElementById(CREATE_REVIEW_FORM_ID).innerHTML = "";
     document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
+}
+
+function clearBlocks(){
+    document.getElementById(FAV_LIST_BLOCK_ID).innerHTML = "";
+    document.getElementById(WATCH_LIST_BLOCK_ID).innerHTML = "";
 }
 
 function printFavWatchLists(listData, blockId ){
@@ -84,49 +91,35 @@ function printFavWatchLists(listData, blockId ){
         div2.appendChild(button)
         div.appendChild(div2);
     });
-
     container.appendChild(div);
-
 }
 
-function showReviewsBytitleId(){
+var reviewIntervalID;
+function showReviewsBytitleId(){    //COMPLETE
     var titleId = this.getAttribute('titleId')
     var accountId = this.getAttribute('accountId')
-    // console.log(accountId)
-
     var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+titleId;
 
-    getAjax(reviewsPath, function(data){
+    document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
+    var callback = ()=>{
+        getAjax(reviewsPath, function(data, statusCode){
+                if (statusCode === 200){
+                    var dataJSON = JSON.parse(data)
+                    printReviewsByTitleId(dataJSON, accountId, REVIEW_LIST_BLOCK_ID )
+                } else {
+                    notify("Error while retrieving reviews")
+                }
+        });
+    }
+    clearInterval(reviewIntervalID);
 
-        var reviewsListData = JSON.parse(data)
-        // console.log('reveiwsListData:::');
-        // console.log(reviewsListData);
+    callback();
+    reviewIntervalID = setInterval(callback, 1000);
 
-        printReviewsByTitleId(reviewsListData, accountId, REVIEW_LIST_BLOCK_ID )
-    });
-
-}
-
-function refreshReviewsByTitleId(titleId, accountId){
-
-    var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+titleId;
-
-    getAjax(reviewsPath, function(data){
-        if(data){
-            var reviewsListData = JSON.parse(data)
-            // console.log('reveiwsListData:::');
-            // console.log(reviewsListData);
-            // console.log("got the date from refresh")
-            printReviewsByTitleId(reviewsListData, accountId, REVIEW_LIST_BLOCK_ID )
-        }
-
-    });
 }
 
 function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
-
-
-    document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
+    // document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
 
     var container = document.getElementById(blockId);
     container.innerHTML = "";
@@ -159,7 +152,6 @@ function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
             deleteButton.addEventListener("click", deleteReview)
             div2.appendChild(deleteButton)
         }
-
         div.appendChild(div2);
     });
 
@@ -168,6 +160,7 @@ function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
 }
 
 function showCreateReviewForm() {
+    document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
 
     var titleId = this.getAttribute('titleId')
     var accountId = this.getAttribute('accountId')
@@ -247,22 +240,20 @@ function createReview(){
     var accountId = this.getAttribute('accountId')
     var reviewText = document.getElementById("reviewText").value
 
-
-    // postAjax(createReviewPath,  { accountId: accountId, review: reviewText, titleId: titleId } , function(data){
-    postAjax(createReviewPath,  { review: reviewText, titleId: titleId } , function(data){
-        if(data){
-            console.log("Review Creation Success")
-            // Clear input field for create
+    postAjax(createReviewPath,  { review: reviewText, titleId: titleId } , function(data, statusCode){
+        if (statusCode === 201){
             document.getElementById("reviewText").value = ""
+            notify("Successfully created a review")
+        } else {
+            if(data)
+            {
+                var dataJSON = JSON.parse(data)
+                notify(dataJSON.error)
+            } else {
+                notify("Unknown error while creating a review")
+            }
         }
     });
-    // Clear input field for create
-    document.getElementById("reviewText").value = ""
-
-    setTimeout(()=>{
-        refreshReviewsByTitleId(titleId, accountId)
-    }, 500)
-
 }
 
 function editReview(){
@@ -278,34 +269,40 @@ function editReview(){
     var createReviewForm = document.getElementById(CREATE_REVIEW_FORM_ID)
     createReviewForm.classList.remove("hideMe")
 
-    // putAjax(editReviewPath,  {reviewId: reviewId, accountId: accountId, review: editReviewText, titleId: titleId } , function(data){
-    putAjax(editReviewPath,  {reviewId: reviewId, review: editReviewText, titleId: titleId } , function(data){
-        if(data){
-            console.log("Review Creation Success")
-        }
+    putAjax(editReviewPath,  {reviewId: reviewId, review: editReviewText, titleId: titleId } , function(data, statusCode){
+        if(statusCode === 200){
+            notify(JSON.parse(data).message)
+            document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
+        } else {
+                if(data)
+                {
+                    var dataJSON = JSON.parse(data)
+                    notify(dataJSON.error)
+                } else {
+                    notify("Unknown error while updating a review")
+                }
+            }
     });
-    setTimeout(()=>{
-        refreshReviewsByTitleId(titleId, accountId)
-    }, 500)
 }
 
 function deleteReview(){
 
-    var titleId = this.getAttribute('titleId')
-    var accountId = this.getAttribute('accountId')
     var reviewId = this.getAttribute('reviewId')
-
     var deleteReviewPath = ACTION_PATH+REVIEW_PATH;
 
-    deleteAjax(deleteReviewPath,  { reviewId: reviewId, accountId: accountId } , function(data){
-    // deleteAjax(deleteReviewPath,  { reviewId: reviewId } , function(data){
-        if(data){
-            console.log("Review Deletion Success")
-            // refreshReviewsBytitleId(titleId, userId)
+    deleteAjax(deleteReviewPath,  { reviewId: reviewId } , function(data, statusCode){
+        if(statusCode === 200){
+            notify("Review Deletion Success");
+            document.getElementById(CREATE_REVIEW_FORM_ID).classList.remove("hideMe")
+            document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = ""
+        } else {
+            if(data)
+            {
+                var dataJSON = JSON.parse(data)
+                notify(dataJSON.error)
+            } else {
+                notify("Unknown error while deleting a review")
+            }
         }
     });
-    setTimeout(()=>{
-        refreshReviewsByTitleId(titleId, accountId)
-    }, 500)
-
 }

@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var signInForm = document.querySelector('.sign-in-form');
     var signOutButton = document.getElementById("signout-button");
     var signUpButton = document.getElementById("sign-up-button");
+    var intervalID;
 
     var ACTION_PATH = "http://localhost:8000/";
 
@@ -14,46 +15,31 @@ document.addEventListener("DOMContentLoaded", function(){
         var password  =document.getElementById("user-sign-in-password").value;
         var loginPath = ACTION_PATH+'api/accounts/tokens';
 
-        postAjax(loginPath,  { username: login, password: password, grant_type:'password' } , function(data){
-            // console.log("This is data")
-            // console.log(data);
-            if( JSON.parse(data).isLoggedIn == true ){
-                // should be in callback function after ajax success or in it
-                // console.log(JSON.parse(data).accountId)
-                successFullAjax(data);
+        postAjax(loginPath,  { username: login, password: password, grant_type:'password' } , function(data, statusCode){
+            var dataJSON = JSON.parse(data)
+            if (statusCode === 200){
+                notify(dataJSON.message)
+                if(dataJSON.isLoggedIn){
+                    successFullAjax(data);
+                }
+            } else {
+                notify(dataJSON.error)
             }
         });
-
-        // console.log('login');
-        // console.log('login is'+login);
-        // console.log('password is'+password);
-
-        // checkCookie();
-
     };
 
     function logout(){
 
         document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-        clearOnDelete();
+        clearAllBlocks();
 
-        // logoutPath = ACTION_PATH+'api/accounts/sign-out';
-        //
-        // postAjax(logoutPath,  false , function(data){
-        //
-        //     if(JSON.parse(data).message == "Signed out"){
-        //
-        //         // alert("Signed out");
-        //         document.location.href="/";
-        //     }
-        //
-        //
-        // });
+        clearInterval(intervalID);
 
         signUpForm.classList.remove('hideMe');
         signInForm.classList.remove('hideMe');
         signOutButton.classList.add('hideMe');
 
+        notify("Successfully logged out!")
     }
 
     function userRegister(){
@@ -66,52 +52,50 @@ document.addEventListener("DOMContentLoaded", function(){
         var passwordNew = document.getElementById("user-sign-up-password").value;
         var fullname = document.getElementById("user-sign-up-fullname").value;
 
-        postAjax(registerPath,  { username: loginNew, fullname: fullname, password: passwordNew } , function(data){
+        postAjax(registerPath,  { username: loginNew, fullname: fullname, password: passwordNew } , function(data, statusCode){
+            var dataJSON = JSON.parse(data)
 
-            // console.log(data);
-            if( JSON.parse(data).isLoggedIn == true ){
-
-                successFullAjax(data);
-
+            if (statusCode === 200){
+                notify(dataJSON.message)
+                if(dataJSON.isLoggedIn){
+                    document.getElementById("user-sign-up-username").value = ""
+                    document.getElementById("user-sign-up-password").value = ""
+                    document.getElementById("user-sign-up-fullname").value = ""
+                    successFullAjax(data);
+                }
+            } else {
+                notify(dataJSON.error)
             }
-
         });
 
         signUpForm.classList.remove('hideMe');
         signInForm.classList.remove('hideMe');
-
     }
 
     function successFullAjax(data){
 
         afterLogin();
-        getLists(data);
+        refreshLists(data);
+        clearInterval(intervalID);
+        intervalID = setInterval(()=>{
+            refreshLists(data)
+            }, 2000);
     }
 
     function afterLogin(){
-
-        // console.log('afterLogin');
         hideSignUp();
-
     };
 
     function hideSignUp(){
-
         signOutButton.classList.remove('hideMe');
         signUpForm.classList.add('hideMe');
         signInForm.classList.add('hideMe');
-
-
     }
 
     signInButton.addEventListener('click' , login);
-
     signOutButton.addEventListener('click' , logout);
-
     signUpButton.addEventListener('click' , userRegister);
 
     signOutButton.classList.add('hideMe');
-
-    // console.log('AUTH FILE')
 
 })
