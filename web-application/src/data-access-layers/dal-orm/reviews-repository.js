@@ -3,20 +3,20 @@ const { rejects } = require("assert")
 module.exports = function({models}){
     return{
         /*************************************** PUBLIC REVIEWS**************************************** */
-        createPublicReview: function(accountId, review, movieId, callback){
+        createReview: function(accountId, review, movieId, callback){
 
             models.Reviews.create({
                 accountId: accountId,
                 content: review,
                 movieId: movieId
-            }).then(function(PublicReview){
-                callback([], PublicReview.dataValues.id)
+            }).then(function(Review){
+                callback([], Review.dataValues.id)
             }).catch(function(error){
                 callback(['databaseError'], null)
             })
         },
 
-        updatePublicReview: function(id, accountId, review, movieId, callback) {
+        updateReview: function(id, accountId, review, movieId, callback) {
             models.Reviews.update({
                 content: review,
                 movieId: movieId
@@ -33,7 +33,7 @@ module.exports = function({models}){
             })
         },
 
-        deletePublicReview: function(id, accountId, callback) {
+        deleteReview: function(id, accountId, callback) {
             models.Reviews.destroy({
                 where: {
                     id: id,
@@ -45,7 +45,7 @@ module.exports = function({models}){
             })
         },
 
-        getPublicReviewById: function(reviewId, callback){
+        getReviewById: function(reviewId, callback){
             models.Reviews.findOne({
                 where: {
                     id: reviewId
@@ -69,7 +69,7 @@ module.exports = function({models}){
                 callback(['databaseError'], null)
             })
         },
-        getAllPublicReviews: function(callback){
+        getAllReviews: function(callback){
             models.Reviews.findAll({
 				raw: true
             }).then(function(reviews){

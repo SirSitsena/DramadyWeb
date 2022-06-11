@@ -34,8 +34,8 @@ module.exports = function({}){
         /*
 			Gets a movie from the API using its title id.
 		*/
-        getMovieByTitleId: function(titleId, callback){
-            request('https://imdb-api.com/en/API/Title/'+API_KEY_1+'/'+titleId, { json:true }, (err, res, body) => {
+        getMovieByMovieId: function(movieId, callback){
+            request('https://imdb-api.com/en/API/Title/'+API_KEY_1+'/'+movieId, { json:true }, (err, res, body) => {
 
                 // TODOO: error handling
                 if(err != null){

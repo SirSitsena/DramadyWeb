@@ -49,11 +49,11 @@ module.exports = function({apiRepository, favouritesRepository, watchlistReposit
         },
 
         // Get movie by its imdb id:
-        getMovieByTitleId: function(titleId, callback){
-			if(titleId != null){
-				apiRepository.getMovieByTitleId(titleId, callback)
+        getMovieByMovieId: function(movieId, callback){
+			if(movieId != null){
+				apiRepository.getMovieByMovieId(movieId, callback)
 			} else {
-				callback(["Invalid titleId"], null)
+				callback(["Invalid movieId"], null)
 			}
         }
     }

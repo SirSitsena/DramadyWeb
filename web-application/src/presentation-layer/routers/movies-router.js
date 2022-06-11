@@ -127,7 +127,7 @@ module.exports = function({movieManager, apiManager}){
 		}
 	})
 
-	router.post('/review/create', function(request, response){
+	router.post('/review/', function(request, response){
 		if(request.session.accountId){
 			const accountId = request.session.accountId
 			const review = request.body.review
@@ -147,12 +147,6 @@ module.exports = function({movieManager, apiManager}){
 				errors: ["Must be logged in to view this page"]
 			}
 			response.render('review-create.hbs', model)
-		}
-	})
-
-	router.get('/review/update/:titleId', function(request, response){
-		if(request.session.accountId){
-			
 		}
 	})
 

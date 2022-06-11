@@ -1,7 +1,7 @@
 module.exports = function({db}){
     return {
-        /*************************************** PUBLIC REVIEWS**************************************** */
-        createPublicReview: function(accountId, review, movieId, callback){
+        /*************************************** REVIEWS**************************************** */
+        createReview: function(accountId, review, movieId, callback){
             var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
             const query = 'INSERT INTO reviews (accountId, content, movieId, createdAt) VALUES (?, ?, ?, ?)'
             const values = [accountId, review, movieId, date]
@@ -15,7 +15,7 @@ module.exports = function({db}){
             })
         },
 
-        updatePublicReview: function(id, accountId, review, movieId, callback) {
+        updateReview: function(id, accountId, review, movieId, callback) {
             var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
             const query = 'UPDATE reviews SET content = ?, movieId = ?, updatedAt = ? WHERE id = ? AND accountId = ?'
             const values = [review, movieId, date, id, accountId]
@@ -29,7 +29,7 @@ module.exports = function({db}){
             })
         },
 
-        deletePublicReview: function(reviewId, accountId, callback) {
+        deleteReview: function(reviewId, accountId, callback) {
             const query = 'DELETE FROM reviews WHERE accountId = ? and id = ?'
             const values = [accountId, reviewId]
 
@@ -42,7 +42,7 @@ module.exports = function({db}){
             })
         },
 
-        getPublicReviewById: function(reviewId, callback){
+        getReviewById: function(reviewId, callback){
             const query = 'SELECT * FROM reviews WHERE id = ?'
             const values = [reviewId]
 
