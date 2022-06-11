@@ -1,5 +1,5 @@
 
-module.exports = function({movieTop250Repository, movieTrendingRepository, favouritesRepository, watchlistRepository, reviewsRepository, apiRepository}){
+module.exports = function({movieTop250Repository, movieTrendingRepository, favouritesRepository, watchlistRepository, reviewsRepository, reviewValidator}){
 	return {
 		getAllMoviesFromTop250: function(accountId, callback){
 			movieTop250Repository.getAllMovies(function(errors, movies){
@@ -167,10 +167,20 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 		/* 						PUBLIC REVIEWS 					*/
 
 		createReview: function(accountId, review, movieId, callback){
+			const validatorErrors = reviewValidator.getErrorsNewReview(review)
+			if(0 < validatorErrors.length){
+				callback(validatorErrors, null)
+				return
+			}
 			reviewsRepository.createReview(accountId, review, movieId, callback)
 		},
 
 		updateReview: function(id, accountId, review, movieId, callback){
+			const validatorErrors = reviewValidator.getErrorsNewReview(review)
+			if(0 < validatorErrors.length){
+				callback(validatorErrors, null)
+				return
+			}
 			reviewsRepository.updateReview(id, accountId, review, movieId, callback)
 		},
 

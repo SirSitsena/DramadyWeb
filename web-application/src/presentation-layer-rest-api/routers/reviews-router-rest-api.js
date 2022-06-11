@@ -43,6 +43,7 @@ module.exports = function({movieManager}){
                         const movieId = request.body.movieId
                         movieManager.createReview(payload.accountId, review, movieId, function(error, results){
                             if(error.length > 0){
+                                console.log(error)
                                 response.status(500).end()
                             } else {
                                 response.setHeader("Location", "/api/reviews/"+results)
@@ -67,6 +68,7 @@ module.exports = function({movieManager}){
                             const review = request.body.review
                             const movieId = request.body.movieId
                             movieManager.createReview(payload.accountId, review, movieId, function(error, results){
+                                console.log(error)
                                 if(error.length > 0){
                                     response.status(500).end()
                                 } else {
