@@ -17,9 +17,7 @@
     </form>
     {{#if movies}}
         {{#each movies}}
-
             <div class="box">
-
                 <article class="media">
                     <div class="media-left">
                         <figure class="image is-64x64">
@@ -30,45 +28,42 @@
                         <div class="content">
                             <p>
                                 <strong>{{title}}</strong>
+                                {{#if ../session.accountId}}
+                                    {{#if this.isFavourited}}
+                                        <span class="icon" style="float:right; color: #00d1b2;">
+                                            <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                            </a>
+                                        </span>
+                                    {{else}}
+                                        <span class="icon" style="float:right;">
+                                            <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
+                                                <i class="fa fa-thumbs-o-up"></i>
+                                            </a>
+                                        </span>
+                                    {{/if}}
 
-                                {{#if this.isFavourited}}
-                                    <span class="icon" style="float:right; color: #00d1b2;">
-                                                <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
-                                                    <i class="fas fa-solid fa-star"></i>
-                                                </a>
-                                            </span>
-                                {{else}}
-                                    <span class="icon" style="float:right;">
-                                                <a href="/movies/favourite/{{id}}/{{title}}" style="color: inherit;">
-                                                    <i class="fas fa-thin fa-star"></i>
-                                                </a>
-                                            </span>
-                                {{/if}}
-
-                                {{#if this.isWatchlisted}}
-                                    <span class="icon" style="float:right; color:#00d1b2;">
-                                                <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
-                                                    <i class="fas fa-solid fa-eye"></i>
-                                                </a>
-                                            </span>
-                                {{else}}
-                                    <span class="icon" style="float:right;">
-                                                <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
-                                                    <i class="fas fa-solid fa-eye"></i>
-                                                </a>
-                                            </span>
+                                    {{#if this.isWatchlisted}}
+                                        <span class="icon" style="float:right; color:#00d1b2;">
+                                            <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </a>
+                                        </span>
+                                    {{else}}
+                                        <span class="icon" style="float:right;">
+                                            <a href="/movies/watchlist/{{id}}/{{title}}" style="color: inherit;">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </span>
+                                    {{/if}}
                                 {{/if}}
                                 <br>
-
-
                             </p>
                             <div class="limit-text js-modal-trigger" data-target="modal-js-{{id}}">{{description}}</div>
-
                         </div>
                     </div>
                 </article>
             </div>
-
         {{/each}}
     {{/if}}
 {{/if}}

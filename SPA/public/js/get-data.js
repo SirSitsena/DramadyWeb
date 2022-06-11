@@ -1,20 +1,25 @@
-var ACTION_PATH = "http://localhost:8000/";
+const ACTION_PATH = "http://localhost:8000/";
 //Fav and Watch lists paths
-var FAV_LIST_PATH = "api/movies/favourites?accountId=";
-var WATCH_LIST_PATH = "api/movies/watchlisted?accountId=";
+const FAV_LIST_PATH = "api/movies/favourites?accountId=";
+const WATCH_LIST_PATH = "api/movies/watchlisted?accountId=";
 //Review paths
-var GET_REVIEWS_BY_MOVIE_ID_PATH = "api/reviews/byTitleId/";
-var REVIEW_PATH = 'api/reviews/';
+const REVIEW_PATH = 'api/reviews/';
+const GET_REVIEWS_BY_MOVIE_ID_PATH = ACTION_PATH+REVIEW_PATH+"byMovieId/";
+const CREATE_REVIEW_PATH = ACTION_PATH+REVIEW_PATH;
+const EDIT_REVIEW_PATH = ACTION_PATH+REVIEW_PATH;
+const DELETE_REVIEW_PATH = ACTION_PATH+REVIEW_PATH;
 //Data blocks
-var FAV_LIST_BLOCK_ID = "favListBlock";
-var WATCH_LIST_BLOCK_ID = "watchListBlock";
-var REVIEW_LIST_BLOCK_ID = "reviewsBlock";
-var CREATE_REVIEW_FORM_ID = "createReviewForm";
-var UPDATE_REVIEW_FORM_ID = "updateReviewForm";
-var NOTIFICATION_BLOCK_ID = "notificationBlock";
-
-// For easy access of the currently chosen movie's title
+const FAV_LIST_BLOCK_ID = "favListBlock";
+const WATCH_LIST_BLOCK_ID = "watchListBlock";
+const REVIEW_LIST_BLOCK_ID = "reviewsBlock";
+const CREATE_REVIEW_FORM_ID = "createReviewForm";
+const UPDATE_REVIEW_FORM_ID = "updateReviewForm";
+const NOTIFICATION_BLOCK_ID = "notificationBlock";
+// For easy access to currently chosen movie's title
 var SELECTED_MOVIE_TITLE = ""
+// Various
+const REFRESH_RATE_FAV_WATCH_BLOCKS = "3000"
+const REFRESH_RATE_REVIEWS = "1500"
 
 function refreshLists(data){
     clearBlocks();
@@ -23,37 +28,43 @@ function refreshLists(data){
 };
 
 var notifyID;
-function notify(message){
+function notify(message, color){
     clearTimeout(notifyID);
+    if(color){
+        document.getElementById(NOTIFICATION_BLOCK_ID).style.color = color;
+    } else {
+        document.getElementById(NOTIFICATION_BLOCK_ID).style.color = "black";
+    }
     document.getElementById(NOTIFICATION_BLOCK_ID).innerText = message;
     notifyID = setTimeout(()=>{
         document.getElementById(NOTIFICATION_BLOCK_ID).innerText = "";
-    }, 1500)
+    }, REFRESH_RATE_FAV_WATCH_BLOCKS)
 }
 
 function getFavList(data){
-    var favListPath = ACTION_PATH+FAV_LIST_PATH+JSON.parse(data).accountId;
+
+    let favListPath = ACTION_PATH+FAV_LIST_PATH+JSON.parse(data).accountId;
 
     getAjax(favListPath, function(data, statusCode){
         if(statusCode === 200){
-            var favListData = JSON.parse(data)
+            const favListData = JSON.parse(data)
             printFavWatchLists(favListData, FAV_LIST_BLOCK_ID )
         } else {
-            notify("Error getting favlist")
+            notify("Error getting favlist", "red")
         }
     });
 }
 
 function getWatchList(data){
 
-    var watchListPath = ACTION_PATH+WATCH_LIST_PATH+JSON.parse(data).accountId;
+    let watchListPath = ACTION_PATH+WATCH_LIST_PATH+JSON.parse(data).accountId;
 
     getAjax(watchListPath, function(data, statusCode){
         if(statusCode === 200){
             var watchListData = JSON.parse(data)
             printFavWatchLists(watchListData, WATCH_LIST_BLOCK_ID )
         }else {
-            notify("Error getting watchlist")
+            notify("Error getting watchlist", "red")
         }
     });
 }
@@ -78,14 +89,14 @@ function printFavWatchLists(listData, blockId ){
     listData.forEach(function (movie) {
         var div2 = document.createElement('div');
 
-        div2.textContent = 'Title: ' + movie.movieTitle + ', titleId: ' + movie.titleId + ', accountId: ' + movie.accountId;
+        div2.textContent = 'Title: ' + movie.movieTitle + ', movieId: ' + movie.movieId + ', accountId: ' + movie.accountId;
         var button = document.createElement('button')
         button.innerText = "Review"
         SELECTED_MOVIE_TITLE = movie.movieTitle
         button.setAttribute('accountId', movie.accountId)
-        button.setAttribute('titleId', movie.titleId)
+        button.setAttribute('movieId', movie.movieId)
         button.setAttribute('movieTitle', movie.movieTitle)
-        button.addEventListener("click", showReviewsBytitleId)
+        button.addEventListener("click", showReviewsByMovieId)
         button.addEventListener("click", showCreateReviewForm)
         div2.appendChild(button)
         div.appendChild(div2);
@@ -94,30 +105,30 @@ function printFavWatchLists(listData, blockId ){
 }
 
 var reviewIntervalID;
-function showReviewsBytitleId(){    //COMPLETE
-    var titleId = this.getAttribute('titleId')
-    var accountId = this.getAttribute('accountId')
-    var reviewsPath = ACTION_PATH+GET_REVIEWS_BY_MOVIE_ID_PATH+titleId;
+function showReviewsByMovieId(){    //COMPLETE
+    let movieId = this.getAttribute('movieId')
+    let accountId = this.getAttribute('accountId')
+    let reviewsPath = GET_REVIEWS_BY_MOVIE_ID_PATH+movieId;
 
     document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
     var callback = ()=>{
         getAjax(reviewsPath, function(data, statusCode){
-                if (statusCode === 200){
-                    var dataJSON = JSON.parse(data)
-                    printReviewsByTitleId(dataJSON, accountId, REVIEW_LIST_BLOCK_ID )
-                } else {
-                    notify("Error while retrieving reviews")
-                }
+            if (statusCode === 200){
+                var dataJSON = JSON.parse(data)
+                printReviewsByMovieId(dataJSON, accountId, REVIEW_LIST_BLOCK_ID )
+            } else {
+                notify("Error while retrieving reviews", "red")
+            }
         });
     }
     clearInterval(reviewIntervalID);
 
     callback();
-    reviewIntervalID = setInterval(callback, 1000);
+    reviewIntervalID = setInterval(callback, REFRESH_RATE_REVIEWS);
 
 }
 
-function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
+function printReviewsByMovieId(reviewsListData, loggedUserId, blockId){
     // document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
 
     var container = document.getElementById(blockId);
@@ -129,14 +140,14 @@ function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
         var div2 = document.createElement('div');
         // console.log(review)
         div2.textContent = 'ReviewId: ' + review.id + ', ReviewBody: ' + review.content + ', accountId: ' + review.accountId;
-        // console.log(review.accountId, loggedUserId)
+        console.log(review.accountId, loggedUserId, "last")
         if(review.accountId == loggedUserId){
 
             // Edit Button
             var editButton = document.createElement('button')
             editButton.innerText = "Edit"
             editButton.setAttribute('accountId', loggedUserId)
-            editButton.setAttribute('titleId', review.titleId)
+            editButton.setAttribute('movieId', review.movieId)
             editButton.setAttribute('reviewId', review.id)
             editButton.setAttribute('content', review.content)
             editButton.addEventListener("click", showEditReviewForm)
@@ -146,7 +157,7 @@ function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
             var deleteButton = document.createElement('button')
             deleteButton.innerText = "Delete"
             deleteButton.setAttribute('accountId', loggedUserId)
-            deleteButton.setAttribute('titleId', review.titleId)
+            deleteButton.setAttribute('movieId', review.movieId)
             deleteButton.setAttribute('reviewId', review.id)
             deleteButton.addEventListener("click", deleteReview)
             div2.appendChild(deleteButton)
@@ -161,7 +172,7 @@ function printReviewsByTitleId(reviewsListData, loggedUserId, blockId){
 function showCreateReviewForm() {
     document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
 
-    var titleId = this.getAttribute('titleId')
+    var movieId = this.getAttribute('movieId')
     var accountId = this.getAttribute('accountId')
     var movieTitle = this.getAttribute('movieTitle')
 
@@ -174,14 +185,14 @@ function showCreateReviewForm() {
     container.classList.remove('hideMe')
 
     var div = document.createElement('div');
-    div.textContent = 'Now you can create a review for: ' + movieTitle + ', with titleId: ' + titleId;
+    div.textContent = 'Now you can create a review for: ' + movieTitle + ', with movieId: ' + movieId;
 
     var input = document.createElement('textarea')
     input.id = "reviewText"
 
     var createReviewButton = document.createElement('button');
     createReviewButton.innerText = "Create"
-    createReviewButton.setAttribute('titleId', titleId)
+    createReviewButton.setAttribute('movieId', movieId)
     createReviewButton.setAttribute('accountId', accountId)
 
     createReviewButton.addEventListener('click',createReview)
@@ -196,11 +207,11 @@ function showCreateReviewForm() {
 
 function showEditReviewForm() {
 
-    var titleId = this.getAttribute('titleId')
-    var accountId = this.getAttribute('accountId')
-    var movieTitle = this.getAttribute('movieTitle')
-    var reviewId = this.getAttribute('reviewId')
-    var content = this.getAttribute('content')
+    let movieId = this.getAttribute('movieId')
+    let accountId = this.getAttribute('accountId')
+    // let movieTitle = this.getAttribute('movieTitle')
+    let reviewId = this.getAttribute('reviewId')
+    let content = this.getAttribute('content')
 
 
     var container = document.getElementById(UPDATE_REVIEW_FORM_ID);
@@ -209,7 +220,7 @@ function showEditReviewForm() {
     document.getElementById(CREATE_REVIEW_FORM_ID).classList.add('hideMe');
 
     var div = document.createElement('div');
-    div.textContent = 'Edit your review for: ' + SELECTED_MOVIE_TITLE + ', with titleId: ' + titleId;
+    div.textContent = 'Edit your review for: ' + SELECTED_MOVIE_TITLE + ', with movieId: ' + movieId;
 
     var input = document.createElement('textarea')
     input.id = "editReviewText"
@@ -217,7 +228,7 @@ function showEditReviewForm() {
 
     var editReviewButton = document.createElement('button');
     editReviewButton.innerText = "Update"
-    editReviewButton.setAttribute('titleId', titleId)
+    editReviewButton.setAttribute('movieId', movieId)
     editReviewButton.setAttribute('accountId', accountId)
     editReviewButton.setAttribute('reviewId', reviewId)
 
@@ -233,23 +244,23 @@ function showEditReviewForm() {
 
 function createReview(){
 
-    var createReviewPath = ACTION_PATH+REVIEW_PATH;
 
-    var titleId = this.getAttribute('titleId')
-    var accountId = this.getAttribute('accountId')
-    var reviewText = document.getElementById("reviewText").value
 
-    postAjax(createReviewPath,  { review: reviewText, titleId: titleId } , function(data, statusCode){
+    let movieId = this.getAttribute('movieId')
+    // let accountId = this.getAttribute('accountId')
+    let reviewText = document.getElementById("reviewText").value
+
+    postAjax(CREATE_REVIEW_PATH,  { review: reviewText, movieId: movieId } , function(data, statusCode){
         if (statusCode === 201){
             document.getElementById("reviewText").value = ""
-            notify("Successfully created a review")
+            notify("Successfully created a review", "green")
         } else {
             if(data)
             {
                 var dataJSON = JSON.parse(data)
-                notify(dataJSON.error)
+                notify(dataJSON.error, "red")
             } else {
-                notify("Unknown error while creating a review")
+                notify("Unknown error while creating a review", "red")
             }
         }
     });
@@ -257,50 +268,50 @@ function createReview(){
 
 function editReview(){
 
-    var titleId = this.getAttribute('titleId')
-    var accountId = this.getAttribute('accountId')
-    var reviewId = this.getAttribute('reviewId')
-    var editReviewText = document.getElementById("editReviewText").value
+    let movieId = this.getAttribute('movieId')
+    // let accountId = this.getAttribute('accountId')
+    let reviewId = this.getAttribute('reviewId')
+    let editReviewText = document.getElementById("editReviewText").value
 
-    var editReviewPath = ACTION_PATH+REVIEW_PATH;
+
     // Show Create Review Form after editing an existing one
 
-    var createReviewForm = document.getElementById(CREATE_REVIEW_FORM_ID)
-    createReviewForm.classList.remove("hideMe")
 
-    putAjax(editReviewPath,  {reviewId: reviewId, review: editReviewText, titleId: titleId } , function(data, statusCode){
+
+    putAjax(EDIT_REVIEW_PATH,  {reviewId: reviewId, review: editReviewText, movieId: movieId } , function(data, statusCode){
         if(statusCode === 200){
-            notify(JSON.parse(data).message)
+            notify(JSON.parse(data).message, "green")
             document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
+            document.getElementById(CREATE_REVIEW_FORM_ID).classList.remove("hideMe")
         } else {
-                if(data)
-                {
-                    var dataJSON = JSON.parse(data)
-                    notify(dataJSON.error)
-                } else {
-                    notify("Unknown error while updating a review")
-                }
+            if(data)
+            {
+                var dataJSON = JSON.parse(data)
+                notify(dataJSON.error, "red")
+            } else {
+                notify("Unknown error while updating a review", "red")
             }
+        }
     });
 }
 
 function deleteReview(){
 
     var reviewId = this.getAttribute('reviewId')
-    var deleteReviewPath = ACTION_PATH+REVIEW_PATH;
 
-    deleteAjax(deleteReviewPath,  { reviewId: reviewId } , function(data, statusCode){
+
+    deleteAjax(DELETE_REVIEW_PATH,  { reviewId: reviewId } , function(data, statusCode){
         if(statusCode === 200){
-            notify("Review Deletion Success");
+            notify("Review Deletion Success", "green");
             document.getElementById(CREATE_REVIEW_FORM_ID).classList.remove("hideMe")
             document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = ""
         } else {
             if(data)
             {
                 var dataJSON = JSON.parse(data)
-                notify(dataJSON.error)
+                notify(dataJSON.error, "red")
             } else {
-                notify("Unknown error while deleting a review")
+                notify("Unknown error while deleting a review", "red")
             }
         }
     });

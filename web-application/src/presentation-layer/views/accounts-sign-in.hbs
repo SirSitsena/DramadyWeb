@@ -12,6 +12,11 @@
         <div class="notification is-dark mr-bottom">
             <h2>Signed in.</h2>
         </div>
+        <script>
+            setTimeout(function(){
+                window.location = '/'
+            }, 3000)
+        </script>
     {{else}}
         <h2>Sign in here:</h2>
         <form action="/accounts/sign-in" method="POST" class="sign-up">

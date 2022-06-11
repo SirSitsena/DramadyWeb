@@ -2,7 +2,6 @@
 <!--    <ul>-->
         {{#each movies}}
             <div class="box">
-
                 <article class="media">
                     <div class="media-left">
                         <figure class="image is-64x64">
@@ -13,36 +12,36 @@
                         <div class="content">
                             <p>
                                 <strong>{{fullTitle}}</strong> <span>IMDB: {{imDbRating}}</span>
-                                    {{#if this.isFavourited}}
-                                        <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </a>
-                                        </span>
-                                    {{else}}
-                                        <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-thumbs-o-up"></i>
-                                            </a>
-                                        </span>
-                                    {{/if}}
+                                    {{#if ../session.accountId}}
+                                        {{#if this.isFavourited}}
+                                            <span class="icon" style="float:right; color: #00d1b2;">
+                                                <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                                </a>
+                                            </span>
+                                        {{else}}
+                                            <span class="icon" style="float:right;">
+                                                <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-thumbs-o-up"></i>
+                                                </a>
+                                            </span>
+                                        {{/if}}
 
-                                    {{#if this.isWatchlisted}}
-                                        <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-eye-slash"></i>
-                                            </a>
-                                        </span>
-                                    {{else}}
-                                        <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </span>
+                                        {{#if this.isWatchlisted}}
+                                            <span class="icon" style="float:right; color:#00d1b2;">
+                                                <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-eye-slash"></i>
+                                                </a>
+                                            </span>
+                                        {{else}}
+                                            <span class="icon" style="float:right;">
+                                                <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </span>
+                                        {{/if}}
                                     {{/if}}
                                 <br>
-
-
                             </p>
                             <div class="limit-text js-modal-trigger" data-target="modal-js-{{id}}">{{plot}}</div>
 
@@ -64,32 +63,34 @@
                                 <div class="media-content">
 
                                     <strong>{{title}}</strong>
-                                    {{#if this.isFavourited}}
-                                        <span class="icon" style="float:right; color: #00d1b2;">
-                                            <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </a>
-                                        </span>
-                                    {{else}}
-                                        <span class="icon" style="float:right;">
-                                            <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-thumbs-o-up"></i>
-                                            </a>
-                                        </span>
-                                    {{/if}}
+                                    {{#if ../session.accountId}}
+                                        {{#if this.isFavourited}}
+                                            <span class="icon" style="float:right; color: #00d1b2;">
+                                                <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                                </a>
+                                            </span>
+                                        {{else}}
+                                            <span class="icon" style="float:right;">
+                                                <a href="/movies/favourite/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-thumbs-o-up"></i>
+                                                </a>
+                                            </span>
+                                        {{/if}}
 
-                                    {{#if this.isWatchlisted}}
-                                        <span class="icon" style="float:right; color:#00d1b2;">
-                                            <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-eye-slash"></i>
-                                            </a>
-                                        </span>
-                                    {{else}}
-                                        <span class="icon" style="float:right;">
-                                            <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </span>
+                                        {{#if this.isWatchlisted}}
+                                            <span class="icon" style="float:right; color:#00d1b2;">
+                                                <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-eye-slash"></i>
+                                                </a>
+                                            </span>
+                                        {{else}}
+                                            <span class="icon" style="float:right;">
+                                                <a href="/movies/watchlist/{{id}}/{{fullTitle}}" style="color: inherit;">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </span>
+                                        {{/if}}
                                     {{/if}}
                                     <p>year: {{year}}</p>
                                     <p>IMDB: {{imDbRating}}</p>

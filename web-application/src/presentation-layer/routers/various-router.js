@@ -11,10 +11,6 @@ module.exports = function ({movieManager}) {
         response.render("contact.hbs")
     })
 
-    router.get("/extraFeatures", function (request, response) {
-        response.render("deadline.hbs")
-    })
-
     router.get("/", function (request, response) {
         response.render("home.hbs")
     })

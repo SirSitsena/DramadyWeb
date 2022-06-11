@@ -1,29 +1,29 @@
 document.addEventListener("DOMContentLoaded", function(){
 
-    var signInButton = document.getElementById("user-sign-in");
-    var signUpForm = document.querySelector('.sign-up-form');
-    var signInForm = document.querySelector('.sign-in-form');
-    var signOutButton = document.getElementById("signout-button");
-    var signUpButton = document.getElementById("sign-up-button");
-    var intervalID;
+    const signInButton = document.getElementById("user-sign-in");
+    const signUpForm = document.querySelector('.sign-up-form');
+    const signInForm = document.querySelector('.sign-in-form');
+    const signOutButton = document.getElementById("signout-button");
+    const signUpButton = document.getElementById("sign-up-button");
 
-    var ACTION_PATH = "http://localhost:8000/";
+    const ACTION_PATH = "http://localhost:8000/";
+    const REGISTER_PATH = ACTION_PATH+'api/accounts';
 
     function login(){
 
-        var login = document.getElementById("user-sign-in-name").value;
-        var password  =document.getElementById("user-sign-in-password").value;
-        var loginPath = ACTION_PATH+'api/accounts/tokens';
+        let login = document.getElementById("user-sign-in-name").value;
+        let password  =document.getElementById("user-sign-in-password").value;
+        let loginPath = ACTION_PATH+'api/accounts/tokens';
 
         postAjax(loginPath,  { username: login, password: password, grant_type:'password' } , function(data, statusCode){
-            var dataJSON = JSON.parse(data)
+            const dataJSON = JSON.parse(data)
             if (statusCode === 200){
-                notify(dataJSON.message)
+                notify(dataJSON.message, "green")
                 if(dataJSON.isLoggedIn){
                     successFullAjax(data);
                 }
             } else {
-                notify(dataJSON.error)
+                notify(dataJSON.error, "red")
             }
         });
     };
@@ -32,31 +32,26 @@ document.addEventListener("DOMContentLoaded", function(){
 
         document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
         clearAllBlocks();
-
         clearInterval(intervalID);
-
+        clearInterval(reviewIntervalID);
         signUpForm.classList.remove('hideMe');
         signInForm.classList.remove('hideMe');
         signOutButton.classList.add('hideMe');
 
-        notify("Successfully logged out!")
+        notify("Successfully logged out!", "green")
     }
 
     function userRegister(){
 
+        let loginNew = document.getElementById("user-sign-up-username").value;
+        let passwordNew = document.getElementById("user-sign-up-password").value;
+        let fullname = document.getElementById("user-sign-up-fullname").value;
 
-        registerPath = ACTION_PATH+'api/accounts';
-
-
-        var loginNew = document.getElementById("user-sign-up-username").value;
-        var passwordNew = document.getElementById("user-sign-up-password").value;
-        var fullname = document.getElementById("user-sign-up-fullname").value;
-
-        postAjax(registerPath,  { username: loginNew, fullname: fullname, password: passwordNew } , function(data, statusCode){
-            var dataJSON = JSON.parse(data)
+        postAjax(REGISTER_PATH,  { username: loginNew, fullname: fullname, password: passwordNew } , function(data, statusCode){
+            const dataJSON = JSON.parse(data)
 
             if (statusCode === 200){
-                notify(dataJSON.message)
+                notify(dataJSON.message, "green")
                 if(dataJSON.isLoggedIn){
                     document.getElementById("user-sign-up-username").value = ""
                     document.getElementById("user-sign-up-password").value = ""
@@ -64,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     successFullAjax(data);
                 }
             } else {
-                notify(dataJSON.error)
+                notify(dataJSON.error, "red")
             }
         });
 
@@ -72,14 +67,14 @@ document.addEventListener("DOMContentLoaded", function(){
         signInForm.classList.remove('hideMe');
     }
 
+    var intervalID;
     function successFullAjax(data){
-
         afterLogin();
         refreshLists(data);
         clearInterval(intervalID);
         intervalID = setInterval(()=>{
             refreshLists(data)
-            }, 2000);
+            }, REFRESH_RATE_FAV_WATCH_BLOCKS);
     }
 
     function afterLogin(){
