@@ -22,29 +22,29 @@ module.exports = function({}){
     })
 
 
-    models.PublicReviews = sequelize.define('publicReviews', {
+    models.Reviews = sequelize.define('reviews', {
         content: Sequelize.TEXT,
-        titleId: Sequelize.TEXT
+        movieId: Sequelize.TEXT
     }, {
         freezeTableName: true
     })
-    models.PublicReviews.belongsTo(models.Accounts, { foreignKey: "accountId"})
+    models.Reviews.belongsTo(models.Accounts, { foreignKey: "accountId"})
 
     models.UserFavourites = sequelize.define('UserFavourites', {
-        titleId: Sequelize.TEXT,
+        movieId: Sequelize.TEXT,
         movieTitle: Sequelize.TEXT
     }, {
         freezeTableName: true
     })
     models.UserFavourites.belongsTo(models.Accounts, { foreignKey: "accountId"})
 
-    models.UserWatchlist = sequelize.define('UserWatchlist', {
-        titleId: Sequelize.TEXT,
+    models.UserWatchlistItem = sequelize.define('UserWatchlistItem', {
+        movieId: Sequelize.TEXT,
         movieTitle: Sequelize.TEXT
     }, {
         freezeTableName: true
     })
-    models.UserWatchlist.belongsTo(models.Accounts, { foreignKey: "accountId"})
+    models.UserWatchlistItem.belongsTo(models.Accounts, { foreignKey: "accountId"})
     
     models.Top250Movies = sequelize.define('top250Movies', {
         rank: Sequelize.INTEGER,

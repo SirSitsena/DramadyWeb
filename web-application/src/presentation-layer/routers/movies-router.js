@@ -43,12 +43,12 @@ module.exports = function({movieManager, apiManager}){
 		})
 	})
 
-	router.get('/favourite/:titleId/:movieTitle', function(request, response){
-		const titleId = request.params.titleId
+	router.get('/favourite/:movieId/:movieTitle', function(request, response){
+		const movieId = request.params.movieId
 		const movieTitle = request.params.movieTitle
 		const accountId = request.session.accountId
 		if(accountId != null){
-			movieManager.favourite(accountId, titleId, movieTitle, function(errors, results){
+			movieManager.favourite(accountId, movieId, movieTitle, function(errors, results){
 				if(errors.length == 0){
 					response.redirect('back')
 				} else {
@@ -73,12 +73,12 @@ module.exports = function({movieManager, apiManager}){
 		})
 	})
 
-	router.get('/watchlist/:titleId/:movieTitle', function(request, response){
-		const titleId = request.params.titleId
+	router.get('/watchlist/:movieId/:movieTitle', function(request, response){
+		const movieId = request.params.movieId
 		const movieTitle = request.params.movieTitle
 		const accountId = request.session.accountId
 		if(accountId != null){
-			movieManager.watchlist(accountId, titleId, movieTitle, function(errors, results){
+			movieManager.watchlist(accountId, movieId, movieTitle, function(errors, results){
 				if(errors.length == 0 || errors == null){
 					response.redirect('back')
 				} else {
@@ -113,10 +113,10 @@ module.exports = function({movieManager, apiManager}){
 		})
 	})
 
-	router.get('/review/create/:titleId', function(request, response){
+	router.get('/review/create/:movieId', function(request, response){
 		if(request.session.accountId){
 			const model = {
-				titleId: titleId,
+				movieId: movieId,
 				csrfToken: request.csrfToken
 			}
 		} else {
@@ -131,8 +131,8 @@ module.exports = function({movieManager, apiManager}){
 		if(request.session.accountId){
 			const accountId = request.session.accountId
 			const review = request.body.review
-			const titleId = request.body.titleId
-			movieManager.createPublicReview(accountId, review, titleId, function(errors, reviewId){
+			const movieId = request.body.movieId
+			movieManager.createReview(accountId, review, movieId, function(errors, reviewId){
 				if(errors.length > 0){
 					const model = {
 						errors: errors

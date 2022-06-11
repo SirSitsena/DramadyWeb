@@ -10,10 +10,10 @@ CREATE TABLE accounts (
 	CONSTRAINT usernameUnique UNIQUE (username)
 );
 
-CREATE TABLE publicReviews (
+CREATE TABLE reviews (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	content VARCHAR(500) NOT NULL,
-	titleId VARCHAR(50) NOT NULL,
+	movieId VARCHAR(50) NOT NULL,
 	createdAt DATE,
 	updatedAt DATE,
 	accountId INT UNSIGNED,
@@ -27,7 +27,7 @@ CREATE TABLE UserFavourites (
 	accountId INT UNSIGNED,
 	CONSTRAINT fk_userFavourites
 	FOREIGN KEY (accountId) REFERENCES accounts(id),
-	titleId VARCHAR(25),
+	movieId VARCHAR(25),
     movieTitle VARCHAR(100),
 	createdAt DATE,
 	updatedAt DATE
@@ -35,12 +35,12 @@ CREATE TABLE UserFavourites (
 
 
 -- CREATE WATCHLIST
-CREATE TABLE UserWatchlist (
+CREATE TABLE UserWatchlistItem (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	accountId INT UNSIGNED,
-	CONSTRAINT fk_userWatchlist
+	CONSTRAINT fk_userWatchlistItem
 	FOREIGN KEY (accountId) REFERENCES accounts(id),
-	titleId VARCHAR(25),
+	movieId VARCHAR(25),
 	movieTitle VARCHAR(100),
 	createdAt DATE,
 	updatedAt DATE
@@ -54,7 +54,7 @@ INSERT INTO accounts (username, hash, isAdministrator, isPublic) VALUES
 ('anestis', '$2b$10$fRewbRKN0PF6zfZnKnEPIu.7J65hX/v7/nh2lnYNLYZ6GbjS5uAli', TRUE, TRUE);
 
 
-INSERT INTO publicReviews (content, titleId, accountId) VALUES
+INSERT INTO reviews (content, movieId, accountId) VALUES
 ('TestCommentUser3','tt1877830', 3),
 ('TestCommentUser2','tt1877830', 2),
 ('TestCommentUser1','tt1877830', 1);

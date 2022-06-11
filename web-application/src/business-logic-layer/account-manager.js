@@ -34,9 +34,9 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 					callback(errors, null)
 				} else {
 					let isPublic = account.isPublic
-					if(isPublic == true){
+					if(isPublic == 1){
 						accountRepository.makePrivate(accountId, callback)
-					} else if (isPublic == false) {
+					} else if (isPublic == 0) {
 						accountRepository.makePublic(accountId, callback)
 					} else {
 						callback(["Internal server error"], null)
@@ -77,7 +77,6 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 					callback(errors, null)
 				} else {
 					if (account != null){
-						console.log(account)
 						let accountId = account.id
 						if(account.isPublic == true){
 							// Fetch the user's favourites and watchlist.

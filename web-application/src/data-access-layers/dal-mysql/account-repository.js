@@ -11,7 +11,6 @@ module.exports = function({db}){
 			
 			db.query(query, values, function(error, accounts){
 				if(error){
-					console.log(error)
 					callback(['databaseError'], null)
 				}else{
 					callback([], accounts)
@@ -51,8 +50,7 @@ module.exports = function({db}){
 		createAccount: function(account, callback){
 			const firstQuery = 'SELECT * FROM accounts WHERE username = ?'
 			const firstValues = [account.username]
-			const secondQuery = 'INSERT INTO accounts (username, hash, isPublic) VALUES (?, ?, ?)'
-			const secondValues = [account.username, account.hash, false]
+			
 			
 			db.query(firstQuery, firstValues, function(error, foundAccounts){
 				if(error){
@@ -60,6 +58,9 @@ module.exports = function({db}){
 				} else if (foundAccounts.length > 0){
 					callback(['User with that username already exists. Please try another username'])
 				} else {
+					var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+					const secondQuery = 'INSERT INTO accounts (username, hash, isPublic, createdAt) VALUES (?, ?, ?, ?)'
+					const secondValues = [account.username, account.hash, 0, date]
 					db.query(secondQuery, secondValues, function(error, insertedRow){
 						if(error){
 							callback(['databaseError'], null)
@@ -90,9 +91,9 @@ module.exports = function({db}){
 		},
 
 		makePublic: function(accountId, callback){
-			const query = 'UPDATE accounts SET isPublic = ? WHERE id = ?'
-			const values = [true, accountId]
-
+			var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+			const query = 'UPDATE accounts SET isPublic = ?, updatedAt = ? WHERE id = ?'
+			const values = [1, date, accountId]
 			db.query(query, values, function(error, result){
 				if(error){
 					callback(['databaseError'], null)
@@ -103,8 +104,9 @@ module.exports = function({db}){
 		},
 
 		makePrivate: function(accountId, callback){
-			const query = 'UPDATE accounts SET isPublic = ? WHERE id = ?'
-			const values = [false, accountId]
+			var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+			const query = 'UPDATE accounts SET isPublic = ?, updatedAt = ? WHERE id = ?'
+			const values = [0, date, accountId]
 
 			db.query(query, values, function(error, result){
 				if(error){

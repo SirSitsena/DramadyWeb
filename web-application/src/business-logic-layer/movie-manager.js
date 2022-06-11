@@ -52,7 +52,7 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 				if(errors.length > 0){
 					callback(['databaseError'], null)
 				} else {
-					if(accountId != null){
+					if(accountId != null){	
 						const promises = []
 						const movs = []
 						for(let mov of movies ){
@@ -105,19 +105,19 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 
 		},
 		
-		favourite: function(accountId, titleId, movieTitle, callback){
+		favourite: function(accountId, movieId, movieTitle, callback){
 			if(accountId != null){
 				//Check if already favourited
-				favouritesRepository.checkIfFavourited(accountId, titleId, function(errors, results){
+				favouritesRepository.checkIfFavourited(accountId, movieId, function(errors, results){
 					if(errors.length > 0){
 						callback(errors, null)
 					} else {
 						if(results.length > 0){
 							// Remove from favourites
-							favouritesRepository.deleteUserFavourite(accountId, titleId, callback)
+							favouritesRepository.deleteUserFavourite(accountId, movieId, callback)
 						} else {
 							// Add to favourites
-							favouritesRepository.createUserFavourites(accountId, titleId, movieTitle, callback)
+							favouritesRepository.createUserFavourites(accountId, movieId, movieTitle, callback)
 						}
 					}
 				})
@@ -143,18 +143,18 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 				})
 
 		},
-		watchlist: function(accountId, titleId, movieTitle, callback){
+		watchlist: function(accountId, movieId, movieTitle, callback){
 			if(accountId != null){
 				//Check if already favourited
-				watchlistRepository.checkIfWatchlisted(accountId, titleId, function(errors, results){
+				watchlistRepository.checkIfWatchlisted(accountId, movieId, function(errors, results){
 					if(errors.length > 0){
 						callback(errors, null)
 					} else {
 						if(results.length > 0){
-							watchlistRepository.deleteUserWatchlist(accountId, titleId, callback)
+							watchlistRepository.deleteUserWatchlistItem(accountId, movieId, callback)
 						} else {
 							// Add to favourites
-							watchlistRepository.createUserWatchlist(accountId, titleId, movieTitle, callback)
+							watchlistRepository.createUserWatchlistItem(accountId, movieId, movieTitle, callback)
 						}
 					}
 				})
@@ -166,28 +166,28 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 
 		/* 						PUBLIC REVIEWS 					*/
 
-		createPublicReview: function(accountId, review, titleId, callback){
-			reviewsRepository.createPublicReview(accountId, review, titleId, callback)
+		createReview: function(accountId, review, movieId, callback){
+			reviewsRepository.createReview(accountId, review, movieId, callback)
 		},
 
-		updatePublicReview: function(id, accountId, review, titleId, callback){
-			reviewsRepository.updatePublicReview(id, accountId, review, titleId, callback)
+		updateReview: function(id, accountId, review, movieId, callback){
+			reviewsRepository.updateReview(id, accountId, review, movieId, callback)
 		},
 
-		deletePublicReview: function(id, accountId, callback){
-			reviewsRepository.deletePublicReview(id, accountId, callback)
+		deleteReview: function(id, accountId, callback){
+			reviewsRepository.deleteReview(id, accountId, callback)
 		},
 
 		getPublicReviewById: function(reviewId, callback){
-			reviewsRepository.getPublicReviewById(reviewId, callback)
+			reviewsRepository.getReviewById(reviewId, callback)
 		},
 
-		getReviewsByTitleId: function(titleId, callback){
-			reviewsRepository.getReviewsByTitleId(titleId, callback)
+		getReviewsByMovieId: function(movieId, callback){
+			reviewsRepository.getReviewsByMovieId(movieId, callback)
 		},
 
 		getAllPublicReviews: function(callback){
-			reviewsRepository.getAllPublicReviews(callback)
+			reviewsRepository.getAllReviews(callback)
 		}
 	}
 }

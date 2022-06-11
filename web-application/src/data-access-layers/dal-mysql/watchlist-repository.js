@@ -3,7 +3,7 @@ module.exports = function({db}) {
         /* ************************* WATCHLIST ************************** */
 
         getUsersWatchlist: function(accountId, callback){
-            const query = 'SELECT * FROM UserWatchlist WHERE accountId = ?'
+            const query = 'SELECT * FROM UserWatchlistItem WHERE accountId = ?'
             const values = [accountId]
 
             db.query(query, values, function(errors, watchlist){
@@ -20,9 +20,10 @@ module.exports = function({db}) {
 
             SUCCESS: RETURNS ID OF watchlist item.
         */
-        createUserWatchlist: function(accountId, titleId, movieTitle, callback) {
-            const query = 'INSERT INTO UserWatchlist (accountId, titleId, movieTitle) VALUES (?, ?, ?)'
-            const values = [accountId, titleId, movieTitle]
+        createUserWatchlistItem: function(accountId, movieId, movieTitle, callback) {
+            var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            const query = 'INSERT INTO UserWatchlistItem (accountId, movieId, movieTitle, createdAt) VALUES (?, ?, ?, ?)'
+            const values = [accountId, movieId, movieTitle, date]
 
             db.query(query, values, function(error, results){
                 if(error){
@@ -38,9 +39,9 @@ module.exports = function({db}) {
 
             SUCCESS: RETURNS (1) DELETED ROW
         */
-        deleteUserWatchlist: function(accountId, titleId, callback) {
-            const query = 'DELETE FROM UserWatchlist WHERE accountId = ? AND titleId = ?'
-            const values = [accountId, titleId]
+        deleteUserWatchlistItem: function(accountId, movieId, callback) {
+            const query = 'DELETE FROM UserWatchlistItem WHERE accountId = ? AND movieId = ?'
+            const values = [accountId, movieId]
 
             db.query(query, values, function(error, results){
                 if(error){
@@ -51,9 +52,9 @@ module.exports = function({db}) {
             })
         },
 
-        checkIfWatchlisted: function(accountId, titleId, callback){
-            const query = 'SELECT * FROM UserWatchlist WHERE accountId = ? AND titleId = ?'
-            const values = [accountId, titleId]
+        checkIfWatchlisted: function(accountId, movieId, callback){
+            const query = 'SELECT * FROM UserWatchlistItem WHERE accountId = ? AND movieId = ?'
+            const values = [accountId, movieId]
 
             db.query(query, values, function(error, watchlistItem){
                 if(error){

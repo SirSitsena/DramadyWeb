@@ -20,9 +20,9 @@ module.exports = function({movieManager}){
         })
     })
 
-    router.get('/byTitleId/:titleId', function(request, response){
-        const titleId = request.params.titleId
-        movieManager.getReviewsByTitleId(titleId, function(errors, results){
+    router.get('/byMovieId/:movieId', function(request, response){
+        const movieId = request.params.movieId
+        movieManager.getReviewsByMovieId(movieId, function(errors, results){
             if(errors.length > 0){
                 response.status(500).end()
             } else {
@@ -38,10 +38,10 @@ module.exports = function({movieManager}){
                 if(error){
                     response.status(401).end()
                 } else {
-                    if(request.body.review != null && request.body.review.length > 0 && request.body.titleId.length > 0 && request.body.titleId != null){
+                    if(request.body.review != null && request.body.review.length > 0 && request.body.movieId.length > 0 && request.body.movieId != null){
                         const review = request.body.review
-                        const titleId = request.body.titleId
-                        movieManager.createPublicReview(payload.accountId, review, titleId, function(error, results){
+                        const movieId = request.body.movieId
+                        movieManager.createReview(payload.accountId, review, movieId, function(error, results){
                             if(error.length > 0){
                                 response.status(500).end()
                             } else {
@@ -63,10 +63,10 @@ module.exports = function({movieManager}){
                     if(error){
                         response.status(401).end()
                     } else {
-                        if(request.body.review != null && request.body.review.length > 0 && request.body.titleId.length > 0 && request.body.titleId != null){
+                        if(request.body.review != null && request.body.review.length > 0 && request.body.movieId.length > 0 && request.body.movieId != null){
                             const review = request.body.review
-                            const titleId = request.body.titleId
-                            movieManager.createPublicReview(payload.accountId, review, titleId, function(error, results){
+                            const movieId = request.body.movieId
+                            movieManager.createReview(payload.accountId, review, movieId, function(error, results){
                                 if(error.length > 0){
                                     response.status(500).end()
                                 } else {
@@ -96,11 +96,11 @@ module.exports = function({movieManager}){
                 if(error){
                     response.status(401).end()
                 } else {
-                    if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){
+                    if(request.body.reviewId != null && request.body.review != null && request.body.movieId != null){
                         const reviewId = request.body.reviewId
                         const review = request.body.review
-                        const titleId = request.body.titleId
-                        movieManager.updatePublicReview(reviewId, payload.accountId, review, titleId, function(error, result) {
+                        const movieId = request.body.movieId
+                        movieManager.updateReview(reviewId, payload.accountId, review, movieId, function(error, result) {
                             if(error.length > 0){
                                 response.status(500).end()
                             } else {
@@ -123,11 +123,11 @@ module.exports = function({movieManager}){
                     if(error){
                         response.status(401).end()
                     } else {
-                        if(request.body.reviewId != null && request.body.review != null && request.body.titleId != null){
+                        if(request.body.reviewId != null && request.body.review != null && request.body.movieId != null){
                             const reviewId = request.body.reviewId
                             const review = request.body.review
-                            const titleId = request.body.titleId
-                            movieManager.updatePublicReview(reviewId, payload.accountId, review, titleId, function(error, result) {
+                            const movieId = request.body.movieId
+                            movieManager.updateReview(reviewId, payload.accountId, review, movieId, function(error, result) {
                                 if(error.length > 0){
                                     response.status(500).end()
                                 } else {
@@ -160,7 +160,7 @@ module.exports = function({movieManager}){
                 } else {
                     if(request.body.reviewId != null){
                         const reviewId = request.body.reviewId
-                        movieManager.deletePublicReview(reviewId, payload.accountId, function(error, result) {
+                        movieManager.deleteReview(reviewId, payload.accountId, function(error, result) {
                             if(error.length > 0){
                                 response.status(500).end()
                             } else {
@@ -183,7 +183,7 @@ module.exports = function({movieManager}){
                     } else {
                         if(request.body.reviewId != null){
                             const reviewId = request.body.reviewId
-                            movieManager.deletePublicReview(reviewId, payload.accountId, function(error, result) {
+                            movieManager.deleteReview(reviewId, payload.accountId, function(error, result) {
                                 if(error.length > 0){
                                     response.status(500).end()
                                 } else {
@@ -208,7 +208,7 @@ module.exports = function({movieManager}){
 
     router.get('/:id', function(request, response){
         const reviewId = request.params.id
-        movieManager.getPublicReviewById(reviewId, function(errors, results){
+        movieManager.getReviewById(reviewId, function(errors, results){
             if(errors.length > 0){
                 response.status(500).end()
             } else {

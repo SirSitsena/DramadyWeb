@@ -23,9 +23,9 @@ module.exports = function({movieManager, apiManager}){
         })
     })
 
-    router.get('/id/:titleId', function(request, response){
-        const titleId = request.params.titleId
-        apiManager.getMovieByTitleId(titleId, function(errors, results){
+    router.get('/id/:movieId', function(request, response){
+        const movieId = request.params.movieId
+        apiManager.getMovieByMovieId(movieId, function(errors, results){
             if(errors.length > 0){
                 response.status(500).end()
             } else {
@@ -48,7 +48,6 @@ module.exports = function({movieManager, apiManager}){
     router.get('/watchlisted', function(request, response){
         const accountId = request.query.accountId
         movieManager.viewWatchlist(accountId, function(errors, results){
-            console.log("presentation-mv-rtr-api" + results)
             if(errors.length > 0){
                 response.status(500).end()
             } else {

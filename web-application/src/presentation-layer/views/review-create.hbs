@@ -17,7 +17,7 @@
         <form action="/movies/review/create" method="POST" class="sign-up">
             Review content: <input type="text" name="review" class="input" style="margin-bottom: 15px;"><br>
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            <input type="hidden" name="titleId" value="{{titleId}}"
+            <input type="hidden" name="movieId" value="{{movieId}}"
             <input type="submit" value="login!" class="button sign-up-button">
         </form>
     {{/if}}

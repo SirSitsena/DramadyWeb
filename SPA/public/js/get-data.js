@@ -32,7 +32,6 @@ function notify(message){
 }
 
 function getFavList(data){
-
     var favListPath = ACTION_PATH+FAV_LIST_PATH+JSON.parse(data).accountId;
 
     getAjax(favListPath, function(data, statusCode){

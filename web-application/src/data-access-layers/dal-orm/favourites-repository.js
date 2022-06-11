@@ -18,10 +18,10 @@ module.exports = function({models}){
 
             SUCCESS: RETURNS ID OF FAVOURITE.
         */
-        createUserFavourites: function(accountId, titleId, movieTitle, callback) {
+        createUserFavourites: function(accountId, movieId, movieTitle, callback) {
             models.UserFavourites.create({
                 accountId: accountId,
-                titleId: titleId,
+                movieId: movieId,
                 movieTitle: movieTitle
             }).then(function(result){
                 callback([], result.dataValues.id)
@@ -35,11 +35,11 @@ module.exports = function({models}){
 
             SUCCESS: RETURNS (1) DELETED ROW
         */
-        deleteUserFavourite: function(accountId, titleId, callback) {
+        deleteUserFavourite: function(accountId, movieId, callback) {
             models.UserFavourites.destroy({
                 where: {
                     accountId: accountId,
-                    titleId: titleId
+                    movieId: movieId
                 }
             }).then(function(result) {
                 callback([], result)
@@ -54,11 +54,11 @@ module.exports = function({models}){
             SUCCESS: Returns rows, if length 0 no favourites, if length > 0 it is favourited.
         */
 
-        checkIfFavourited: function(accountId, titleId, callback){
+        checkIfFavourited: function(accountId, movieId, callback){
             models.UserFavourites.findAll({
                 where: {
                     accountId: accountId,
-                    titleId: titleId
+                    movieId: movieId
                 },
 				raw: true
             }).then(function(favourites){

@@ -6,7 +6,7 @@ module.exports = function({models}) {
 
         getUsersWatchlist: function(accountId, callback){
 
-            models.UserWatchlist.findAll({
+            models.UserWatchlistItem.findAll({
                 where: {
                     accountId: {
                         [Op.eq]: accountId
@@ -25,10 +25,10 @@ module.exports = function({models}) {
 
             SUCCESS: RETURNS ID OF watchlist item.
         */
-        createUserWatchlist: function(accountId, titleId, movieTitle, callback) {
-            models.UserWatchlist.create({
+        createUserWatchlistItem: function(accountId, movieId, movieTitle, callback) {
+            models.UserWatchlistItem.create({
                 accountId: accountId,
-                titleId: titleId,
+                movieId: movieId,
                 movieTitle: movieTitle
             })
             .then(function(watchlistItem){
@@ -44,11 +44,11 @@ module.exports = function({models}) {
 
             SUCCESS: RETURNS (1) DELETED ROW
         */
-        deleteUserWatchlist: function(accountId, titleId, callback) {
+        deleteUserWatchlistItem: function(accountId, movieId, callback) {
             models.UserWatchlist.destroy({
                 where: {
                     accountId: accountId,
-                    titleId: titleId
+                    movieId: movieId
                 }
             }).then(function(){
                 callback([], null)
@@ -57,11 +57,12 @@ module.exports = function({models}) {
             })
         },
 
-        checkIfWatchlisted: function(accountId, titleId, callback){
+        checkIfWatchlisted: function(accountId, movieId, callback){
+            console.log(movieId)
             models.UserWatchlist.findAll({
                 where: {
                     accountId: accountId,
-                    titleId: titleId
+                    movieId: movieId
                 },
 				raw: true
             }).then(function(results){
