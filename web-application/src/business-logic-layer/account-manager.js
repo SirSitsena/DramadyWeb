@@ -59,7 +59,6 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 								callback(["Password incorrect for user [" + acc.username + "]"])
 							}
 						}
-						
 					})
 				} else {
 					if(errors.length > 0){
@@ -98,7 +97,6 @@ module.exports = function({accountRepository, accountValidator, favouritesReposi
 						} else {
 							callback([], account)
 						}
-
 					} else {
 						callback(["databaseError"], null)
 					}

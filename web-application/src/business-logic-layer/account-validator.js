@@ -6,9 +6,7 @@ const MAX_PASSWORD_LENGTH = 25
 module.exports = function({}){
 	return {
 		getErrorsNewAccount: function(account){
-	
 			const errors = []
-			
 			// Validate username.
 			if(!account.hasOwnProperty("username")){
 				errors.push("username is missing")
@@ -24,9 +22,7 @@ module.exports = function({}){
 			} else if(account.password.length > MAX_PASSWORD_LENGTH){
 				errors.push("password is too long")
 			}
-			
 			return errors
-			
 		}
 	}
 }

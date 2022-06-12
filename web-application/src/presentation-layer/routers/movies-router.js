@@ -103,7 +103,6 @@ module.exports = function({movieManager, apiManager}){
 
 		apiManager.getSearchMovieByTitle(accountId, keywords, function(error, result) {
 			if(error.length > 0){
-				console.log(error)
 			} else {
 				const model = {
 					movies: result.results

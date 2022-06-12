@@ -8,23 +8,14 @@ module.exports = function({}){
     return {
         getSearchMovieByTitle: function(keywords, callback){
             request('https://imdb-api.com/en/API/SearchMovie/'+API_KEY_1+'/'+keywords, { json: true}, (error, response, body) => {
-                /*if(error || body.errorMessage != ""){
-                    callback(error, null)
-                } else {
-                    callback(null, body)
-                } */
-                console.log("keywords: ", keywords)
                 if(error != null){
-                    console.log("error: ", error)
                     if(error.length > 0){
                         callback(["Error making request"], null)
                     }
                 } else {
                     if(body.errorMessage != ""){
-                        console.log("bodyerr:" +body.errorMessage)
                         callback(["Server error"], null)
                     } else {
-                        //console.log("body: ",  body)
                         callback([], body)
                     }
                 }
@@ -36,18 +27,13 @@ module.exports = function({}){
 		*/
         getMovieByMovieId: function(movieId, callback){
             request('https://imdb-api.com/en/API/Title/'+API_KEY_1+'/'+movieId, { json:true }, (err, res, body) => {
-
-                // TODOO: error handling
+                // Error handling
                 if(err != null){
-                    console.log("err: " + err)
                     if(err.length > 0){
-                        console.log("err len: "+ err)
                     }
                 } else {
                     if(body.errorMessage != null){
-                        console.log(body.errorMessage)
                     }
-                    //console.log(body.title)
                     callback([], body)
                 }
             })
@@ -59,11 +45,8 @@ module.exports = function({}){
                 if (err || body.errorMessage != "") {
                     callback(err, null)
                 } else {
-                    //console.log(body.items)
                     callback([], body.items)
                 }
-                // console.log(body.url);
-                // console.log(body.explanation);
             });
         }
     }

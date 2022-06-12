@@ -58,7 +58,6 @@ module.exports = function({models}) {
         },
 
         checkIfWatchlisted: function(accountId, movieId, callback){
-            console.log(movieId)
             models.UserWatchlist.findAll({
                 where: {
                     accountId: accountId,

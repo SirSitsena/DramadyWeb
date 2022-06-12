@@ -122,14 +122,11 @@ function showReviewsByMovieId(){    //COMPLETE
         });
     }
     clearInterval(reviewIntervalID);
-
     callback();
     reviewIntervalID = setInterval(callback, REFRESH_RATE_REVIEWS);
-
 }
 
 function printReviewsByMovieId(reviewsListData, loggedUserId, blockId){
-    // document.getElementById(UPDATE_REVIEW_FORM_ID).innerHTML = "";
 
     var container = document.getElementById(blockId);
     container.innerHTML = "";
@@ -138,11 +135,8 @@ function printReviewsByMovieId(reviewsListData, loggedUserId, blockId){
 
     reviewsListData.forEach(function (review) {
         var div2 = document.createElement('div');
-        // console.log(review)
         div2.textContent = 'ReviewId: ' + review.id + ', ReviewBody: ' + review.content + ', accountId: ' + review.accountId;
-        console.log(review.accountId, loggedUserId, "last")
         if(review.accountId == loggedUserId){
-
             // Edit Button
             var editButton = document.createElement('button')
             editButton.innerText = "Edit"
@@ -152,7 +146,6 @@ function printReviewsByMovieId(reviewsListData, loggedUserId, blockId){
             editButton.setAttribute('content', review.content)
             editButton.addEventListener("click", showEditReviewForm)
             div2.appendChild(editButton)
-
             // Delete Button
             var deleteButton = document.createElement('button')
             deleteButton.innerText = "Delete"
@@ -164,9 +157,7 @@ function printReviewsByMovieId(reviewsListData, loggedUserId, blockId){
         }
         div.appendChild(div2);
     });
-
     container.appendChild(div);
-    // alert('Print Review')
 }
 
 function showCreateReviewForm() {
@@ -209,10 +200,8 @@ function showEditReviewForm() {
 
     let movieId = this.getAttribute('movieId')
     let accountId = this.getAttribute('accountId')
-    // let movieTitle = this.getAttribute('movieTitle')
     let reviewId = this.getAttribute('reviewId')
     let content = this.getAttribute('content')
-
 
     var container = document.getElementById(UPDATE_REVIEW_FORM_ID);
     container.innerHTML = ""
@@ -232,7 +221,6 @@ function showEditReviewForm() {
     editReviewButton.setAttribute('accountId', accountId)
     editReviewButton.setAttribute('reviewId', reviewId)
 
-
     editReviewButton.addEventListener('click',editReview)
 
     container.appendChild(div);
@@ -244,10 +232,7 @@ function showEditReviewForm() {
 
 function createReview(){
 
-
-
     let movieId = this.getAttribute('movieId')
-    // let accountId = this.getAttribute('accountId')
     let reviewText = document.getElementById("reviewText").value
 
     postAjax(CREATE_REVIEW_PATH,  { review: reviewText, movieId: movieId } , function(data, statusCode){
@@ -269,14 +254,8 @@ function createReview(){
 function editReview(){
 
     let movieId = this.getAttribute('movieId')
-    // let accountId = this.getAttribute('accountId')
     let reviewId = this.getAttribute('reviewId')
     let editReviewText = document.getElementById("editReviewText").value
-
-
-    // Show Create Review Form after editing an existing one
-
-
 
     putAjax(EDIT_REVIEW_PATH,  {reviewId: reviewId, review: editReviewText, movieId: movieId } , function(data, statusCode){
         if(statusCode === 200){
@@ -298,7 +277,6 @@ function editReview(){
 function deleteReview(){
 
     var reviewId = this.getAttribute('reviewId')
-
 
     deleteAjax(DELETE_REVIEW_PATH,  { reviewId: reviewId } , function(data, statusCode){
         if(statusCode === 200){

@@ -93,7 +93,6 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 			})
 		},
 
-
 		/* 						FAVOURITES FUNCTIONALITY 					*/
 		viewFavourites: function(accountId, callback){
 		/*
@@ -102,7 +101,6 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 			favouritesRepository.getUsersFavourites(accountId, function(error, results){
 				callback(error, results)
 			})
-
 		},
 		
 		favourite: function(accountId, movieId, movieTitle, callback){
@@ -141,7 +139,6 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 						callback([], results)
 					}
 				})
-
 		},
 		watchlist: function(accountId, movieId, movieTitle, callback){
 			if(accountId != null){
@@ -161,7 +158,6 @@ module.exports = function({movieTop250Repository, movieTrendingRepository, favou
 			} else {
 				callback(['Please log in to view this page'], null)
 			}
-			
 		},
 
 		/* 						PUBLIC REVIEWS 					*/

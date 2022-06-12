@@ -53,7 +53,6 @@ module.exports = function({db}){
             })
         },
 
-
         /*
             Retrieves the movie with the given year.
             Possible errors: databaseError

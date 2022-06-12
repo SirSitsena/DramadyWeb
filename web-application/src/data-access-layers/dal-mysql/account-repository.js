@@ -50,8 +50,7 @@ module.exports = function({db}){
 		createAccount: function(account, callback){
 			const firstQuery = 'SELECT * FROM accounts WHERE username = ?'
 			const firstValues = [account.username]
-			
-			
+
 			db.query(firstQuery, firstValues, function(error, foundAccounts){
 				if(error){
 					callback(['databaseError'], null)

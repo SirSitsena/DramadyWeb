@@ -23,9 +23,7 @@ function postAjax(url, data, success) {
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
     xhr.send(params);
-
     return xhr;
 }
 

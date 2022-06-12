@@ -4,9 +4,7 @@ const MAX_REVIEW_LENGTH = 255
 module.exports = function({}){
 	return {
 		getErrorsNewReview: function(review){
-	
 			const errors = []
-			
 			// Validate username.
 			if(!review){
 				errors.push("review content is missing")
@@ -15,9 +13,7 @@ module.exports = function({}){
 			}else if(MAX_REVIEW_LENGTH < review.length){
 				errors.push("review is too long")
 			}
-			
 			return errors
-			
 		}
 	}
 }

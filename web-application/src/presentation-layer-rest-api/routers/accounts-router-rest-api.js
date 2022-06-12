@@ -64,7 +64,6 @@ module.exports = function({accountManager}) {
 
         accountManager.createAccount(account, function(errors, accountId) {
             if(errors.length > 0){
-                console.log(errors)
                 response.status(500).json({error: "account couldn't be created due to unknown error."})
             } else {
                 accountManager.signIn(account, function(errors, accountId){

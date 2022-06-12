@@ -1,7 +1,6 @@
 
 module.exports = function({apiRepository, favouritesRepository, watchlistRepository}){
     return {
-
         getSearchMovieByTitle:  function(accountId, keywords, callback){
             const acceptableKeywords = encodeURIComponent(keywords.trim())
             apiRepository.getSearchMovieByTitle(acceptableKeywords, function(error, result){
@@ -47,7 +46,6 @@ module.exports = function({apiRepository, favouritesRepository, watchlistReposit
                 }
             })
         },
-
         // Get movie by its imdb id:
         getMovieByMovieId: function(movieId, callback){
 			if(movieId != null){
